@@ -1,0 +1,34 @@
+# Bitsand - a web-based booking system for LRP events
+# Copyright (C) 2006 - 2012 The Bitsand Project (http://bitsand.googlecode.com/)
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+#
+#
+#
+# This file is a list of systems that user details can be exported from
+# It is tab-seperated. Lines beginning with a # are comments and ignored
+#
+#
+#
+# Fields:
+# Name	System (LT/Maelstrom/Other)	Export URL
+#
+Bears	LT	http://kaitain.vm.bytemark.co.uk/bears/export.php
+Gryphons	LT	http://www.gryphonbooking.com/export.php
+Harts	LT	http://albion.leynexus.net/booking/export.php
+#Jackals	LT	http://www.jackalfaction.com/booking/export.php
+Lions	LT	https://bookings.lionsfaction.co.uk/export.php
+Vipers	LT	http://www.viperfaction.co.uk/booking/export.php
+First Spear	LT	https://bookings.lionsfaction.co.uk/firstspear/export.php

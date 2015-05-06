@@ -1,0 +1,79 @@
+Change Log
+Version 4.0 to 5.0
+
+BUG FIXES
+
+Extra backslashes shown in Admin->System configuration (issue 122)
+Players booking meal ticket but no bunk listed as having booked both (issue 123)
+Fixed Meal ticket not recording as true / false. Now checkboxes will display correctly.
+Added "Beguile X" to OSP table (issue 124)
+Fixed apostrophe issue in encrypted fields (issue 126)
+Maelstrom: Help pages displayed help for config items that were not shown on config page
+Fixed character export to show OSPs and ancestors correctly.
+Fixed booking list csv export to show ancestors correctly and escape quotes in notes fields.
+Maelstrom: Show bunk assigned value on admin view details page.
+Install script now sets timeout limit & max number of login attempts (issue 130)
+Backslashes appear in ticket description if there are quotes (issue 136)
+Fix to spell cards required totals (issue 137)
+Fixed a bug that was allowing the booking list to be viewed by directly linked to the page, even if it should only show to logged in users.
+Update DB script does not add Beguile <X> to OSP list (issue 138)
+Create Tables script does not populate config table (issue 139)
+Free bookings were not assigned bunk
+Group name not always displayed correctly on bookings.php
+Bulk marking as paid leads to several confirmations to one person (issue 143)
+Show the preferred character name on the admin view details page, admin_viewdetails.php (issue 142)
+Double-quotes in medical details screw up CSV export (issue 146)
+LT: Added Tiers for sliding specials, High Magic specialisations, and levels for OS Beguile and Fearsome Aspect (issue 150)
+Fixed how bunks are assigned by admins to make it more intuitive (issue 140)
+Fixed bug creating tables using install tools (issue 152)
+Fixed bug in CreateRelease.sh script (issue 153)
+Player bunk limit is now respected (issue 127)
+Player ID not included in PayPal e-mail (issue 145)
+Bunk not assigned when player paid extra for bunk via PayPal (issue 132)
+Bookings export did not include car registration (issue 155)
+Fixed admin_search.php to include db_prefix in query to return data.
+Cannot confirm IC details in Maelstrom version (issue 158)
+
+-----------------------------
+
+OTHER CHANGES
+
+admin_cards.php now shows total number of bunks required (issue 125)
+GrepForIssues.sh now puts date run in Bitsand_issues
+Altered admin_groups.php and admin_ancestors.php to allow you to view all free-text entries, and assign them to values in the database (issue 128)
+Altered the admin_viewdetails.php to allow you to mark a Monster/staff booking's IC information complete when they do not want to play a character.
+Added a 'Monster Only' flag to characters table, so you can set to only monster for the current event without overwriting previous character information.
+Added an 'Event pack by post' flag to players table, so players can request an event pack to be sent by post.
+Added a report to show bookings that have requested an event pack by post.
+Added the 'Monster Only' and 'Event pack by post' to the booking export.
+Added a link to view details of players with disabled accounts.
+Added Pay on Gate Checkbox to Meal Ticket management in admin section, so you can record who has changed their mind about a meal ticket, and that they need to pay on the gate for it.
+Change to inc_head_html.php to include a logo, and an admin page style sheet, changed main.css to include an entry for the logo, and added admin.css
+LT: Added Plant and Mineral to the Racial Types list.
+Change the booking pack by post report to show the booking type.
+Updated help files to output nicer HTML, and also added a help style sheet.
+When the configuration is changed via the web interface, the e-mail sent to root includes details of the changes (issue 135)
+When the configuration is changed via the web interface, player ID of user that made the change is included in the e-mail (issue 135)
+Added links to issue tracker and new issue form (issue 141)
+Added a custom text field to the final confirmation email page (admin_finalconfirmation.php).
+Changed root_oldlogins.php to allow selective deletion of inactive users.
+Start page shows whether or not player has bunk allocated, and whether they have bought a meal ticket (issue 147)
+admin_bunks.php - move "Bunk Requested" column (issue 148)
+Added Car Reg to Booking list export.
+LT: Added config setting to allow output of full OS names in booking list export.
+Added the ability for a user to unconfirm their details if they have not yet paid (issue 120)
+Added the ability for an admin user to delete a booking (issue 120)
+LT: Added Faction to the Booking List page (issue 149)
+Added the ability for admin users to quickly clear character information (issue 144)
+Added the ability for a player to quickly clear their character information (issue 144)
+Option to request a bunk is not present if no bunks are available (issue 134)
+Changed the navigation to allow most to be performed via links at the top of the page, not the bottom.
+LT: Can no longer select multiple OS or Guilds in the UI (issue 76)
+LT: Added a feature to allow bookings to be placed in a queue if they are for a player from another faction, controlled by a config setting.
+Added e-mail preferences on a user level, can choose whether to recieve e-mails about IC changes, OOC changes, payment made and removal from booking queues.
+Do not show "install directory is present" message if user is not logged in
+Added function to send test e-mail from install/index.php
+Added page to run phpinfo to install directory
+Logs a warning when non-admin user attempts to access admin page
+Added text to make it clear that payment does not have to be made via PayPal (issue 156)
+Added ability for admins to search for character name or player ID (issue 157)

@@ -1,0 +1,15 @@
+Change Log
+Version 3.0 to 3.1
+
+BUG FIXES
+
+CheckReferrer () function did not work with admin or install pages, making them unusable
+Admin FAQ page - backslashes appear when editing FAQ items
+
+-----------------------------
+
+OTHER CHANGES
+
+All failed login attempts are logged to WARNING_LOG file
+Changed contact e-mail address to russ@phillipsuk.org
+Updated copyright notice

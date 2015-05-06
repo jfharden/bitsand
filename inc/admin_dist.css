@@ -1,0 +1,38 @@
+/*
+Bitsand - a web-based booking system for LRP events
+Copyright (C) 2006 - 2014 The Bitsand Project (http://bitsand.googlecode.com/)
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+*/
+
+/*
+This style sheet is applied to all admin or root user pages,
+these pages are different to the generally accessed pages, with
+lots of very wide tables, so it is useful to be able to style them independently
+of the rest of the system.
+
+Rename this file from admin_dist.css to admin.css to make use of it.
+*/
+
+/*This removes the divs used to allow the creation of a drop shadow effect*/
+.topshadow
+{
+	display: none;
+}
+
+#logo
+{
+	display: none;
+}

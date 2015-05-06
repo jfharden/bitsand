@@ -1,0 +1,108 @@
+/*
+Bitsand - a web-based booking system for LRP events
+Copyright (C) 2006 - 2014 The Bitsand Project (http://bitsand.googlecode.com/)
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+*/
+
+/*
+This file should be renamed to body.css then edited to suit the individual installation.
+It only has the style definitions for the body tags
+*/
+
+#logo
+{
+	display:none;
+}
+
+body {
+	font-family: sans-serif;
+	font-size: 12pt;
+	background-image: url('../img/watermark.jpg');
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-attachment: fixed;
+	background-color: #E9E9E9;
+}
+
+/*
+Used on index page, start page (when logged in). Can be used to provide a background
+image relevant to the event, for example
+*/
+body.event {
+	font-family: sans-serif;
+	font-size: 12pt;
+	background-image: url('../img/event_background.jpg');
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-attachment: fixed;
+	background-color: #E9E9E9;
+}
+
+/*This removes the divs used to allow the creation of a drop shadow effect*/
+.topshadow
+{
+	display: none;
+}
+
+.menu {
+width: 100%;
+border-bottom: black 1px solid;
+color: #000;
+font-size: 14pt;
+font-family: Arial, Helvetica, sans-serif;
+height: 2em;
+}
+
+.menu ul
+{
+margin: 0px;
+padding-left:0;
+padding-top: 0.5em;
+padding-bottom: 0.3em;
+white-space: nowrap;
+float: left;
+}
+
+.menu li {
+list-style-type: none;
+display: inline;
+}
+
+.menu li a {
+text-decoration: none;
+padding: 0.5em 0.75em 0.3em 0.75em;
+}
+
+.menu li a:link {
+color: #000;
+}
+
+.menu li a:visited {
+color: #000;
+}
+
+.menu li a:hover {
+background-color: lightgray;
+}
+
+#management form {
+  float: right;
+  padding-left: 0.75em;
+}
+
+#management ul {
+float: right;
+}

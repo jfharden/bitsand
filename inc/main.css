@@ -1,0 +1,157 @@
+/*
+Bitsand - a web-based booking system for LRP events
+Copyright (C) 2006 - 2014 The Bitsand Project (http://bitsand.googlecode.com/)
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+*/
+
+#logo a img
+{
+	border: 0px;
+}
+
+
+/* Used on FAQ page */
+p.question {
+	font-weight: bold;
+}
+
+h1, h2 {
+	text-align: center;
+}
+
+table.midtable {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+table.characterDisplay {
+	width: 68ex;
+}
+
+td.charactertext {
+	width: 38ex;
+}
+
+tr.highlight:hover {
+	background-color: #FFFFCC;
+}
+
+th {
+	padding-left: 1ex;
+	padding-right: 1ex;
+	font-weight: bold;
+	font-size: 12pt;
+}
+
+th.left {
+	padding-left: 1ex;
+	padding-right: 1ex;
+	font-weight: bold;
+	font-size: 12pt;
+	text-align: left;
+}
+
+td {
+	padding-left: 1ex;
+	padding-right: 1ex;
+	font-size: 12pt;
+}
+
+input.text {
+	font-family: sans-serif;
+	font-size: 12pt;
+	width: 32ex;
+}
+
+.paypalamount {
+	font-family: sans-serif;
+	font-size: 12pt;
+	width: 6ex;
+}
+
+select {
+	font-family: sans-serif;
+	font-size: 12pt;
+}
+
+textarea {
+	font-family: sans-serif;
+	font-size: 12pt;
+	width: 60ex;
+}
+
+textarea.eventinfo {
+	font-family: sans-serif;
+	font-size: 12pt;
+	width: 90ex;
+	min-height: 20ex;
+}
+
+/* .mid only works for inline elements */
+.mid {
+	text-align: center;
+}
+
+/* centre block elements */
+.blockmid {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.warn {
+	color: red;
+	font-weight: bold;
+	border: solid thin red;
+	padding: 1ex;
+	margin: 0.25em;
+	background-color: #ffc4c4;
+}
+
+.green {
+	color: green;
+	font-weight: bold;
+	border: solid thin green;
+	padding: 1ex;
+	margin: 0.25em;
+	background-color: #c4ffc4;
+}
+
+.sans-warn {
+	color: red;
+	font-weight: bold;
+}
+
+.sans-green {
+	color: green;
+	font-weight: bold;
+}
+
+.required {
+	background-color: #CCCC99;
+	font-family: sans-serif;
+	font-size: 12pt;
+	width: 32ex;
+}
+
+.req_colour {
+	background-color: #CCCC99;
+	font-family: sans-serif;
+	font-size: 12pt;
+}
+
+.smallprint {
+	font-size: 70%;
+}

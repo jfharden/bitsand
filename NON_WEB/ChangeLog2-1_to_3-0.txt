@@ -1,0 +1,70 @@
+Change Log
+Version 2.1 to 3.0
+
+BUG FIXES
+Table was not sortable in the following pages:
+	admin_markpaid.php
+	admin_booked.php
+	admin_search.php
+admin_signsheet.php - print.css was not being included
+TLD's longer than 3 characters (eg .info) were considered invalid
+Config file test page (in install directory) tries to determine whether SYSTEM_URL is valid
+
+Fixed issue 40 (Missing Lore Sheet types)
+Fixed issue 53 (Backslashes appear in character data)
+Fixed issue 57 (FAQ displays player ID 0 if not logged in)
+Fixed issue 59 (Access log - log when user enters password, but do not store password)
+Fixed issue 66 (Do not allow user to choose multiple power skills)
+Fixed issue 70 (Cannot change e-mail)
+Fixed issue 72 (Stat line changing when admin edits IC details)
+Fixed issue 73 (Email details do not appear on the Bookings CSV)
+Fixed issue 80 (MySQL 4 doesn't like default charset)
+
+-----------------------------
+
+OTHER CHANGES
+Admin search page: Can search by e-mail address. Name in results table is split into first name & surname
+admin_cards.php now shows numbers of monster, player, staff, total bookings
+Moved root links on admin.php to below "All Data" admin links
+bookings.php now shows numbers of monster, player, staff, total bookings
+Tables are now sorted case-insensitively
+When bookings are deleted, bunk requests/assignments are reset
+Number of bunks assigned is shown on admin_cards.php
+When user changes e-mail address, confirmation e-mail is sent to both existing and new e-mail addresses
+Removed SQL files - of little use now that there is a PHP page to create tables
+
+Fix for issue 23 (Encryption key change) - password salt change has been put in a new issue (64 - Allow password salt to be changed)
+Fix for issue 44 (PayPal payments - automatically mark as paid)
+Fix for issue 50 (Move FAQ items to database)
+Fix for issue 58 (Perform checks when confirming IC details)
+Fix for issue 62 (Better handling of OSPs)
+Fix for issue 63 (Better referral checking)
+Fix for issue 64 (Allow password salt to be changed)
+Fix for issue 65 (Allow monsters/staff to not enter any IC details)
+Fix for issue 67 (User does not get e-mail when paying via PayPal)
+Fix for issue 68 ("Pay on gate" tickbox for admins)
+Fix for issue 69 (Script to update database)
+Fix for issue 71 (Short skill names in CSV export)
+Fix for issue 74 (Export access log to csv)
+Fix for issue 75 (Short OSP names in CSV export)
+Fix for issue 77 (Note when admin enters illegal skill combination)
+Fix for issue 79 (Add player/monster/staff booking limits)
+
+GrepForIssues.sh:
+	Does not display names of PHP files run through lint, unless run in verbose mode
+	Fixed bug when checking for DB function calls that do not include $link parameter
+Created script to create releases (copies/moves/deletes/renames files, etc)
+
+Added Developer.wiki - general developer notes
+Added AdminRoot.wiki - root user manual
+Added fnSystemURL () function - redirects will go to https:// or http:// as appropriate
+Added a maintenance mode
+
+Configuration file:
+	Added OLD_PW_SALT
+	Added RPG_NAME configuration, set to "LT" or "Maelstrom" - set by CreateRelease.sh script
+
+-----------------------------
+
+MAELSTROM VERSION
+Created Maelstrom-specific files. Maelstrom files have same name as LT counterpart, with _m appended (eg IC form becomes ic_form_m.php)

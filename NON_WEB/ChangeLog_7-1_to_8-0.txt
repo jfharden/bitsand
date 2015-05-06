@@ -1,0 +1,12 @@
+Change Log
+Version 7.1 to 8.0
+
+BUG FIXES
+JO - Large update to copyright dates - 2014
+JO - Couple of small admin bugfixes (report output, Clear character details, closed event link)
+Issue 228: 	Save bookings to csv doesn't include people without a faction
+
+-----------------------------
+
+OTHER CHANGES
+Added new OSPs

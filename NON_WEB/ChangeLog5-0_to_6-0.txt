@@ -1,0 +1,35 @@
+Change Log
+Version 5.0 to 6.0
+
+BUG FIXES
+Fix to make the paypal buttons generate the correct custom value so autopay works properly to mark mealtickets and bunks
+Fix to clear out Monster Only field if person fills in data as a player
+Fixed issue 162: Tally of points spent doesn't work when entering character
+Fixed issue 163: Players without an entry in the characters table do not appear in search results
+Fixed admin_mealticket.php to allow column sorting
+Fixed issue 160: "Email me when my payment is received" cannot be changed
+Fix to prevent top menu appearing when sign-in sheet is printed
+LT: Fixed spelling of Additional in OS Additional Reforging
+LT: Fixed escaping of one of the notes fields (Special powers / items) in csv export
+LT: Fixed issue 177: Thrown Weapon missing from skill list
+Fixed issue 165: bkInQueue column not created in booking table
+Fixed issue 170: Users getting timed out prematurely
+Sign-in sheet properly escapes HTML characters & strips slashes
+Issue 179: 	Warnings when creating tables
+Issue 184: 	Damage Reduction (Crush) not in OSPs table
+
+-----------------------------
+
+OTHER CHANGES
+LT: Added marshal type and ref number fields, to allow recording of these values, so you can see what refs you have booked
+LT: Added 'Immune to Paralysis' OS.
+LT: Included Marshal and Ref Number in player reports.
+LT: admin_cards.php now shows number of herb cards required
+Added feature to allow bulk removal of admin notes.
+Added filter on Final Confirmation page to allow filter by Event Pack by post status.
+Added config setting to allow or disable requests of event packs by post.
+Split first name & surname into separate columns on Admin/booking status page
+Issue 161: 	Sliding specials - tier & bloodline
+Issue 27: 	Export/Import details
+Issue 173: 	More flexible payment options
+Issue 166: 	Add RSS feed for bookings

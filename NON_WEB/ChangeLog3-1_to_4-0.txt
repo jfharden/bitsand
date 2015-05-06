@@ -1,0 +1,79 @@
+Change Log
+Version 3.1 to 4.0
+
+BUG FIXES
+
+Generic:
+	Redirect did not work when an admin reset a user's password
+	Did not redirect properly when trying to access admin page when not logged in, or trying to access root page when not root (redirected to non-existant page)
+	Access log: when table was sorted, Previous/Next links did not stay at the bottom of the table
+	Referral Check & HTTPS check were not very robust
+	On IC view, Specials appeared in the wrong place
+	Add a fix to bug in configuration mode, was not displaying the maintenance screen, nor allowing access to install folder (issue 99)
+	Help text for disclaimer text suggests that event name & date is included (issue 114)
+	Sign-in sheet disclaimer text now appears on all printed pages (issue 116)
+	Pay on Gate option function now works correctly (issue 111)
+	More characters should be handled correctly in input fields (issue 108)
+	Changed notify_url in start.php, should allow PayPal payments to be automatically marked paid (issue 94)
+	Update database script (in install directory) does not populate config table (issue 121)
+
+Maelstrom version:
+	Removed LT-specific FAQ items in install/upgrade scripts
+	admin_cards.php had references to spell cards & lore sheets
+	IC form & admin IC edit did not have class set for some text boxes
+	Staff do not appear in booking list (issue 90)
+
+LT version:
+	You can no longer save multiple copies of Guilds and OS to the database (issue 76)
+	Character OS now appear correctly when editing a Character's details in the admin screen
+	You can no longer select level 2 and level 1 magic skills for your character (issue 109)
+
+-----------------------------
+
+OTHER CHANGES
+
+Configuration Changes:
+	Added config item to configure whether or not password is sent in e-mails (issue 93)
+	Added configuration option to allow/not allow monster bookings (issue 89)
+	Config item to optionally make booking list viewable to only logged in users (issue 88)
+	Config item to make the prompt for IC reason for attendance editable (issue 83)
+	Moved most of the configuration items into the database, see documentation for full details (issue 55)
+	Config item to control automatically marking PayPal payments as paid.
+	Configurable number of limited bunks, paying extra for a bunk (issue 117)
+	Bunks can optionally be automatically assigned (issue 119)
+
+Admin Changes:
+	Improved admin interface for editing FAQ items (issue 82)
+	Simpler interface to add/revoke administrators (issue 81)
+	Added page to show disabled accounts (issue 92)
+	Check PHP & MySQL versions in install/index.php (issue 96)
+	Added page to assign/remove meal tickets (issue 101)
+	Returned the Player and Character Export pages (issue 102)
+	In booked player export, included Bunk Requested (issue 102)
+	In Admin view OC details, include Bunk Allocated and Meal Ticket info (issue 102)
+	Include ability to track amount paid, and amount expected (issue 105)
+	Include ability to send a final confirmation e-mail containing the details of all booked players (issue 106)
+	Root user can view users that have not logged on for some time, and optionally delete them (issue 118)
+	Install pages now have error reporting set to report all errors
+	Created an "initial config" page in install/ directory
+	Record when player last booked, with option to delete records of people that haven't booked for some time (issue 118)
+
+Other Changes:
+	Add return_cancel value to PayPal buttons (issue 87)
+	Changed/improved text of e-mail sent when user gives wrong password too many times
+	Some help links have been added (issue 85)
+	Added svn versions of AdminInstall, AdminManual & AdminRoot wiki pages
+	Signature sheet now has disclaimer on every page
+	Added option to show host names on access log
+	Started adding wiki pages to describe individual files (particularly included files)
+	JavaScript code has "<!--" & "// -->" comments so that non-JS browsers will ignore it
+	Include preferred character name (issue 84)
+	Added a blank sign-in sheet (.ods and .pdf formats) (issue 113)
+
+LT Version:
+	Added pages for admins to add/edit groups & locations (issue 86)
+	Config item for the label on the NPC checkbox (issue 98)
+	Added configuration item (ANCESTOR_DROPDOWN) that will show/hide a dropdown list of ancestors (like Groups) (issue 103)
+	Added page for admins to add/edit Ancestors (issue 103)
+	Added configuration item (NON_DEFAULT_FACTION_NOTES) that will control whether a character must provide notes if they are from outside of the default faction (issue 104)
+	Changed the booked character CSV export to include a column for the number of power cards required per day (issue 115).

@@ -1,0 +1,64 @@
+Change Log
+Version 6.0 to 7.0
+
+BUG FIXES
+
+Issue 209: 	Some characters are not displayed correctly
+Minor bug fix in admin search results
+Issue 210: 	Some people don't appear on admin pages
+Issue 208: 	Minor Issue - When confirming paid rather than getting my BA number (BA002) I get BA000
+Issue 199: 	User can import details using existing e-mail, resulting in two accounts with same e-mail address
+Issue 200: 	Import - character defaults to male beastkin
+Issue 202: 	Export to CSV not working on Maelstrom
+Issue 201: 	PayPal buttons appear when PayPal is disabled
+Issue 186: 	Bitsand asks users to confirm details, but there is no way to do so
+Issue 187: 	Backslashes shown if event name has apostrophes
+Issue 188: 	Some sliding special OSPs missing
+Bug in access log viewer prevented viewing of logs
+Character name not always displayed on event details page
+Issue 189: Events that have happened will not be shown in a user's list of bookings
+Issue 191: Monster and staff bookings will not be added to the queue
+Issue 192: Event Contacts will be informed if bookings are added to the Queue
+Issue 190: Staff label is now configurable
+Issue 193: Too much information required
+Issue 194: People without character details will now included on booked list
+Issue 195: Queued bookings no longer count to player limits
+Issue 197: Reset buttons have no text
+Issue 222: "Clear IC details" button does not work
+Fix to deleting bookings to correctly remove linked items
+Fix to Payment requests to display correct requests to logged in user.
+Fix to payment request to not logout user by mistake
+Fix to queue removal to send e-mail informing players of removal
+LT: Fix to display ancestor correctly if they are "Other" and have a single quote in the name.
+LT: Fix to include default group record.
+LT: Ensure that Missile Weapon skill has v3 name (Thrown Weapon). Fix to booking export csv to include this.
+LT: Add Ancestral, Daemon and Elemental as supported races
+Fix to IC confirm clear to redirect to the ic details form.
+LT Issue 203: Prevent booking with more than MAX_CHAR_PTS, don't allow any NPC type bookings
+Correct paypal buttons to render properly.
+LT: Fix to Sigil Spell Reduction to set it to 1 not 2.
+LT: Fix character check to allow saves of valid data in parts
+LT: Fix to common queries to remove an isnull.
+CheckReferrer function in inc/inc_head_db.php - second parameter is now optional
+Removed setBoolValue and setBlankToNull functions in install/initial_config.php
+Fixed bookings RSS feed - was listing all bookings, ignoring event parameter
+Added stripslashes() to inc_config_fromdb.php
+Minor PayPal button fixes
+Issue 231: 	New OSPs
+
+-----------------------------
+
+OTHER CHANGES
+
+Removed Maelstrom version, since Maelstrom has now ended
+
+Issue 182: Added the ability to record text in your Command, Oath Sworn, Sage, Scholar, Apprentice, Journeyman, Master, Translate Named Script OSPs and all four sliding specials
+Issue 207: 	Generate medical details and dietary requirements lists
+Changed DocType from HTML 4 Strict to Transitional
+Added feature to allow bookings to be queued when spaces have run out
+Added feature to allow bookings to be cancelled when not yet paid for
+Added "Events where booking has not yet opened" section to admin page
+Added titles to "Bookings open" and "Bookings close" table cells on event admin page. Mouse-over text explains these settings
+Added a link to the event admin page to allow admin to view event details page - useful when an event is not open for booking
+Issue 220: 	Everything included in booking should be included in bookings.csv
+Issue 221: 	Add iCalendar URL for events
