@@ -1,8 +1,12 @@
 # bitsand
 
-Bitsand is an online booking system for live role play events. It was initially written for the Lions faction in the LT system, but it can now be used by any faction or guild.
+Bitsand is an online booking system for live role play events originally written by Russell Phillips for the Lions Lorien Trust faction.  Since it's creation it has been modified so that it can be used for any faction or guild.
 
-Report bugs, request features, etc via the [github page](https://github.com/PeteAUK/bitsand)
+Registration information can be pulled between different Bitsand installations if the person booking uses the same e-mail and password on all installations.
+
+Bugs, feature requests, questions and any other items can be done by creating an Issue at [Bitsand Github page](https://github.com/PeteAUK/bitsand/issues).
+
+It is recommended that you ["Watch" the Github repository](https://github.com/PeteAUK/bitsand/subscription) so that you will be kept up to date with new releases and updates.  Alternativly if you're not a Github user, sign up to our [Mailing List](http://www.freelists.org/list/bitsand) to receive notifications of new releases.
 
 Bitsand is known to be in use by:
 
