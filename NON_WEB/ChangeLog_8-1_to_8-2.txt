@@ -1,0 +1,10 @@
+Change Log
+Version 8.1 to 8.2
+
+BUG FIXES
+If no result were passed to a number of ba_db_ functions, the script would fail - for example if the database weren't installed correctly.  This now gracefully returns a false
+
+-----------------------------
+
+OTHER CHANGES
+Version control
