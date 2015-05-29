@@ -48,9 +48,7 @@ if (fnSystemURL () == 'http://bookings.lionsfaction.co.uk/' || fnSystemURL () ==
 Full source code is available from the <a href = "https://github.com/PeteAUK/bitsand">Bitsand Github repository</a>. There is also an <a href = "https://github.com/PeteAUK/bitsand/issues">issue tracker</a>, where bugs and feature requests can be registered.
 </p>
 
-<p>
-If you would like to be informed when new versions are released, <a href = 'mailto:<?php echo Obfuscate ('russ@phillipsuk.org')?>'>E-mail Russ</a>.
-</p>
+<p>If you would like to be informed when new versions are released, please <a href="https://github.com/PeteAUK/bitsand/subscription">watch the Bitsand Github repository</a> or <a href="http://www.freelists.org/list/bitsand">sign up to our Mailing List</a></p>
 
 <?php
 include ('inc/inc_foot.php');
