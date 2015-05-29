@@ -15,3 +15,6 @@ Bitsand is known to be in use by:
 * [Lions](http://bookings.lionsfaction.co.uk/)
 * [Harts](http://albion.leynexus.net/booking/)
 * [Jackals](http://www.jackalfaction.com/booking/)
+* [Bears](http://kaitain.vm.bytemark.co.uk/bears/)
+* [Vipers](http://www.viperfaction.co.uk/booking/)
+* [Dragons](http://events.dragonsfaction.org)
