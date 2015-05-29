@@ -8,6 +8,8 @@ Bugs, feature requests, questions and any other items can be done by creating an
 
 It is recommended that you ["Watch" the Github repository](https://github.com/PeteAUK/bitsand/subscription) so that you will be kept up to date with new releases and updates.  Alternativly if you're not a Github user, sign up to our [Mailing List](http://www.freelists.org/list/bitsand) to receive notifications of new releases.
 
+Please note, the new location of the Systems file (for registration import) is: https://cdn.rawgit.com/PeteAUK/bitsand/NON_WEB/systems and not the old Googlecode one.
+
 Bitsand is known to be in use by:
 
 * [Lions](http://bookings.lionsfaction.co.uk/)
