@@ -22,11 +22,12 @@
  | Bitsand.  If not, see <http://www.gnu.org/licenses/>.
  +---------------------------------------------------------------------------*/
 
-Function to generate random string
-$iMinLen: minimum length
-$iMaxLen: maximum length
-Returns string of random alpha-numeric characters
-*/
+/**
+ * Function to generate random string
+ * @param integer $iMinLen Minimum length
+ * @param integer $iMaxLen Maximum length
+ * @return string
+ */
 function RandomString ($iMinLen, $iMaxLen) {
 	//Initialise string to return and get length of string to create
 	$sGenerated = '';
@@ -51,10 +52,13 @@ function RandomString ($iMinLen, $iMaxLen) {
 	return $sGenerated;
 }
 
-/*
-Function to replace illegal characters in an e-mail, and to make it lower case.
-This ensures that e-mail check is case-insensitive, and guards against bad entry
-*/
+/**
+ * Function to replace illegal characters in an e-mail, and to make it lower
+ * case. This ensures that e-mail check is case-insensitive, and guards against
+ * bad entry
+ * @param string $email
+ * @return string
+ */
 function SafeEmail ($email) {
 	//Check for characters in e-mail that aren't legal. Replace with '-'
 	$email = str_replace (array (';', ',', ' ', '(', ')'), '-', $email);
