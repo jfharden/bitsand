@@ -54,7 +54,7 @@ if ($PLAYER_ID != 0) {
 <hr>
 <p class = 'smallprint'>
 This online booking system runs on Bitsand, a web-based booking system for LRP events. Bitsand is copyright (c) <a href = "http://github.com/PeteAUK/Bitsand">The Bitsand Project</a>.<br>
-Found a bug? <a href = "http://code.google.com/p/bitsand/issues/entry?template=User%20defect%20report">Report it</a>.<br>
+Found a bug? <a href = "https://github.com/PeteAUK/bitsand/issues">Report it</a>.<br>
 Bitsand is free software; you can redistribute it and/or modify it under the terms of the <a href = "<?php echo $CSS_PREFIX?>LICENCE.html">GNU General Public License</a> as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.<br>
 <a href = "<?php echo $CSS_PREFIX?>download.php">Full details, including download links</a>
 </p>
