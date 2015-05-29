@@ -31,21 +31,21 @@ include ('inc/inc_head_html.php');
 <h1><?php echo TITLE?> - Download</h1>
 
 <p>
-This booking system runs on Bitsand, a web-based booking system for LRP events. Bitsand is copyright (c) 2006 - 2014 <a href = "http://bitsand.googlecode.com/">The Bitsand Project</a>.
+This booking system runs on Bitsand, a web-based booking system for LRP events. Bitsand is copyright (c) 2006 - 2015 <a href = "https://github.com/PeteAUK/bitsand">The Bitsand Project</a>.
 </p>
 
 <p>
-Bitsand is free software; you can redistribute it and/or modify it under the terms of the <a href = "http://www.gnu.org/licenses/gpl.html">GNU General Public License</a> as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
+Bitsand is free software; you can redistribute it and/or modify it under the terms of the <a href = "http://www.gnu.org/licenses/gpl.html">GNU General Public License</a> as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
 </p>
 
 <?php
 //Display notice about lion background image if this is the Lions' system
 if (fnSystemURL () == 'http://bookings.lionsfaction.co.uk/' || fnSystemURL () == 'https://bookings.lionsfaction.co.uk/')
-	echo '<p>The lion background image is modified from an <a href = "http://flickr.com/photos/stuartyeates/216280481/">image by Stuart Yeates</a>, released under the Creative Commons <a href = "http://creativecommons.org/licenses/by-sa/2.0/">Attribution-ShareAlike 2.0</a> licence. The modified image is available from the <a href = "http://bitsand.googlecode.com/">Bitsand page</a> at <a href = "http://code.google.com/">Google Code</a></p>';
+	echo '<p>The lion background image is modified from an <a href = "http://flickr.com/photos/stuartyeates/216280481/">image by Stuart Yeates</a>, released under the Creative Commons <a href = "http://creativecommons.org/licenses/by-sa/3.0/">Attribution-ShareAlike 3.0</a> licence. The modified image is available from the <a href = "https://github.com/PeteAUK/bitsand">Bitsand Project</a></p>';
 ?>
 
 <p>
-Full source code (including read access to the SVN repository) is available from the <a href = "http://bitsand.googlecode.com/">Bitsand page</a> at <a href = "http://code.google.com/">Google Code</a>. There is also an <a href = "http://code.google.com/p/bitsand/issues/list">issue tracker</a>, where <a href = "http://code.google.com/p/bitsand/issues/entry?template=User%20defect%20report">bugs should be filed</a>.
+Full source code is available from the <a href = "https://github.com/PeteAUK/bitsand">Bitsand Github repository</a>. There is also an <a href = "https://github.com/PeteAUK/bitsand/issues">issue tracker</a>, where bugs and feature requests can be registered.
 </p>
 
 <p>
