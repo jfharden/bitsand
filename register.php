@@ -25,7 +25,7 @@
 $bLoginCheck = False;
 
 //URL of file that contains details of systems that user details can be copied from
-define ('IMPORT_SYSTEMS_URL', 'http://bitsand.googlecode.com/svn/trunk/bitsand/NON_WEB/systems');
+define ('IMPORT_SYSTEMS_URL', 'https://cdn.rawgit.com/PeteAUK/bitsand/NON_WEB/systems');
 
 include ('inc/inc_head_db.php');
 $db_prefix = DB_PREFIX;
@@ -127,8 +127,13 @@ Forgotten your password? <a href = "retrieve.php">Get a new password</a><br>
 </p>
 
 <?php
-//Get latest system list from SVN
-$asSystems = file (IMPORT_SYSTEMS_URL, FILE_SKIP_EMPTY_LINES);
+// Get latest system list from Git, ensure we're not using the old SVN repo
+if (strpos(IMPORT_SYSTEMS_URL, 'googlecode') === false) {
+	$asSystems = file(IMPORT_SYSTEMS_URL, FILE_SKIP_EMPTY_LINES);
+} else {
+	$asSystems = file('https://cdn.rawgit.com/PeteAUK/bitsand/NON_WEB/systems', FILE_SKIP_EMPTY_LINES);
+}
+
 if ($asSystems === False)
 	LogError ("Unable to get list of systems from " . SYSTEM_URLS);
 else {
