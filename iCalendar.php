@@ -33,7 +33,7 @@ $result = ba_db_query ($link, $sql);
 
 echo "BEGIN:VCALENDAR\r\n";
 echo "VERSION:2.0\r\n";
-echo "PRODID:Bitsand http://bitsand.googlecode.com/\r\n";
+echo "PRODID:Bitsand https://github.com/PeteAUK/bitsand\r\n";
 echo "X-WR-CALDESC:" . SYSTEM_NAME . "\r\n";
 
 while($row = ba_db_fetch_assoc($result)) {
