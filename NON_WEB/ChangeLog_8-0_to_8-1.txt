@@ -1,0 +1,12 @@
+Change Log
+Version 8.0 to 8.1
+
+BUG FIXES
+Changed MacOS line endings into CF's in a few files
+
+-----------------------------
+
+OTHER CHANGES
+Changed license blocks throughout code to use GNU V3 and refer to new Github repository
+Registration data import now points to the new Github repository via a third-party CDN
+Added Dragons Faction to the list of known Bitsand users
