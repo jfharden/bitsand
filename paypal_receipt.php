@@ -67,14 +67,14 @@ else {
 				//Only mark as paid if configured to do so.
 				if (PAYPAL_AUTO_MARK_PAID)
 				{
-					//Mark as paid. 
+					//Mark as paid.
 					//Custom value is the bookingid
 					//Don't set bkAmountExpected, and we add to amount paid, allowing potential for partial payments in future.
 					$custom = (int)$custom;
 					$sql = "UPDATE {$db_prefix}bookings SET bkDatePaymentConfirmed = '" . date ('Y-m-d') . "', bkAmountPaid = bkAmountPaid + ".$payment_amount." WHERE bkID = " . $custom;
 					//Run UPDATE query to set paid date
 					ba_db_query ($link, $sql);
-										
+
 					//Mark bunk as allocated if one was requested
 					$sql = "UPDATE {$db_prefix}bookings SET bkBunkAllocated = 1 WHERE bkBunkRequested = 1 and bkID = " . $custom;
 					//Run UPDATE query to set assign bunk
@@ -100,7 +100,7 @@ else {
 				$sBody .= "OOC Name: " . $row ['plFirstName'] . " " . $row ['plSurname'];
 				if ($bEmailPaymentReceived)
 					mail ($row ['plEmail'], SYSTEM_NAME . ' - payment received', $sBody, "From:" . SYSTEM_NAME . " <" . EVENT_CONTACT_MAIL . ">");
-				
+
 				//Clear any payment requests for this booking
 				$sql = "delete from {$db_prefix}paymentrequests where prBookingID = ".$custom;
 				$result = ba_db_query($link, $sql);
@@ -119,4 +119,3 @@ else {
 }
 
 include ('inc/inc_foot.php');
-?>

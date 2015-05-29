@@ -116,4 +116,3 @@ echo 'define (\'MAX_CHAR_PTS\','. (int) MAX_CHAR_PTS.");\n";
 echo 'define (\'MAX_NPC_PTS\','. (int) MAX_NPC_PTS.");\n";
 echo 'define (\'MAX_OSPS\','. (int) MAX_OSPS.");\n";
 echo "?>\n";
-?>

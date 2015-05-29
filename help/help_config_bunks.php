@@ -30,4 +30,3 @@ include ('inc_help_head.php');
 <p><strong>TOTAL_BUNKS:</strong> TOTAL_BUNKS can be used if you have a limited number of bunks, but do not mind how they are split up. If the total number of bunks booked is at least this many, no more bunk bookings of any type will be accepted. If set to zero, no bunk bookings of any type will be accepted (bunks can still be assigned manually)</p>
 <?php
 include ('inc_help_foot.php');
-?>

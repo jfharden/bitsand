@@ -187,4 +187,3 @@ if (($inc_head_html_row ['plAccess'] == 'admin' || ROOT_USER_ID == $PLAYER_ID) &
 
 if (ini_get ('error_reporting') != 0)
 	echo "<p style = 'border: solid thin orange; background: orange; text-align: center;'><b>DEBUG MODE ENABLED</b></p>\n";
-?>

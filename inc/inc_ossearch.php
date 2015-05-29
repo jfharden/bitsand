@@ -41,4 +41,3 @@ $results[] = array(value=>$row['ospID'], label=>$row['ospName'], allowadditional
 }
 
 echo json_encode($results);
-?>

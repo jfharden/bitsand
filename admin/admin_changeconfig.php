@@ -174,4 +174,3 @@ if ($sMessage !='')
 
 <?php
 include ('../inc/inc_foot.php');
-?>

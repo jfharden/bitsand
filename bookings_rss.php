@@ -90,4 +90,3 @@ if (!BOOKING_LIST_IF_LOGGED_IN) {
 
 //Close link to database
 ba_db_close ($link);
-?>

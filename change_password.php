@@ -220,4 +220,3 @@ If you have requested an e-mail change, and received a confirmation code, enter 
 
 <?php
 include ('inc/inc_foot.php');
-?>

@@ -183,4 +183,3 @@ if (ba_db_num_rows($result) > 0)
 
 
 include ('inc/inc_foot.php');
-?>

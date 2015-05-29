@@ -137,4 +137,3 @@ if ($ic == 1) {
 		echo $row ['otOspID'] . ',';
 	echo "\n";
 }
-?>

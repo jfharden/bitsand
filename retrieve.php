@@ -109,4 +109,3 @@ If you have forgotten your password, enter your e-mail address below and click t
 
 <?php
 include ('inc/inc_foot.php');
-?>

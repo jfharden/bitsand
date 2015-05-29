@@ -30,4 +30,3 @@ You can use this page to change which players have requested meal tickets, handy
 
 <?php
 include ('inc_help_foot.php');
-?>

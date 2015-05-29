@@ -151,4 +151,3 @@ else {
 
 echo "<p class = 'smallprint'><a href='iCalendar.php'>iCalendar feed of events</a></p>\n";
 include ('inc/inc_foot.php');
-?>

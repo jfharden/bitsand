@@ -111,4 +111,3 @@ if (!$bNone)
 }
 echo "</form>";
 include ('../inc/inc_foot.php');
-?>

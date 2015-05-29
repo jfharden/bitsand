@@ -329,4 +329,3 @@ echo "<tr><td>Tick to request event pack by post:</td>";
 
 <?php
 include ('../inc/inc_foot.php');
-?>

@@ -66,4 +66,3 @@ function SafeEmail ($email) {
 	$email = strtolower ($email);
 	return $email;
 }
-?>

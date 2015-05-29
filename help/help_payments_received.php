@@ -32,4 +32,3 @@ This page can also be used to mark those users that are to pay on the gate.
 </p>
 <?php
 include ('inc_help_foot.php');
-?>

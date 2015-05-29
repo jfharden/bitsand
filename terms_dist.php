@@ -82,4 +82,3 @@ Keeping your in character and real world information up to date is your responsi
 
 <?php
 include ('inc/inc_foot.php');
-?>

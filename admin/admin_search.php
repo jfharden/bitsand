@@ -145,4 +145,3 @@ if ($bNone)
 echo "</table>\n";
 
 include ('../inc/inc_foot.php');
-?>

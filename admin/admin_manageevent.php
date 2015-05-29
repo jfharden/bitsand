@@ -81,4 +81,3 @@ echo "</p>";
 
 <?php
 include ('../inc/inc_foot.php');
-?>

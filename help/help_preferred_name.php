@@ -29,4 +29,3 @@ include ('inc_help_head.php');
 
 <?php
 include ('inc_help_foot.php');
-?>

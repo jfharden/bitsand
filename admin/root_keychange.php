@@ -134,4 +134,3 @@ This form can be used to change your password salt.<br>
 
 <?php
 include ('../inc/inc_foot.php');
-?>

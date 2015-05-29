@@ -39,4 +39,3 @@ function generatePaypalButton($itemname, $itemnumber, $amount, $custom, $amounti
 			echo "<input type='image' src='http://images.paypal.com/images/x-click-but01.gif' name='submit' alt='Make payments with PayPal - fast, free and secure!'>\n";
 			echo "</form>\n";
 }
-?>

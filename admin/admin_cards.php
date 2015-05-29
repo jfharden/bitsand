@@ -256,4 +256,3 @@ This is only for those people booked on this system. If you are expecting bookin
 
 <?php
 include ('../inc/inc_foot.php');
-?>

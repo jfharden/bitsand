@@ -30,4 +30,3 @@ Select your character's faction from the drop-down list. If you are not in a fac
 
 <?php
 include ('inc_help_foot.php');
-?>

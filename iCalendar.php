@@ -76,4 +76,3 @@ while($row = ba_db_fetch_assoc($result)) {
 }
 
 echo "END:VCALENDAR\r\n";
-?>

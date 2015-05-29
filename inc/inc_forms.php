@@ -38,7 +38,7 @@ function IC_Check () {
 			$sReturn .= $asElementNames [$iCount] . "<br>\n";
 		$iCount++;
 	}
-	
+
 	return $sReturn;
 }
 
@@ -153,9 +153,9 @@ function setBlankToNull($sPassedValue)
 		else {return $sPassedValue;}
 	}
 
-function DatePickerFullDate($sID, $dDefaultDate, $iYearsToShow, $iYearsInFuture) 
+function DatePickerFullDate($sID, $dDefaultDate, $iYearsToShow, $iYearsInFuture)
 {
-	if ($dDefaultDate != '') 
+	if ($dDefaultDate != '')
 	{
 		$iDateYear = substr ($dDefaultDate, 0, 4);
 		$iMonth = substr ($dDefaultDate, 5, 2);
@@ -257,5 +257,3 @@ function ListNamesFromArray ($aNames, $sDefault = '', $iDefaultNum = 0) {
 		echo ">" . htmlentities (stripslashes ($sName)) . "</option>\n";
 	}
 }
-
-?>

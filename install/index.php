@@ -105,4 +105,3 @@ Send a test e-mail to: <input name = "txtEmail"> <input type = "submit">
 
 <?php
 include ('../inc/inc_foot.php');
-?>

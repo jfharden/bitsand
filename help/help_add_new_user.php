@@ -32,4 +32,3 @@ Note that the user will not have a password set, and so will not be able to log 
 
 <?php
 include ('inc_help_foot.php');
-?>

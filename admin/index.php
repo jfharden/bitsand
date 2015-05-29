@@ -27,4 +27,3 @@
 require ('../inc/inc_config.php');
 include ('../inc/inc_head_db.php');
 header ("Location: " . SYSTEM_URL);
-?>

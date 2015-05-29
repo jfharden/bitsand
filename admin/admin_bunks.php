@@ -41,15 +41,15 @@ if ($_POST ['btnSubmit'] != '' && CheckReferrer ('admin_bunks.php')) {
 			$bunk = (int) $_POST ["chkPl{$value}"];
 			if ($bunk > 0) { $bunk = 1; }
 			else { $bunk = 0; }
-	
-	
+
+
 			$iBookingID = (int) $value;
 			if ($bunk) {
 			 	$sql_update = "UPDATE {$db_prefix}bookings SET bkBunkAllocated = 1, bkBunkRequested = 1 WHERE bkID = " . $iBookingID;
 				//echo $sql_update."<br />";
 				ba_db_query ($link, $sql_update);
 			}
-			
+
 			removeItem($iBookingID, 'bunk');
 			if ($bunk > 0) { addItem($iBookingID, 'bunk'); }
 		}
@@ -143,4 +143,3 @@ while ($row = ba_db_fetch_assoc ($result)) {
 
 <?php
 include ('../inc/inc_foot.php');
-?>

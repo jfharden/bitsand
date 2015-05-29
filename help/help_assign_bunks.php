@@ -28,4 +28,3 @@ This page can be used to assign bunks to players, so that it is possible to keep
 </p>
 <?php
 include ('inc_help_foot.php');
-?>

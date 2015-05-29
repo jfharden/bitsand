@@ -34,4 +34,3 @@ include ('inc_help_head.php');
 <p><strong>ALLOW_EVENT_PACK_BY_POST:</strong> This value determines if people can request an event pack to be sent by post.</p>
 <?php
 include ('inc_help_foot.php');
-?>

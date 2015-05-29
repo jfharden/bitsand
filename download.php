@@ -54,4 +54,3 @@ If you would like to be informed when new versions are released, <a href = 'mail
 
 <?php
 include ('inc/inc_foot.php');
-?>

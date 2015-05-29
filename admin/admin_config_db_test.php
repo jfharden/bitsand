@@ -83,4 +83,3 @@ else {
 }
 
 include ('../inc/inc_foot.php');
-?>

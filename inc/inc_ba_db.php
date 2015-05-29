@@ -125,4 +125,3 @@ function ba_insert_id($link)
 	if (DB_TYPE == 'mysql')
 		return mysql_insert_id ($link);
 }
-?>

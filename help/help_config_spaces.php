@@ -31,4 +31,3 @@ include ('inc_help_head.php');
 <p><strong>ALLOW_MONSTER_BOOKINGS:</strong> Leave unchecked if you do not wish to allow "Monster" bookings.</p>
 <?php
 include ('inc_help_foot.php');
-?>

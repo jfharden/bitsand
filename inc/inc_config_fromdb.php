@@ -67,5 +67,3 @@ if ($result = ba_db_query ($link, $sql)) {
 		define ('QUEUE_OVER_LIMIT', stripslashes($row['cnQUEUE_OVER_LIMIT']));
 	}
 }
-
-?>

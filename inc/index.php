@@ -27,4 +27,3 @@
 require ('inc_config.php');
 include ('inc_head_db.php');
 header ("Location: " . fnSystemURL ());
-?>

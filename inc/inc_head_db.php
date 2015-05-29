@@ -232,5 +232,3 @@ function fnMailer ($sBody, $bTech = False) {
 		mail (TECH_CONTACT_MAIL, SYSTEM_NAME, $sBody, "From:" . SYSTEM_NAME . " <" . EVENT_CONTACT_MAIL . ">", '-f'.EVENT_CONTACT_MAIL);
 	}
 }
-
-?>

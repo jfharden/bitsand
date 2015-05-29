@@ -30,4 +30,3 @@ include ('inc_help_head.php');
 <p><strong>SEND_PASSWORD:</strong> If checked, password will be included in e-mails sent to users when registering etc.</p>
 <?php
 include ('inc_help_foot.php');
-?>

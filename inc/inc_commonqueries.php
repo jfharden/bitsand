@@ -32,14 +32,14 @@ function getEventDetails($eventid, $requirebookingsopen, $failureURL)
 	if ($requirebookingsopen) {$sql .= "evBookingsOpen <= '".$today."' and evBookingsClose >= '".$today."' and ";}
 	$sql .= " evEventID = " . $eventid;
 	$result = ba_db_query ($link, $sql);
-	
+
 	if (ba_db_num_rows($result) == 0)
 	{
 		$sMsg = "The selected event is not currently open for bookings";
 		$sURL = fnSystemURL () . $failureURL . '?warn=' . urlencode ($sMsg);
 		header ("Location: $sURL");
 	}
-	
+
 	return ba_db_fetch_assoc ($result);
 }
 
@@ -81,7 +81,7 @@ function addItem($bookingid, $itemtype)
 	$sql.= "and itAvailableFrom <= '".$today."' and itAvailableTo >= '".$today."'";
 	$sql.= " order by itAvailability desc limit 1";
 	$result = ba_db_query ($link, $sql);
-	
+
 	if (ba_db_num_rows($result) > 0)
 	{
 		$itemid = ba_db_fetch_assoc($result);
@@ -97,7 +97,7 @@ function getItemCost($itemtype, $availability, $eventid)
 	if (strtolower($itemtype) == "meal") { $itemfilter = ' and itMeal = 1';}
 	if (strtolower($itemtype) == "bunk") { $itemfilter = ' and itBunk = 1';}
 	if (strtolower($itemtype) == "ticket") { $itemfilter = ' and itTicket = 1';}
-	
+
 	$sql = "select ifnull(itItemCost, 0) as itItemCost from {$db_prefix}items where itEventID = $eventid $itemfilter and itAvailability in ('All','$availability') ";
 	$sql.= "and itAvailableFrom <= '".$today."' and itAvailableTo >= '".$today."'";
 	$sql.= " order by itAvailability desc limit 1";
@@ -111,7 +111,7 @@ function getItemCost($itemtype, $availability, $eventid)
 function resetExpectedAmount($bookingid)
 {
 	global $today,$db_prefix, $link;
-	
+
 	$sql = "select sum(biQuantity * itItemCost) as Expected from {$db_prefix}bookingitems inner join {$db_prefix}items on biItemID = itItemID where biBookingID = $bookingid";
 	$result = ba_db_query ($link, $sql);
 	$expected = ba_db_fetch_assoc ($result);
@@ -123,7 +123,7 @@ function resetExpectedAmount($bookingid)
 function deleteBooking($bookingid)
 {
 	global $today,$db_prefix, $link;
-	
+
 	$sql = "DELETE FROM {$db_prefix}bookingitems WHERE biBookingID = ".$bookingid;
 	ba_db_query ($link, $sql);
 	$sql = "DELETE FROM {$db_prefix}paymentrequests WHERE prBookingID = ".$bookingid;
@@ -132,4 +132,3 @@ function deleteBooking($bookingid)
 	ba_db_query ($link, $sql);
 
 }
-?>

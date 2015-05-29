@@ -28,4 +28,3 @@ Select your character's group from the drop-down list. If your group is not list
 </p>
 <?php
 include ('inc_help_foot.php');
-?>

@@ -384,4 +384,3 @@ related to your character</i></td>
 
 <?php
 include ('inc/inc_foot.php');
-?>

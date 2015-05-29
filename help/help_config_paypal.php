@@ -45,4 +45,3 @@ Amount to charge. If the booking is not charged, set it to 0.00, if the booking 
 <p><strong>PAYPAL_AUTO_MARK_PAID:</strong> If true, PayPal payments are automatically marked as paid, otherwise they must be manually accepted.</p>
 <?php
 include ('inc_help_foot.php');
-?>

@@ -108,4 +108,3 @@ Note that the password must be at least <?php echo MIN_PASS_LEN?> characters lon
 
 <?php
 include ('../inc/inc_foot.php');
-?>

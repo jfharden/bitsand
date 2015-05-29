@@ -76,4 +76,3 @@ To guard against mistakes, enter <b>confirm</b> (in capital letters) in the box 
 
 <?php
 include ('../inc/inc_foot.php');
-?>

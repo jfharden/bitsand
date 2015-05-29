@@ -145,4 +145,3 @@ if (ROOT_USER_ID == $PLAYER_ID) {
 }
 
 include ('../inc/inc_foot.php');
-?>

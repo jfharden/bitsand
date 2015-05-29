@@ -242,4 +242,3 @@ else
 echo "<p>There are no spaces left for this event</p>";
 }
 include ('inc/inc_foot.php');
-?>

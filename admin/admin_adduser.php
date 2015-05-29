@@ -68,4 +68,3 @@ if ($sGreen != '') {
 		"&btnSubmit=Search'>Edit details\n</p>";
 }
 include ('../inc/inc_foot.php');
-?>

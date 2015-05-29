@@ -422,4 +422,3 @@ $('#txtOverriddenAmountPaid').hide();
 
 <?php
 include ('../inc/inc_foot.php');
-?>

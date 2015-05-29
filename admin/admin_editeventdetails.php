@@ -349,4 +349,3 @@ if ($eventid == 0) { echo "<input type='button' id='btndefaultitemset' value='Ad
 
 <?php
 include ('inc/inc_foot.php');
-?>

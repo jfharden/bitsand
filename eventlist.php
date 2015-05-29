@@ -71,4 +71,3 @@ echo "<h2>Events where booking has closed</h2>";
 	}
 
 include ('inc/inc_foot.php');
-?>

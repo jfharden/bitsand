@@ -27,4 +27,3 @@ include ('inc_help_head.php');
 <p><strong>USE_QUEUE:</strong> If this value is greater than 0, then players from outside of the default faction will be placed in a booking queue when they attempt to book. This will probably be expanded in time to allow greter control over who goes in the queue.</p>
 <?php
 include ('inc_help_foot.php');
-?>

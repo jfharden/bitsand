@@ -32,4 +32,3 @@ You will need to confirm your decision. Once you have done so, you will be recor
 </p>
 <?php
 include ('inc_help_foot.php');
-?>

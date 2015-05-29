@@ -115,4 +115,3 @@ function updatePaypalButton()
 
 <?php
 include ('inc/inc_foot.php');
-?>

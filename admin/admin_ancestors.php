@@ -151,4 +151,3 @@ if (($_POST ['btnSubmit'] == 'Show free text' || $_POST ['btnSubmit'] == 'Assign
 
 <?php
 include ('../inc/inc_foot.php');
-?>

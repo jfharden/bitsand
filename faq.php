@@ -51,4 +51,3 @@ while ($row = ba_db_fetch_assoc ($result)) {
 
 <?php
 include ('inc/inc_foot.php');
-?>

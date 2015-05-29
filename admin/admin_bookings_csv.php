@@ -265,4 +265,3 @@ while ($row = ba_db_fetch_assoc ($result)) {
 
 //Close link to database
 ba_db_close ($link);
-?>

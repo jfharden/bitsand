@@ -72,15 +72,15 @@ if ($_POST ['btnSubmit'] != '' && CheckReferrer ('register.php')) {
 			"You can use the following details to log in:\n\n" .
 			"E-mail: $sEmail\nPassword: $sNewPass\n\n" .
 			"Once you are logged in, you will be able to change your password to something else.\n\n" . fnSystemURL ();
-			
+
 		ini_set("sendmail_from", EVENT_CONTACT_MAIL);
 		$mail = mail ($sEmail, SYSTEM_NAME . ' - registered', $sBody, "From:" . SYSTEM_NAME . " <" . EVENT_CONTACT_MAIL . ">", '-f'.EVENT_CONTACT_MAIL);
-		if ($mail) {	
+		if ($mail) {
 			$msg = 'Registration successful. Please check your e-mail, and use the supplied password to log in';
 		} else {
 			$msg = 'Registration successful. Email sending failed, please contact the system admin for assistance';
 		}
-		
+
 		//Make up URL & redirect to index.php with message
 		$sURL = fnSystemURL () . 'index.php' . '?green=' . urlencode ($msg);
 		header ("Location: $sURL");
@@ -172,4 +172,3 @@ If you are registered on another copy of Bitsand, simply select the system from 
 } // end of "if $asSystems !== False" block
 
 include ('inc/inc_foot.php');
-?>

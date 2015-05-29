@@ -121,4 +121,3 @@ elseif ($_POST ['btnSubmit'] != '' && $_POST ['txtKey'] != CRYPT_KEY)
 
 <?php
 include ('../inc/inc_foot.php');
-?>

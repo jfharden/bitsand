@@ -136,4 +136,3 @@ if ($_POST ['btnSubmit'] == 'Search' && CheckReferrer ('root_admins.php')) {
 }
 
 include ('../inc/inc_foot.php');
-?>

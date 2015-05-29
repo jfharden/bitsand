@@ -27,4 +27,3 @@ if (ROOT_USER_ID != $PLAYER_ID) {
 	$sURL = SYSTEM_URL . 'start.php?warn=' . urlencode ('You do not have permission to access that page');
 	header ("Location: $sURL");
 }
-?>

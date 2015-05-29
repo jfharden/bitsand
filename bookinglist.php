@@ -157,4 +157,3 @@ else
 	echo "<p>The list of bookings for this event is only available if you are logged into the system.</p>";
 }
 include ('inc/inc_foot.php');
-?>

@@ -281,4 +281,3 @@ if ($bConfirmed == False) {
 
 <?php
 include ('inc/inc_foot.php');
-?>

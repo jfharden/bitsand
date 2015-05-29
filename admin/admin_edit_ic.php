@@ -160,8 +160,8 @@ if ($_POST ['btnSubmit'] != '' && CheckReferrer ('admin_edit_ic.php')) {
 			}
 		}
 	}
-	
-	
+
+
 	//Do not redirect if there are any database warnings
 	if ($sWarn == '') {
 		//Make up URL & redirect. Any warnings about data are encoded into URL for display on next page
@@ -481,4 +481,3 @@ fnCalculate ()
 
 <?php
 include ('../inc/inc_foot.php');
-?>

@@ -31,7 +31,7 @@ $db_prefix = DB_PREFIX;
 
 if ($_POST ['btnSubmit'] != '' && CheckReferrer ('ic_form.php')) {
 	$sNameWarn = IC_Check ();
-	
+
 		//Character details - check if character exists
 		$sql = "SELECT * FROM {$db_prefix}characters WHERE chPlayerID = $PLAYER_ID";
 		$result = ba_db_query ($link, $sql);
@@ -56,7 +56,7 @@ if ($_POST ['btnSubmit'] != '' && CheckReferrer ('ic_form.php')) {
 		//Build up UPDATE query
 
 
-	if ($sNameWarn == '') 
+	if ($sNameWarn == '')
 	{
 		//IC Check passed try to save
 
@@ -73,7 +73,7 @@ if ($_POST ['btnSubmit'] != '' && CheckReferrer ('ic_form.php')) {
 			"chNotes = '" . ba_db_real_escape_string ($link, $_POST ['txtNotes']) . "', " .
 			"chOSP = '" . ba_db_real_escape_string ($link, $_POST ['txtSpecial']) . "' " .
 			"WHERE chPlayerID = $PLAYER_ID";
-	
+
 		//Run query
 		if (! ba_db_query ($link, $sql)) {
 			$sWarn = "There was a problem updating your IC details";
@@ -81,7 +81,7 @@ if ($_POST ['btnSubmit'] != '' && CheckReferrer ('ic_form.php')) {
 		}
 
 	}
-	
+
 		//Guilds list: Delete existing rows from guildmembers, then run INSERT queries
 		$sql = "DELETE FROM {$db_prefix}guildmembers WHERE gmPlayerID = $PLAYER_ID";
 		if (! ba_db_query ($link, $sql)) {
@@ -108,10 +108,10 @@ if ($_POST ['btnSubmit'] != '' && CheckReferrer ('ic_form.php')) {
 				$sGuild = "selGuild" . ++$iGuildCount;
 			}
 		}
-	
-	
+
+
 	$sSkillWarn = IC_Skill_Check();
-	
+
 	if ($sSkillWarn== "")
 	{
 		//Skills list: Delete existing rows from skillstaken, then run INSERT queries
@@ -139,7 +139,7 @@ if ($_POST ['btnSubmit'] != '' && CheckReferrer ('ic_form.php')) {
 			}
 		}
 	}
-	
+
 		//OSPs list: Delete existing rows from ospstaken, then run INSERT queries
 	$sql = "DELETE FROM {$db_prefix}ospstaken WHERE otPlayerID = $PLAYER_ID";
 		if (! ba_db_query ($link, $sql)) {
@@ -162,14 +162,14 @@ if ($_POST ['btnSubmit'] != '' && CheckReferrer ('ic_form.php')) {
 				}
 			}
 		}
-		
+
 		$sNonCriticalWarn = IC_Check_NonCritical();
-	
+
 		$sWarn .= $sNameWarn . $sSkillWarn . $sNonCriticalWarn;
 		if ($sWarn != '')
 		$sWarn = "The following problems were found:<br>\n" . $sWarn;
-	
-	
+
+
 		//Do not redirect if there are any warnings (required fields not filled in, etc)
 		if ($sWarn == '') {
 			//Get user's e-mail address
@@ -509,4 +509,3 @@ fnCalculate ();
 
 <?php
 include ('inc/inc_foot.php');
-?>

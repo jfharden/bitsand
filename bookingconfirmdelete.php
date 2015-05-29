@@ -56,7 +56,7 @@ include ('inc/inc_head_html.php');
 		ba_db_query ($link, $sql);
 		$sql = "DELETE FROM {$db_prefix}bookings WHERE bkID = ".$bookingid;
 		ba_db_query ($link, $sql);
-		
+
 		if ($_POST['delete'] != null)
 		{
 			$sMsg = "Your booking has been cancelled for ".htmlentities (stripslashes ($bookinginfo['evEventName']));
@@ -86,7 +86,7 @@ if ($bookinginfo['bkAmountPaid'] > 0)
 	echo "<p>You will need to request a refund of any payment made, please contact <a href = 'mailto:" .Obfuscate (EVENT_CONTACT_MAIL) . "'>" . EVENT_CONTACT_NAME . "</a>.</p>";
 }
 ?>
-	
+
 <form method='POST' action='bookingconfirmdelete.php'>
 <table>
 <input type="hidden" value="<?php echo $bookingid ?>" name='BookingID'/>
@@ -95,7 +95,6 @@ if ($bookinginfo['bkAmountPaid'] > 0)
 <tr><td><input type="submit" name='cancel' value='Leave this booking'/></td></tr>
 </table>
 </form>
-	
+
 <?php
 include ('inc/inc_foot.php');
-?>

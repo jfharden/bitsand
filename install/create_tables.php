@@ -456,4 +456,3 @@ elseif ($_POST ['btnSubmit'] != '' && $_POST ['txtKey'] != CRYPT_KEY)
 <p><a href = "./">Installation Tests &amp; Tools</a></p>
 <?php
 include ('../inc/inc_foot.php');
-?>

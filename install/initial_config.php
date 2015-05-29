@@ -123,4 +123,3 @@ Initial settings can be configured here. To configure other settings, log in as 
 <p><a href = "./">Installation Tests &amp; Tools</a></p>
 <?php
 include ('../inc/inc_foot.php');
-?>

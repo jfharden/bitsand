@@ -77,4 +77,3 @@ Once it's confirmed it cannot be undone, you will need to re-enter your informat
 </p>
 <?php
 include ('inc/inc_foot.php');
-?>

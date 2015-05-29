@@ -210,4 +210,3 @@ foreach($_POST as $itemname => $value)
 	$result = ba_db_query ($link, $sql);
 
 include ('inc/inc_foot.php');
-?>

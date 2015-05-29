@@ -226,4 +226,3 @@ if ($_GET ['btnQuery'] != '' && CheckReferrer ('root_accesslog.php')) {
 }
 
 include ('../inc/inc_foot.php');
-?>

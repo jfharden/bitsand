@@ -380,7 +380,7 @@ echo "<td>Ancestor:</td><td>". htmlentities (stripslashes ($row ['chAncestor']))
 	echo "<input type = 'text' name = 'txtClearIC'/><input type = 'submit' value = 'Clear IC details' name = 'btnClearIC' />";
 	echo "</form>";
 	echo "</tr>\n";
-	echo "</table>\n"; 
+	echo "</table>\n";
 }
 ?>
 </p>
@@ -388,4 +388,3 @@ echo "<td>Ancestor:</td><td>". htmlentities (stripslashes ($row ['chAncestor']))
 
 <?php
 include ('../inc/inc_foot.php');
-?>

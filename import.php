@@ -221,4 +221,3 @@ ba_db_close ($link);
 $sURL = fnSystemURL () . "index.php";
 $sURL .= "?green=" . urlencode ("Details imported. Please log in and check your details to ensure that they are correct");
 header ("Location: $sURL");
-?>

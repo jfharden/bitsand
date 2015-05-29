@@ -289,4 +289,3 @@ if ($buttonpressed > 0  && CheckReferrer ('admin_finalconfirmation.php'))
 
 <?php
 include ('../inc/inc_foot.php');
-?>

@@ -51,5 +51,3 @@ if (ROOT_USER_ID != $PLAYER_ID && $row ['plAccess'] != 'admin') {
 
 //If this script is included, then the page is an admin page. Set CSS prefix
 $CSS_PREFIX = '../';
-
-?>

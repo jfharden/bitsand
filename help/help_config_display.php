@@ -37,4 +37,3 @@ include ('inc_help_head.php');
 <p><strong>NPC_LABEL:</strong> This is the label for the NPC checkbox.</p>
 <?php
 include ('inc_help_foot.php');
-?>
