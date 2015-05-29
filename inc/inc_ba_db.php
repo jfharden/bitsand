@@ -84,6 +84,8 @@ function ba_db_query ($link, $sQuery) {
 }
 
 function ba_db_num_rows ($result) {
+	if (!$result)
+		return false;
 	if (DB_TYPE == 'mysqli')
 		return mysqli_num_rows ($result);
 	if (DB_TYPE == 'mysql')
@@ -91,6 +93,8 @@ function ba_db_num_rows ($result) {
 }
 
 function ba_db_fetch_assoc ($result) {
+	if (!$result)
+		return false;
 	if (DB_TYPE == 'mysqli')
 		return mysqli_fetch_assoc ($result);
 	if (DB_TYPE == 'mysql')
@@ -98,6 +102,8 @@ function ba_db_fetch_assoc ($result) {
 }
 
 function ba_db_fetch_row ($result) {
+	if (!$result)
+		return false;
 	if (DB_TYPE == 'mysqli')
 		return mysqli_fetch_row ($result);
 	if (DB_TYPE == 'mysql')
