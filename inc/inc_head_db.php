@@ -39,8 +39,14 @@ function fnSystemURL () {
 	return "$sProtocol$sHost$sURI/";
 }
 
-//Load config file
-require ('inc_config.php');
+/*
+ * Ensure that the config file has been correctly created. If not gracefully
+ * stop the script from executing anything else
+ */
+if (!file_exists(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'inc_config.php')) {
+	die('Bitsand has not been configured correctly, please ensure config file has been created.');
+}
+include('inc_config.php');
 
 //Load error reporting, encrypt/decrypt functions
 include ('inc_error.php');
