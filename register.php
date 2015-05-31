@@ -100,31 +100,31 @@ To register, enter your e-mail address below, then click <b>Register</b>. A rand
 <?php
 //Report any problems
 if ($sProblem != '')
-	echo "<p class = 'warn'>$sProblem</p>\n";
+	echo '<p class="warn">' , $sProblem , '</p>' , PHP_EOL;
 ?>
 
-<form action = 'register.php' method = 'post' onsubmit = 'return fnCheck ()'>
-<table class = 'blockmid'>
-<tr>
-<td>E-mail address:</td>
-<td><input name = 'txtEmail' class = 'text'></td>
-</tr><tr>
-<td colspan = '2'>
-Please ensure that you have read and understood the <a href = "terms.php" target="_blank">terms &amp; conditions</a>
-</td>
-</tr><tr>
-<td colspan = '2' class = 'mid'><input type = 'submit' name = 'btnSubmit' value = 'Register'>&nbsp;
-<input type = 'reset' value = "Reset form"></td>
-</tr>
-</table>
+<form action="register.php" method="post" onsubmit="return fnCheck()">
+  <table class="blockmid">
+    <tr>
+      <td>E-mail address:</td>
+      <td><input name="txtEmail" type="email" class="text"></td>
+    </tr>
+    <tr>
+      <td colspan="2">Please ensure that you have read and understood the <a href="terms.php" target="_blank">terms &amp; conditions</a></td>
+    </tr>
+    <tr>
+      <td colspan="2" class="mid">
+        <input type="submit" name="btnSubmit" value="Register">&nbsp;
+        <input type = 'reset' value = "Reset form">
+      </td>
+    </tr>
+  </table>
 </form>
 
 <h2>Already Registered</h2>
 
-<p>
-Already registered? <a href = "index.php">Login</a><br>
-Forgotten your password? <a href = "retrieve.php">Get a new password</a><br>
-</p>
+<p>Already registered? <a href="index.php">Login</a><br/>
+Forgotten your password? <a href="retrieve.php">Get a new password</a></p>
 
 <?php
 // Get latest system list from Git, ensure we're not using the old SVN repo
@@ -144,33 +144,45 @@ else {
 If you are registered on another copy of Bitsand, simply select the system from the drop-down box below and enter your user name and password on that system. Your details will be copied over automatically.
 </p>
 
-<form action = "import.php" method = "post">
-<table class = 'blockmid'>
-<tr><td>System to copy from:</td>
-<td>
-<select name = "selSystem">
+<form action="import.php" method="post">
+  <table class="blockmid">
+    <tr>
+      <td>System to copy from:</td>
+      <td>
+        <select name = "selSystem">
 <?php
 	foreach ($asSystems as $asSystemLine) {
 		// Ignore comments
 		if ($asSystemLine [0] != "#") {
 			$aSystem = explode ("\t", trim ($asSystemLine));
-			echo "<option value = '{$aSystem [2]}'>{$aSystem [0]}";
-			echo " (OOC details only)";
-			echo "</option>\n";
+			echo '          <option value="' , $aSystem [2] , '">' , $aSystem [0] , ' (OOC details only)</option>' , PHP_EOL;
 		}
 	}
 ?>
-</select>
-</td></tr>
-<tr><td>E-mail:</td>
-<td><input name = "email"></td></tr>
-<tr><td>Password:</td>
-<td><input name = "password" type = "password"></td></tr>
-<tr><td colspan = "2" align = "center"><input name = "ic" id = "ic" type = "checkbox">
-&nbsp;<label for="ic">Tick to copy IC details</label></td></tr>
-<tr><td colspan = '2' class = 'mid'><input type = 'submit' name = 'btnSubmit' value = 'Copy Details'>&nbsp;
-<input type = 'reset' value = "Reset form"></td></tr>
-</table>
+        </select>
+      </td>
+    </tr>
+    <tr>
+      <td>E-mail:</td>
+      <td><input name="email" type="email" /></td>
+    </tr>
+    <tr>
+      <td>Password:</td>
+      <td><input name="password" type="password" /></td>
+    </tr>
+    <tr>
+      <td colspan="2" align="center">
+        <input name="ic" id="ic" type="checkbox" />&nbsp;
+        <label for="ic">Tick to copy IC details</label>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2" class="mid">
+        <input type="submit" name="btnSubmit" value="Copy Details" />&nbsp;
+        <input type="reset" value="Reset form" />
+      </td>
+    </tr>
+  </table>
 </form>
 
 <?php
