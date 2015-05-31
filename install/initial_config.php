@@ -91,9 +91,9 @@ $sWarn = "Could not find config information in database";
 
 <?php
 if ($sWarn != '')
-	echo "<p class = 'warn'>" . $sWarn . "</p>";
+	echo '<p class="warn">' . $sWarn . '</p>';
 if ($sMessage !='')
-	echo "<p class = 'green'>" . $sMessage . "</p>";
+	echo '<p class="green">' . $sMessage . '</p>';
 ?>
 
 <p>
@@ -101,20 +101,20 @@ Initial settings can be configured here. To configure other settings, log in as 
 </p>
 
 <p>
-<form action = "initial_config.php" method = "post">
+<form action = "initial_config.php" method="post">
 <table>
-<tr><td><?php HelpLink ('help_config_login.php'); ?> MIN_PASS_LEN:</td><td><input type="text" value="<?php echo htmlspecialchars($row['cnMIN_PASS_LEN']); ?>" name="txtMIN_PASS_LEN" /></td></tr>
-<tr><td><?php HelpLink ('help_config_login.php'); ?> SEND_PASSWORD:</td><td><input type="checkbox" <?php if ($row['cnSEND_PASSWORD']) {echo " checked";} ?> name="chkSEND_PASSWORD" /></td></tr>
-<tr><td><?php HelpLink ('help_config_display.php'); ?> SYSTEM_NAME:</td><td><input type="text" value="<?php echo htmlspecialchars($row['cnSYSTEM_NAME']); ?>" name="txtSYSTEM_NAME" /></td></tr>
-<tr><td><?php HelpLink ('help_config_display.php'); ?> TITLE:</td><td><input type="text" value="<?php echo htmlspecialchars($row['cnTITLE']); ?>" name="txtTITLE" /></td></tr>
-<tr><td><?php HelpLink ('help_config_display.php'); ?> EVENT_CONTACT_NAME:</td><td><input type="text" value="<?php echo htmlspecialchars($row['cnEVENT_CONTACT_NAME']); ?>" name="txtEVENT_CONTACT_NAME" /></td></tr>
-<tr><td><?php HelpLink ('help_config_display.php'); ?> EVENT_CONTACT_MAIL:</td><td><input type="text" value="<?php echo htmlspecialchars($row['cnEVENT_CONTACT_MAIL']); ?>" name="txtEVENT_CONTACT_MAIL" /></td></tr>
-<tr><td><?php HelpLink ('help_config_display.php'); ?> TECH_CONTACT_NAME:</td><td><input type="text" value="<?php echo htmlspecialchars($row['cnTECH_CONTACT_NAME']); ?>" name="txtTECH_CONTACT_NAME" /></td></tr>
-<tr><td><?php HelpLink ('help_config_display.php'); ?> TECH_CONTACT_MAIL:</td><td><input type="text" value="<?php echo htmlspecialchars($row['cnTECH_CONTACT_MAIL']); ?>" name="txtTECH_CONTACT_MAIL" /></td></tr>
+<tr><td><?php HelpLink ('help_config_login.php'); ?> MIN_PASS_LEN:</td><td><input type="text" value="<?php echo htmlspecialchars($row['cnMIN_PASS_LEN']); ?>" name="txtMIN_PASS_LEN" tabindex="1" /></td></tr>
+<tr><td><?php HelpLink ('help_config_login.php'); ?> SEND_PASSWORD:</td><td><input type="checkbox" <?php if ($row['cnSEND_PASSWORD']) {echo " checked";} ?> name="chkSEND_PASSWORD" tabindex="2" /></td></tr>
+<tr><td><?php HelpLink ('help_config_display.php'); ?> SYSTEM_NAME:</td><td><input type="text" value="<?php echo htmlspecialchars($row['cnSYSTEM_NAME']); ?>" name="txtSYSTEM_NAME" tabindex="3" /></td></tr>
+<tr><td><?php HelpLink ('help_config_display.php'); ?> TITLE:</td><td><input type="text" value="<?php echo htmlspecialchars($row['cnTITLE']); ?>" name="txtTITLE" tabindex="4" /></td></tr>
+<tr><td><?php HelpLink ('help_config_display.php'); ?> EVENT_CONTACT_NAME:</td><td><input type="text" value="<?php echo htmlspecialchars($row['cnEVENT_CONTACT_NAME']); ?>" name="txtEVENT_CONTACT_NAME" tabindex="5" /></td></tr>
+<tr><td><?php HelpLink ('help_config_display.php'); ?> EVENT_CONTACT_MAIL:</td><td><input type="email" value="<?php echo htmlspecialchars($row['cnEVENT_CONTACT_MAIL']); ?>" name="txtEVENT_CONTACT_MAIL" tabindex="6" /></td></tr>
+<tr><td><?php HelpLink ('help_config_display.php'); ?> TECH_CONTACT_NAME:</td><td><input type="text" value="<?php echo htmlspecialchars($row['cnTECH_CONTACT_NAME']); ?>" name="txtTECH_CONTACT_NAME" tabindex="7" /></td></tr>
+<tr><td><?php HelpLink ('help_config_display.php'); ?> TECH_CONTACT_MAIL:</td><td><input type="email" value="<?php echo htmlspecialchars($row['cnTECH_CONTACT_MAIL']); ?>" name="txtTECH_CONTACT_MAIL" tabindex="8" /></td></tr>
 
-<tr><td>Value of CRYPT_KEY in configuration file:</td><td><input type = 'password' name = 'txtKey'></td></tr>
+<tr><td>Value of CRYPT_KEY in configuration file:</td><td><input type="password" name="txtKey" tabindex="9" /></td></tr>
 
-<tr><td colspan = "2" class = "mid"><input type = 'submit' value = 'Update values' name = 'btnSubmit'></td></tr>
+<tr><td colspan="2" class="mid"><input type="submit" value="Update values" name="btnSubmit" tabindex="10"></td></tr>
 </table>
 </form>
 
