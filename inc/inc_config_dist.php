@@ -79,5 +79,3 @@ define ('NUM_GUILDS',10);
 define ('MAX_CHAR_PTS',16);
 define ('MAX_NPC_PTS',20);
 define ('MAX_OSPS',24);
-//URL of file that contains details of systems that user details can be imported from
-define ('IMPORT_SYSTEMS_URL', 'https://cdn.rawgit.com/PeteAUK/bitsand/NON_WEB/systems');
