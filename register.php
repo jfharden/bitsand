@@ -110,7 +110,7 @@ if ($sProblem != '')
 <td><input name = 'txtEmail' class = 'text'></td>
 </tr><tr>
 <td colspan = '2'>
-Please ensure that you have read and understood the <a href = "terms.php">terms &amp; conditions</a>
+Please ensure that you have read and understood the <a href = "terms.php" target="_blank">terms &amp; conditions</a>
 </td>
 </tr><tr>
 <td colspan = '2' class = 'mid'><input type = 'submit' name = 'btnSubmit' value = 'Register'>&nbsp;
