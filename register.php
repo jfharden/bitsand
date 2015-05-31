@@ -127,14 +127,46 @@ if ($sProblem != '')
 Forgotten your password? <a href="retrieve.php">Get a new password</a></p>
 
 <?php
-// Get latest system list from Git, ensure we're not using the old SVN repo
-if (strpos(IMPORT_SYSTEMS_URL, 'googlecode') === false) {
-	$asSystems = file(IMPORT_SYSTEMS_URL, FILE_SKIP_EMPTY_LINES);
-} else {
-	$asSystems = file('https://cdn.rawgit.com/PeteAUK/bitsand/NON_WEB/systems', FILE_SKIP_EMPTY_LINES);
+/*
+ * Get the latest system list from Git, ensure we're not using the old SVN
+ * repository (i.e. Googlecode).  We also need to ensure that we've got an 
+ * openSSL wrapper if the URL is accessed via SSL
+ */
+$systems_url = IMPORT_SYSTEMS_URL;
+$use_curl = false;
+
+if (substr($systems_url, 0, 5) == 'https') {
+	$wrappers = stream_get_wrappers();
+	if (!in_array('https', $wrappers)) {
+		if (function_exists('curl_init')) {
+			$use_curl = true;
+		} else {
+			// Old school failsafe, try the non SSL version
+			$systems_url = str_replace('https', 'http', $systems_url);
+		}
+	}
 }
 
-if ($asSystems === False)
+if (!$use_curl) {
+	$ba_systems = file($systems_url, FILE_SKIP_EMPTY_LINES);
+} else {
+	$ch = curl_init();
+	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+	curl_setopt($ch, CURLOPT_HEADER, false);
+	curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+	curl_setopt($ch, CURLOPT_URL, $systems_url);
+	curl_setopt($ch, CURLOPT_REFERER, $systems_url);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, false);
+	$result = curl_exec($ch);
+	curl_close($ch);
+	if ($result) {
+		$ba_systems = explode("\n", $result);
+	}
+}
+
+
+
+if (!$ba_systems)
 	LogError ("Unable to get list of systems from " . SYSTEM_URLS);
 else {
 ?>
@@ -151,7 +183,7 @@ If you are registered on another copy of Bitsand, simply select the system from 
       <td>
         <select name = "selSystem">
 <?php
-	foreach ($asSystems as $asSystemLine) {
+	foreach ($ba_systems as $asSystemLine) {
 		// Ignore comments
 		if ($asSystemLine [0] != "#") {
 			$aSystem = explode ("\t", trim ($asSystemLine));
