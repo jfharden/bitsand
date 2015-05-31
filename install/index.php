@@ -72,6 +72,32 @@ elseif ($aMySqlVersion [0] == "")
 	echo "Could not connect to database. Check config file<br>\n";
 else
 	echo "<span class = 'sans-warn'>$sMySQLVersion (You need a newer version of MySQL to run Bitsand)</span><br>\n";
+
+// See if we have the necessary items to load https files
+$wrappers = stream_get_wrappers();
+echo 'HTTPS Stream Wrapper: ';
+$https = false;
+if (in_array('https', $wrappers)) {
+	echo '<span class="sans-green">Yes</span><br/>' , PHP_EOL;
+	$https = true;
+} else {
+	echo '<span class="sans-warn">No</span><br/>' , PHP_EOL;
+}
+
+// See if we have curl loaded, but only if don't have the stream wrapper
+if (!$https) {
+	echo 'CURL: ';
+	if (function_exists('curl_init')) {
+		echo '<span class="sans-green">Yes</span><br/>' , PHP_EOL;
+		$https = true;
+	} else {
+		echo '<span class="sans-warn">No</span><br/>' , PHP_EOL;
+	}
+}
+
+if (!$https) {
+	echo '<span class="sans-warn">Warning:</span> You have no way to remotely load HTTPS files which may prohibit linking with other Bitsand installations.' , PHP_EOL;
+}
 ?>
 </p>
 
