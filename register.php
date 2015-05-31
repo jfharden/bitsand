@@ -148,7 +148,7 @@ if (substr($systems_url, 0, 5) == 'https') {
 }
 
 if (!$use_curl) {
-	$ba_systems = file($systems_url, FILE_SKIP_EMPTY_LINES);
+	$ba_systems_file = file($systems_url, FILE_SKIP_EMPTY_LINES);
 } else {
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
@@ -160,15 +160,25 @@ if (!$use_curl) {
 	$result = curl_exec($ch);
 	curl_close($ch);
 	if ($result) {
-		$ba_systems = explode("\n", $result);
+		$ba_systems_file = explode("\n", $result);
 	}
 }
 
 
 
-if (!$ba_systems)
-	LogError ("Unable to get list of systems from " . SYSTEM_URLS);
-else {
+if ($ba_systems_file) :
+	// Tidy up the retrieved file, drop all of the rem lines and then sort
+	$ba_systems = array();
+	foreach ($ba_systems_file as $line) {
+		if (substr(trim($line), 0, 1) != '#' && !empty(trim($line))) {
+			$line = explode("\t", $line);
+			$ba_systems[$line[0]] = array(
+				'system' => $line[1],
+				'url'    => $line[2]
+			);
+		}
+	}
+	ksort($ba_systems);
 ?>
 <h2>Copy Details From Another System</h2>
 
@@ -181,15 +191,10 @@ If you are registered on another copy of Bitsand, simply select the system from 
     <tr>
       <td>System to copy from:</td>
       <td>
-        <select name = "selSystem">
-<?php
-	foreach ($ba_systems as $asSystemLine) {
-		// Ignore comments
-		if ($asSystemLine [0] != "#") {
-			$aSystem = explode ("\t", trim ($asSystemLine));
-			echo '          <option value="' , $aSystem [2] , '">' , $aSystem [0] , ' (OOC details only)</option>' , PHP_EOL;
-		}
-	}
+        <select name="selSystem">
+<?php 	foreach ($ba_systems as $name=>$system) : ?>
+          <option value="<?php echo $system['url']; ?>"><?php echo $name; ?> (OOC details only)</option>
+<?php 	endforeach; ?>
 ?>
         </select>
       </td>
@@ -218,6 +223,8 @@ If you are registered on another copy of Bitsand, simply select the system from 
 </form>
 
 <?php
-} // end of "if $asSystems !== False" block
+else :
+	LogError ("Unable to get list of systems from " . SYSTEM_URLS);
+endif;
 
 include ('inc/inc_foot.php');
