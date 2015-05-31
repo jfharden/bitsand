@@ -25,7 +25,7 @@
 $bLoginCheck = False;
 
 //URL of file that contains details of systems that user details can be copied from
-define ('IMPORT_SYSTEMS_URL', 'https://cdn.rawgit.com/PeteAUK/bitsand/NON_WEB/systems');
+define('IMPORT_SYSTEMS_URL', 'https://cdn.rawgit.com/PeteAUK/bitsand/master/NON_WEB/systems');
 
 include ('inc/inc_head_db.php');
 $db_prefix = DB_PREFIX;
