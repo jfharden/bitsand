@@ -172,10 +172,13 @@ if ($ba_systems_file) :
 	foreach ($ba_systems_file as $line) {
 		if (substr(trim($line), 0, 1) != '#' && !empty(trim($line))) {
 			$line = explode("\t", $line);
-			$ba_systems[$line[0]] = array(
-				'system' => $line[1],
-				'url'    => $line[2]
-			);
+			// We don't need to include our own site
+			if (strpos($line[2], fnSystemURL()) === false) {
+				$ba_systems[$line[0]] = array(
+					'system' => $line[1],
+					'url'    => $line[2]
+				);
+			}
 		}
 	}
 	ksort($ba_systems);
