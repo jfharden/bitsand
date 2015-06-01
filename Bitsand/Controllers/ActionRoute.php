@@ -41,7 +41,6 @@ class ActionRoute extends Action {
 
 		$path = '';
 		$class = '';
-
 		$parts = explode('/', str_replace(array('../', '..\\', '..'), '', (string)$route));
 		//$func = create_function('$c', 'return strtoupper($c[1]);');
 
@@ -52,16 +51,16 @@ class ActionRoute extends Action {
 			}, $part));
 
 			// All routes point to a controller file
-			if (is_dir(Config::getAppPath() . '/controller/' . $path)) {
-				$path .= '/';
+			if (is_dir(Config::getAppPath() . 'controller' . DIRECTORY_SEPARATOR . $path)) {
+				$path .= DIRECTORY_SEPARATOR;
 				$class .= ' ';
 				array_shift($parts);
 				continue;
 			}
 
-			if (is_file(Config::getAppPath() . '/controller/' . str_replace('../', '', $path) . '.php')) {
-				$this->file = Config::getAppPath() . '/controller/' . str_replace('../', '', $path) . '.php';
-				$this->class = Config::getVal('app', 'namespace') . '/Controller/' . preg_replace('/[^a-zA-Z0-9]/', '', $class);
+			if (is_file(Config::getAppPath() . 'controller' . DIRECTORY_SEPARATOR . str_replace('../', '', $path) . '.php')) {
+				$this->file = Config::getAppPath() . 'controller' . DIRECTORY_SEPARATOR . str_replace('../', '', $path) . '.php';
+				$this->class = Config::getVal('namespace') . '/Controller/' . preg_replace('/[^a-zA-Z0-9]/', '', $class);
 				array_shift($parts);
 				break;
 			}
@@ -70,13 +69,12 @@ class ActionRoute extends Action {
 		// If no controller has been found, look in the built in folder
 		if (is_null($this->class) && is_null($this->file)) {
 			$class = preg_replace('/[^a-zA-Z0-9]/', '', ucwords(str_replace(array('_', '/'), ' ', $route)));
-			if (file_exists(Config::getBasePath() . '/Bitsand/Builtin/Controller/' . $class . '.php')) {
+			if (file_exists(str_replace('/', DIRECTORY_SEPARATOR, Config::getBasePath() . 'Bitsand/Builtin/Controller/' . $class . '.php'))) {
 				$this->class = 'Bitsand/Builtin/Controller/' . $class;
-				$this->file = Config::getBasePath() . '/Bitsand/Builtin/Controller/' . $class . '.php';
+				$this->file = str_replace('/', DIRECTORY_SEPARATOR, Config::getBasePath() . 'Bitsand/Builtin/Controller/' . $class . '.php');
 				$parts = array();
 			}
 		}
-
 
 		// Flick the slashes round so they become namespaces
 		$this->class = str_replace('/', '\\', $this->class);

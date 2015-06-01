@@ -46,7 +46,7 @@ class Autoloader {
 		} else {
 			$app_parts = explode('\\', $class);
 			$class_name = array_pop($app_parts);
-			$file_path = str_replace('/', DIRECTORY_SEPARATOR, Config::getAppPath() . strtolower(implode('/', $app_parts)) . '/');
+			$file_path = str_replace('/', DIRECTORY_SEPARATOR, Config::getBasePath() . strtolower(implode('/', $app_parts)) . '/');
 			$path = '';
 
 			$parts = preg_split('/(?=[A-Z])/', $class_name, 0 , PREG_SPLIT_NO_EMPTY);
