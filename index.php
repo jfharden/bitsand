@@ -30,7 +30,7 @@ include($root_path . 'Bitsand' . DIRECTORY_SEPARATOR . 'autoload.php');
 // Push the basepath into the config object
 use Bitsand\Config\Config;
 Config::setBasePath($root_path);
-//Config::setVal('app', 'namespace', 'public');
+Config::setVal('namespace', 'Booking');
 Config::setVal('theme', 'template');
 Config::setVal('pci_harden', true);
 Config::setVal('compress', true);
