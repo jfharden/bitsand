@@ -1,4 +1,6 @@
 inc/inc_config.php
+inc/admin.css
 inc/body.css
+inc/help.css
 terms.php
 *-tmp
