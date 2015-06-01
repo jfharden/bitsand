@@ -1,0 +1,9 @@
+Change Log
+Version 8.2 to 9.0
+
+BUG FIXES
+
+-----------------------------
+
+OTHER CHANGES
+Moved over to a MVC style 'framework' to more easily allow customisation of the front-end.  This version required PHP 5.5 or greater.
