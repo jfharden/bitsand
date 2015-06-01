@@ -156,7 +156,7 @@ if (!$use_curl) {
 	curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
 	curl_setopt($ch, CURLOPT_URL, $systems_url);
 	curl_setopt($ch, CURLOPT_REFERER, $systems_url);
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, false);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 	$result = curl_exec($ch);
 	curl_close($ch);
 	if ($result) {
