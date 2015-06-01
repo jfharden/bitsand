@@ -25,7 +25,7 @@
 $bLoginCheck = False;
 
 //URL of file that contains details of systems that user details can be copied from
-define('IMPORT_SYSTEMS_URL', 'https://cdn.rawgit.com/PeteAUK/bitsand/master/NON_WEB/systems');
+define('IMPORT_SYSTEM_URL', 'https://cdn.rawgit.com/PeteAUK/bitsand/master/NON_WEB/systems');
 
 include ('inc/inc_head_db.php');
 $db_prefix = DB_PREFIX;
@@ -129,10 +129,10 @@ Forgotten your password? <a href="retrieve.php">Get a new password</a></p>
 <?php
 /*
  * Get the latest system list from Git, ensure we're not using the old SVN
- * repository (i.e. Googlecode).  We also need to ensure that we've got an 
+ * repository (i.e. Googlecode).  We also need to ensure that we've got an
  * openSSL wrapper if the URL is accessed via SSL
  */
-$systems_url = IMPORT_SYSTEMS_URL;
+$systems_url = IMPORT_SYSTEM_URL;
 $use_curl = false;
 
 if (substr($systems_url, 0, 5) == 'https') {
