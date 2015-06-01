@@ -46,7 +46,7 @@ function fnSystemURL () {
 if (!file_exists(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'inc_config.php')) {
 	die('Bitsand has not been configured correctly, please ensure config file has been created.');
 }
-include('inc_config.php');
+require_once('inc_config.php');
 
 //Load error reporting, encrypt/decrypt functions
 include ('inc_error.php');
