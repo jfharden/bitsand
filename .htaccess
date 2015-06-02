@@ -1,0 +1,61 @@
+Options +FollowSymlinks
+
+# Prevent Directory Listing
+Options -Indexes
+
+# Prevent Direct Access to files
+<FilesMatch "\.(tpl|ini|log|git)">
+ Order deny,allow
+ Deny from all
+</FilesMatch>
+
+RewriteEngine On
+
+# Prevent libwww-perl access
+RewriteCond %{HTTP_USER_AGENT} libwww-perl.*
+RewriteRule .* - [F,L]
+
+
+# OK, this seems like a rediculously repetaive block of rewrites
+# This is designed to ensure that css/js/images are served from the
+# the custom folder or default (in that order), but without adding
+# overhead to the PHP script.
+
+RewriteCond %{REQUEST_URI} (.*)/css(.*)$ [NC]
+RewriteCond %{DOCUMENT_ROOT}%1/booking/view/custom/css%2 (.*)$ [NC]
+RewriteCond %1 -f
+RewriteCond %1 booking(.*)$ [NC]
+RewriteRule ^(.*) booking/%1 [L]
+RewriteCond %{REQUEST_URI} (.*)/css(.*)$ [NC]
+RewriteCond %{DOCUMENT_ROOT}%1/booking/view/default/css%2 (.*)$ [NC]
+RewriteCond %1 -f
+RewriteCond %1 booking(.*)$ [NC]
+RewriteRule ^(.*) booking/%1 [L]
+
+RewriteCond %{REQUEST_URI} (.*)/js(.*)$ [NC]
+RewriteCond %{DOCUMENT_ROOT}%1/booking/view/custom/js%2 (.*)$ [NC]
+RewriteCond %1 -f
+RewriteCond %1 booking(.*)$ [NC]
+RewriteRule ^(.*) booking/%1 [L]
+RewriteCond %{REQUEST_URI} (.*)/js(.*)$ [NC]
+RewriteCond %{DOCUMENT_ROOT}%1/booking/view/default/js%2 (.*)$ [NC]
+RewriteCond %1 -f
+RewriteCond %1 booking(.*)$ [NC]
+RewriteRule ^(.*) booking/%1 [L]
+
+RewriteCond %{REQUEST_URI} (.*)/images(.*)$ [NC]
+RewriteCond %{DOCUMENT_ROOT}%1/booking/view/custom/images%2 (.*)$ [NC]
+RewriteCond %1 -f
+RewriteCond %1 booking(.*)$ [NC]
+RewriteRule ^(.*) booking/%1 [L]
+RewriteCond %{REQUEST_URI} (.*)/images(.*)$ [NC]
+RewriteCond %{DOCUMENT_ROOT}%1/booking/view/default/images%2 (.*)$ [NC]
+RewriteCond %1 -f
+RewriteCond %1 booking(.*)$ [NC]
+RewriteRule ^(.*) booking/%1 [L]
+
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_URI} !.*\.(ico|gif|jpg|jpeg|png|js|css|woff|ttf)
+RewriteRule ^([^?]*) index.php?_route_=$1 [L,QSA]
