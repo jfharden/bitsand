@@ -47,12 +47,21 @@ class Request {
 		$this->cookie = $_COOKIE;
 		$this->files = $_FILES;
 		$this->server = $_SERVER;
+
+		// Remove any trailing slashes from the redirected route
+		if (isset($this->get['_route_'])) {
+			$this->get['_route_'] = rtrim($this->get['_route_'], '/');
+		}
 	}
 
 	/**
-	 * Cleans the passed data by html encoding it
-	 * @param mixed $data
-	 * @return mixed
+	 * Performs XSS protection (cleaning) on the passed data by html encoding
+	 * it.  If passed any exclude keys then don't perform it on these, this is
+	 * useful for ensuring certain server variables aren't messed with.
+	 *
+	 * @param string|array $data
+	 * @param array $exclude_keys [Optional]
+	 * @return string|array
 	 */
 	public function clean($data, $exclude_keys = false) {
 		if (is_array($data)) {
