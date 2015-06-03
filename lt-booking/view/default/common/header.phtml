@@ -1,19 +1,26 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="UTF-8" />
-	<title><?php echo $title; ?></title>
+  <meta charset="UTF-8" />
+  <title><?php $_($title); ?></title>
 <?php if ($description) : ?>
-	<meta name="description" content="<?php echo $description; ?>" />
+  <meta name="description" content="<?php $_($description); ?>" />
 <?php endif; ?>
 <?php if ($keywords) : ?>
-	<meta name="keywords" content="<?php echo $keywords; ?>" />
+  <meta name="keywords" content="<?php $_($keywords); ?>" />
 <?php endif; ?>
 <?php foreach ($styles as $style) : ?>
-	<link rel="<?php echo $style['rel']; ?>" type="text/css" href="<?php echo $style['href']; ?>"<?php if ($style['media']) : ?> media="<?php echo $style['media']; ?>"<?php endif; ?> />
+  <link rel="<?php echo $style['rel']; ?>" type="text/css" href="<?php $_($style['href']); ?>"<?php if ($style['media']) : ?> media="<?php echo $style['media']; ?>"<?php endif; ?> />
 <?php endforeach; ?>
 <?php foreach ($scripts as $script) : ?>
-	<script type="text/javascript" src="<?php echo $script; ?>"></script>
+  <script type="text/javascript" src="<?php $_($script); ?>"></script>
 <?php endforeach; ?>
+<?php if ($favicon) : ?>
+  <link rel="shortcut icon" href="<?php $_($favicon); ?>" />
+<?php endif; ?>
+<?php if ($rss_feed) : ?>
+  <link rel="alternate" type="application/rss+xml" href="<?php $_($rss_feed); ?>" title="<?php echo $_($rss_feed_title); ?>" />
+<?php endif; ?>
 </head>
 <body>
+  <div class="content">

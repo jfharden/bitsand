@@ -2,7 +2,7 @@
 /*+----------------------------------------------------------------------------
  || Bitsand - an online booking system for Live Role Play events
  ||
- || File public/controller/common/footer.php
+ || File public/controller/common/download.php
  ||     Author: Pete Allison
  ||  Copyright: (C) 2006 - 2015 The Bitsand Project
  ||             (http://github.com/PeteAUK/bitsand)
@@ -25,24 +25,23 @@ namespace LTBooking\Controller;
 
 use Bitsand\Controllers\Controller;
 
-class CommonHeader extends Controller {
+class CommonDownload extends Controller {
 	public function index() {
-		$this->document->addStyle('styles/body.css');
+		$this->document->setTitle('Download Bitsand');
 
-		$this->data['title'] = $this->document->getTitle();
-		$this->data['description'] = $this->document->getDescription();
-		$this->data['keywords'] = $this->document->getKeywords();
-		$this->data['styles'] = $this->document->getStyles();
-		$this->data['scripts'] = $this->document->getScripts();
+		$this->data['link_repository'] = $this->config->getVal('git_repository');
+		$this->data['link_issues'] = $this->config->getVal('git_repository') . 'issues/';
+		$this->data['link_license'] = 'http://www.gnu.org/licenses/gpl-3.0.en.html';
 
-		// See if we have a favicon
-		$favicon_file = $this->config->getAppPath() . 'view' . DIRECTORY_SEPARATOR . $this->config->get('theme') . DIRECTORY_SEPARATOR . 'favicon.ico';
-		$this->data['favicon'] = file_exists($favicon_file) ? HTTPS_BOOKING . 'favicon.ico' : '';
-		$this->data['rss_feed'] = $this->router->link('feed/booking-rss', '', \Bitsand\SSL);
-		$this->data['rss_feed_title'] = $this->document->getTitle() . ' Booking List';
+		$this->data['version'] = 'v' . BITSAND_VERSION;
 
-		$this->setView('common/header');
+		$this->children = array(
+			'common/header',
+			'common/footer'
+		);
 
-		return $this->render();
+		$this->setView('common/download');
+
+		$this->view->setOutput($this->render());
 	}
 }

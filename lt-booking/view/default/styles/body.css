@@ -1,3 +1,25 @@
+@import url(http://fonts.googleapis.com/css?family=Droid+Serif:400,700);
+
 body {
-	font-family: "Times New Roman", Times, serif;
+	font-family: "Droid Serif", "Times New Roman", Times, serif;
+	background-color: rgb(223, 223, 223);
+}
+
+a {
+	color: rgb(43, 114, 187);
+	text-decoration: none;
+}
+a:visited {
+	color: rgb(33, 92, 152);
+}
+
+.content {
+	max-width: 960px;
+	margin: 0px auto;
+}
+
+#footer p {
+	font-family: sans-serif;
+	text-align: center;
+	font-size: 0.6rem;
 }
