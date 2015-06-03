@@ -2,7 +2,7 @@
 /*+----------------------------------------------------------------------------
  || Bitsand - an online booking system for Live Role Play events
  ||
- || File public/controller/common/footer.php
+ || File public/controller/common/home.php
  ||     Author: Pete Allison
  ||  Copyright: (C) 2006 - 2015 The Bitsand Project
  ||             (http://github.com/PeteAUK/bitsand)
@@ -21,14 +21,21 @@
  || Bitsand.  If not, see <http://www.gnu.org/licenses/>.
  ++--------------------------------------------------------------------------*/
 
-namespace Booking\Controller;
+namespace LTBooking\Controller;
 
 use Bitsand\Controllers\Controller;
 
-class CommonFooter extends Controller {
+class CommonHome extends Controller {
 	public function index() {
-		$this->setView('common/footer');
+		$this->document->setTitle('Home');
 
-		return $this->render();
+		$this->children = array(
+			'common/header',
+			'common/footer'
+		);
+
+		$this->setView('common/home');
+
+		$this->view->setOutput($this->render());
 	}
 }

@@ -30,8 +30,9 @@ include($root_path . 'Bitsand' . DIRECTORY_SEPARATOR . 'autoload.php');
 // Push the basepath into the config object
 use Bitsand\Config\Config;
 Config::setBasePath($root_path);
-Config::setVal('namespace', 'Booking');
-Config::setVal('theme', 'template');
+Config::setAppDirectory('lt-booking');
+Config::setVal('namespace', 'LTBooking');
+Config::setVal('theme', 'custom');
 Config::setVal('pci_harden', true);
 Config::setVal('compress', true);
 

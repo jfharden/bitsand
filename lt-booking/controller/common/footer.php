@@ -21,19 +21,13 @@
  || Bitsand.  If not, see <http://www.gnu.org/licenses/>.
  ++--------------------------------------------------------------------------*/
 
-namespace Booking\Controller;
+namespace LTBooking\Controller;
 
 use Bitsand\Controllers\Controller;
 
-class CommonHeader extends Controller {
+class CommonFooter extends Controller {
 	public function index() {
-		$this->data['title'] = $this->document->getTitle();
-		$this->data['description'] = $this->document->getDescription();
-		$this->data['keywords'] = $this->document->getKeywords();
-		$this->data['styles'] = $this->document->getStyles();
-		$this->data['scripts'] = $this->document->getScripts();
-
-		$this->setView('common/header');
+		$this->setView('common/footer');
 
 		return $this->render();
 	}
