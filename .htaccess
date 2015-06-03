@@ -15,6 +15,10 @@ RewriteEngine On
 RewriteCond %{HTTP_USER_AGENT} libwww-perl.*
 RewriteRule .* - [F,L]
 
+# Prevent anybody accessing resources or routes directly
+RewriteCond %{QUERY_STRING} (^|&)_route_=(.*)($|&) [OR]
+RewriteCond %{QUERY_STRING} (^|&)_resource_=(.*)($|&)
+RewriteRule . index.php?_route_=error/method_not_allowed [R=405,L]
 
 # The scripts, styles and images needs to be served from either the active theme or the default theme
 RewriteCond %{REQUEST_URI} !.*(src).*
@@ -24,4 +28,4 @@ RewriteRule ^(styles|scripts|images|downloads)(.*) index.php?_resource_=$1$2 [L,
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_URI} !.*\.(ico|gif|jpg|jpeg|png|js|css|woff|ttf)
-RewriteRule ^([^?]*) index.php?_route_=$1 [L,QSA]
+RewriteRule ^([^?]*) index.php?_route_=$1 [L,QSA,END]
