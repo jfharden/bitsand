@@ -1,3 +1,6 @@
+php_flag xdebug.profiler_enable on
+php_value xdebug.profiler_output_dir "D:/tmp/"
+
 Options +FollowSymlinks
 
 # Prevent Directory Listing
@@ -22,7 +25,7 @@ RewriteRule . index.php?_route_=error/method_not_allowed [R=405,L]
 
 # The scripts, styles and images needs to be served from either the active theme or the default theme
 RewriteCond %{REQUEST_URI} !.*(src).*
-RewriteRule ^(styles|scripts|images|downloads)(.*) index.php?_resource_=$1$2 [L,QSA,END]
+RewriteRule ^(styles|scripts|images|downloads|favicon)(.*) index.php?_resource_=$1$2 [L,QSA,END]
 
 # Pass all other (non-file) requests to index.php
 RewriteCond %{REQUEST_FILENAME} !-f
