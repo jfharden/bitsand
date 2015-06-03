@@ -40,6 +40,19 @@ if (file_exists(Config::getAppPath() . 'custom.php')) {
 	include(Config::getAppPath() . 'custom.php');
 }
 
+use Bitsand\Controllers\Resource;
+
+// Look to see if we are serving a resource - only time we ever use $_GET directly
+if (isset($_GET['_resource_'])) {
+	// Resources are unique because we just pipe the correct item
+	include($root_path . 'Bitsand' . DIRECTORY_SEPARATOR . 'init_resource.php');
+
+	$resource = new Resource();
+	if ($resource->exists()) {
+		$resource->output();
+	}
+}
+
 // Initialise Bitsand
 include($root_path . 'Bitsand' . DIRECTORY_SEPARATOR . 'init.php');
 
