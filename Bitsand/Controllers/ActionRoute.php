@@ -42,11 +42,10 @@ class ActionRoute extends Action {
 		$path = '';
 		$class = '';
 		$parts = explode('/', str_replace(array('../', '..\\', '..'), '', (string)$route));
-		//$func = create_function('$c', 'return strtoupper($c[1]);');
 
 		foreach ($parts as $part) {
 			$path .= $part;
-			$class .= ucwords(preg_replace_callback('/_([a-zA-Z0-9])/', function($c) {
+			$class .= ucwords(preg_replace_callback('/[_|-]([a-zA-Z0-9])/', function($c) {
 				return strtoupper($c[1]);
 			}, $part));
 

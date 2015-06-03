@@ -33,7 +33,9 @@ class Autoloader {
 	 * PSR-4 for the core construction.  Other files follow a slightly
 	 * different configuration that is designed for improved readability.
 	 *
-	 * All namespaces are separated using the backslash character (\)
+	 * All namespaces are separated using the backslash character (\).
+	 * Filenames must be hyphen separated.
+	 *
 	 * @param string $class
 	 * @return boolean
 	 */
@@ -47,6 +49,7 @@ class Autoloader {
 			$app_parts = explode('\\', preg_replace('/^' . Config::get('namespace') . '/i', Config::getAppDirectory(), $class));
 			$class_name = array_pop($app_parts);
 			$file_path = str_replace('/', DIRECTORY_SEPARATOR, Config::getBasePath() . strtolower(implode('/', $app_parts)) . '/');
+
 			$path = '';
 			$parts = preg_split('/(?=[A-Z])/', $class_name, 0 , PREG_SPLIT_NO_EMPTY);
 
@@ -60,17 +63,24 @@ class Autoloader {
 					continue;
 				}
 
-				if (is_file($file_path . str_replace('../', '', $path) . strtolower(implode('_', $parts)) . '.php')) {
+				if (is_file($file_path . str_replace('../', '', $path) . strtolower(implode('-', $parts)) . '.php')) {
+					$file_path .= str_replace('../', '', $path) . strtolower(implode('-', $parts)) . '.php';
+					break;
+				}/*
+				 * If by some quirk we need underscore separated filenames we
+				 * can enabled it here, preference is to not however.
+				 *
+					elseif (is_file($file_path . str_replace('../', '', $path) . strtolower(implode('_', $parts)) . '.php')) {
 					$file_path .= str_replace('../', '', $path) . strtolower(implode('_', $parts)) . '.php';
 					break;
-				}
+				}*/
 
 				$path .= $part;
 			}
 		}
 
-		if (!file_exists($file_path)) {
-			throw new \Bitsand\Exceptions\FileNotFoundException('File does not exist ' . $file_path);
+		if (!file_exists($file_path) || !is_file($file_path)) {
+			throw new \Bitsand\Exceptions\FileNotFoundException('File does not exist ' . $file_path . ' (class: ' . $class . ')');
 		} else {
 			return !!include($file_path);
 		}
