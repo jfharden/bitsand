@@ -29,4 +29,4 @@ namespace Bitsand;
 use Bitsand\Registry;
 
 // The request object is core to routing, so we need to set this up first
-Registry::set('request', 'Bitsand\Controllers\Request');
+Registry::set('request', 'Bitsand\Controllers\Request', '_GET');

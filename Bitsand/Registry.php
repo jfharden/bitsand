@@ -27,6 +27,9 @@
 
 namespace Bitsand;
 
+const SSL = true;
+const NONSSL = false;
+
 class Registry {
 	protected static $_registered = array();
 
@@ -34,6 +37,7 @@ class Registry {
 		if (!isset(self::$_registered[strtolower($item)]) || $overwrite) {
 			self::$_registered[strtolower($item)] = new $class;
 		}
+		return self::$_registered[strtolower($item)];
 	}
 
 	public static function get($item) {

@@ -33,11 +33,15 @@ use Bitsand\Utilities\ShutdownHandler;
 use Bitsand\Utilities\Tracy;
 use Bitsand\Utilities\ErrorHandler;
 
+// Bitsand version being run
+define('BITSAND_VERSION', '9.0');
+
 // The request object is core to routing, so we need to set this up first
-Registry::set('request', 'Bitsand\Controllers\Request');
+$request = Registry::set('request', 'Bitsand\Controllers\Request');
 
 // We need to establish what App space we are running within
-Registry::set('route', 'Bitsand\Controllers\Route');
+//$route = Registry::set('route', 'Bitsand\Controllers\Route');
+$router = Registry::get('router');
 
 // Load up the App config file
 //Config::loadConfigFile(Config::getAppPath() . 'Application.config');
@@ -64,5 +68,16 @@ Registry::set('session', 'Bitsand\Controllers\Session');
 Registry::set('document', 'Bitsand\Controllers\Document');
 //Registry::set('device', 'Bitsand\Utilities\Device');
 Registry::set('config', 'Bitsand\Config\Config');
+Registry::set('load', 'Bitsand\Controllers\Loader');
 
 //Registry::set('db', '\Bitsand\Database\DB');
+
+// Define urls here
+define('HTTP_BOOKING', 'http://' . $router->getBaseUrl());
+if (Config::getVal('ssl') === true) {
+	define('HTTPS_BOOKING', 'https://' . $router->getBaseUrl());
+	define('HTTP_SCHEMA', isset($request->server['HTTPS']) && $request->server['HTTPS'] != 'off' ? 'https://' : 'http://');
+} else {
+	define('HTTPS_BOOKING', HTTP_BOOKING);
+	define('HTTP_SCHEMA', 'http://');
+}

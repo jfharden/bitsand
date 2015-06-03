@@ -35,27 +35,32 @@ Config::setVal('namespace', 'LTBooking');
 Config::setVal('theme', 'custom');
 Config::setVal('pci_harden', true);
 Config::setVal('compress', true);
+Config::setVal('ssl', false);
+Config::setVal('git_repository', 'https://github.com/PeteAUK/bitsand/');
+Config::setVal('display_errors', true);
 
 // Any customisations can occur here
 if (file_exists(Config::getAppPath() . 'custom.php')) {
 	include(Config::getAppPath() . 'custom.php');
 }
 
-use Bitsand\Controllers\Resource;
+use Bitsand\Registry;
 
-// Look to see if we are serving a resource - only time we ever use $_GET directly
-if (isset($_GET['_resource_'])) {
-	// Resources are unique because we just pipe the correct item
-	include($root_path . 'Bitsand' . DIRECTORY_SEPARATOR . 'init_resource.php');
+$router = Registry::set('router', 'Bitsand\Routing\Router');
 
-	$resource = new Resource();
-	if ($resource->exists()) {
-		$resource->output();
-	}
+$resource = $router->getResource();
+
+if ($resource && $resource->exists()) {
+	$resource->output();
 }
+
+$router->map('GET|POST', '/', 'common/home', 'home');
+
+
 
 // Initialise Bitsand
 include($root_path . 'Bitsand' . DIRECTORY_SEPARATOR . 'init.php');
+
 
 use Bitsand\Controllers\Action;
 use Bitsand\Controllers\ActionRoute;
@@ -64,7 +69,5 @@ use Bitsand\Controllers\Front;
 $controller = new Front();
 
 $controller->dispatch(new ActionRoute('error/not_found'));
-
-use Bitsand\Registry;
 
 Registry::get('view')->output();

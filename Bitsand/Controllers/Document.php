@@ -26,12 +26,18 @@
 
 namespace Bitsand\Controllers;
 
+use Bitsand\Registry;
+
 class Document {
 	private $title;
 	private $description;
 	private $keywords;
 	private $styles = array();
 	private $scripts = array();
+
+	public function __construct() {
+		$this->route = Registry::get('router');
+	}
 
 	/**
 	 * Sets the document title
@@ -89,7 +95,7 @@ class Document {
 	 */
 	public function addStyle($href, $rel = 'stylesheet', $media = 'screen') {
 		$this->styles[md5($href)] = array(
-			'href'  => $href,
+			'href'  => $this->route->getBaseUrl(false) . $href,
 			'rel'   => $rel,
 			'media' => $media
 		);

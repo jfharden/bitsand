@@ -34,16 +34,29 @@ use Bitsand\Config\Config;
 
 class Route {
 	/**
+	 * Base URL for the site
+	 * @var string
+	 */
+	private $_base_url;
+
+	/**
 	 * Location of the cache file
 	 * @var string
 	 */
-	private $_cache_file = '/var/routes/route.cache';
+	private $_cache_file = 'var/routes/route.cache';
+
+	/**
+	 * The request object
+	 * @var \Bitsand\Controllers\Request
+	 */
+	private $request;
 
 	/**
 	 * Initialises the Route object
 	 */
 	public function __construct() {
-		$this->_cache_file = Config::getBasePath() . $this->_cache_file;
+		$this->_cache_file = Config::getBasePath() . str_replace('/', DIRECTORY_SEPARATOR, $this->_cache_file);
+		$this->request = Registry::get('request');
 	}
 
 	/**
@@ -68,8 +81,6 @@ class Route {
 
 		$route = '';
 
-		$request = Registry::get('request');
-
 		// Calculate base path. We assume that there are no additional redirects in place
 		/*$base_path = str_replace(array($request->server['DOCUMENT_ROOT'], 'index.php'), '', $request->server['SCRIPT_FILENAME']);
 
@@ -89,12 +100,32 @@ class Route {
 
 		$route = str_replace($base_path, '', $request_uri);*/
 
-		if (isset($request->get['_route_'])) {
-			$route = trim($request->get['_route_'], '/');
-		} elseif (!isset($request->get['_resource_'])) {
+		if (isset($this->request->get['_route_'])) {
+			$route = trim($this->request->get['_route_'], '/');
+		} elseif (!isset($this->request->get['_resource_'])) {
 			$route = 'common/home';
 		}
 
 		return $route;
+	}
+
+	/**
+	 * Returns the base url of the website, without scheme
+	 * @return type
+	 */
+	public function getBaseUrl($include_host = true) {
+		if (!$this->_base_url) {
+			// Everything gets served from index.php
+			$this->_base_url = str_replace('index.php', '', $this->request->server['SCRIPT_NAME']);
+		}
+		return ($include_host ? $this->request->server['HTTP_HOST'] : '') . $this->_base_url;
+	}
+
+	public function link($route, $args = array(), $is_ssl = \Bitsand\NONSSL) {
+		if ($is_ssl == \Bitsand\SSL) {
+			return HTTPS_BOOKING . $route . '/';
+		} else {
+			return HTTP_BOOKING . $route . '/';
+		}
 	}
 }
