@@ -31,9 +31,11 @@ use Bitsand\Config\Config;
 
 class Resource {
 	private $file;
+	private $_resource_;
 
 	public function __construct() {
-		$this->request = Registry::get('request');
+		// We don't want the whole request object (takes too long)
+		$this->_resource_ = htmlspecialchars($_GET['_resource_'], ENT_COMPAT, 'UTF-8');
 	}
 
 	/**
@@ -41,12 +43,12 @@ class Resource {
 	 * @return boolean
 	 */
 	public function exists() {
-		if (file_exists($file = Config::getAppPath() . 'view' . DIRECTORY_SEPARATOR . Config::getVal('theme') . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $this->request->get['_resource_']))) {
+		if (file_exists($file = Config::getAppPath() . 'view' . DIRECTORY_SEPARATOR . Config::getVal('theme') . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $this->_resource_))) {
 			$this->file = $file;
-		} elseif (file_exists($file = Config::getAppPath() . 'view' . DIRECTORY_SEPARATOR . 'default' . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $this->request->get['_resource_']))) {
+		} elseif (file_exists($file = Config::getAppPath() . 'view' . DIRECTORY_SEPARATOR . 'default' . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $this->_resource_))) {
 			$this->file = $file;
 		} else {
-			$this->request->get['_route_'] = 'error/not_found';
+			$_GET['_route_'] = 'error/not_found';
 		}
 
 		return !!$this->file;
@@ -63,8 +65,24 @@ class Resource {
 			}
 		}
 
+		$headers = apache_request_headers();
+
 		$mime_type = $this->mimeType($this->file);
-		header('Content-Type: ' . $mime_type);
+		$last_modified = gmdate('D, d M Y H:i:s', filemtime($this->file)) . 'GMT';
+		$etag = md5($last_modified);
+		$if_modified_since = isset($headers['If-Modified-Since']) ? $headers['If-Modified-Since'] : false;
+		$if_none_match = trim(isset($headers['If-None-Match']) ? $headers['If-None-Match'] : false, '"');
+
+		if ((!$if_none_match || $if_none_match == $etag || $if_none_match == $etag . '-gzip') && $if_modified_since == $last_modified) {
+			header('HTTP/1.1 304 Not Modified');
+			exit();
+		} else {
+			header('Last-Modified: ' . $last_modified);
+			header('ETag: "' . $etag . '"');
+			header('Content-Type: ' . $mime_type);
+			header('Cache-Control: public');
+			header('Pragma: cache');
+		}
 
 		// If we have the Apache X-Sendfile module, use this - most optimal method
 		if (in_array('mod_xsendfile', apache_get_modules())) {
@@ -94,6 +112,7 @@ class Resource {
 			'doc'  => 'application/msword',
 			'docx' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
 			'gif'  => 'image/gif',
+			'ico'  => 'image/x-icon',
 			'jpe'  => 'image/jpeg',
 			'jpeg' => 'image/jpeg',
 			'jpg'  => 'image/jpeg',
@@ -113,7 +132,7 @@ class Resource {
 		$suffix = strtolower(preg_replace('/^.*\./', '', $file));
 
 		if (isset($suffixes[$suffix])) {
-			return $suffix;
+			return $suffixes[$suffix];
 		} else {
 			return 'text/plain';
 		}
