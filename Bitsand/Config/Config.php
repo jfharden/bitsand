@@ -115,7 +115,7 @@ class Config {
 	 * Returns the application directory folder name
 	 * @return string
 	 */
-	public function getAppDirectory() {
+	public static function getAppDirectory() {
 		return static::$_app_directory;
 	}
 
