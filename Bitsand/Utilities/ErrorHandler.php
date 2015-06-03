@@ -28,7 +28,7 @@ class ErrorHandler {
 
 	public static function error($error_number, $error_string, $error_file, $error_line, $error_context) {
 		\Bitsand\Registry::get('log')->write($error_string, $error_line, $error_file);
-		if (\Bitsand\Config\Config::getVal('app', 'display_errors')) {
+		if (\Bitsand\Config\Config::getVal('display_errors')) {
 			echo '<style>table.x{border-style:solid;margin-bottom:6px}table.x td,table.x th[bgcolor="#eeeeec"]{font-family:monospace}</style>' , PHP_EOL;
 			echo '<table class="x">';
 			if (function_exists('xdebug_get_function_stack')) {
