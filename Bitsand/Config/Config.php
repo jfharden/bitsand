@@ -26,6 +26,7 @@ namespace Bitsand\Config;
 class Config {
 	protected static $_config = array();
 	protected static $_base_path;
+	protected static $_app_directory;
 
 	public static function loadConfigFile($file_path) {
 		if (file_exists($file_path)) {
@@ -58,7 +59,7 @@ class Config {
 		if (isset(Config::$_config[$key])) {
 			return Config::$_config[$key];
 		} elseif ($required === true) {
-			throw new Bitsand\Config\Exceptions\ConfigKeyNotFoundException("Config key not found: [{$key}]");
+			throw new \Bitsand\Exceptions\ConfigKeyNotFoundException("Config key not found: [{$key}]");
 		}
 	}
 
@@ -81,6 +82,17 @@ class Config {
 		Config::$_base_path = $base_path;
 	}
 
+	/**
+	 * Sets the application directory
+	 * @param type $app_directory
+	 * @return type
+	 */
+	public static function setAppDirectory($app_directory) {
+		$app_directory = rtrim($app_directory, '/');
+
+		Config::$_app_directory = $app_directory;
+	}
+
 
 
 	/**
@@ -96,7 +108,15 @@ class Config {
 	 * @return string
 	 */
 	public static function getAppPath() {
-		return str_replace('/', DIRECTORY_SEPARATOR, static::getBasePath() . 'booking/');
+		return str_replace('/', DIRECTORY_SEPARATOR, static::getBasePath() . static::$_app_directory . DIRECTORY_SEPARATOR);
+	}
+
+	/**
+	 * Returns the application directory folder name
+	 * @return string
+	 */
+	public function getAppDirectory() {
+		return static::$_app_directory;
 	}
 
 	public static function dump() {
