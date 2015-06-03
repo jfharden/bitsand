@@ -60,7 +60,7 @@ abstract class Controller {
 
 	protected function getTemplate($view_route) {
 		if ($this->templateExists($view_route)) {
-			return $this->config->getVal('app', 'theme') . '/' . $view_route;
+			return $this->config->getVal('theme') . '/' . $view_route;
 		}
 		return '';
 	}
