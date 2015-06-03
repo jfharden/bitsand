@@ -53,12 +53,12 @@ class Route {
 	 * @return mixed
 	 */
 	public function getRoute($as_action = false) {
-		$this->match();
+		$route = $this->match();
 
 		if (!$as_action) {
-			return 'common/home';
+			return $route;
 		} else {
-			return new \Bitsand\Controllers\ActionRoute('common/home');
+			return new \Bitsand\Controllers\ActionRoute($route);
 		}
 	}
 
@@ -66,10 +66,12 @@ class Route {
 		$params = array();
 		$match = false;
 
+		$route = '';
+
 		$request = Registry::get('request');
 
 		// Calculate base path. We assume that there are no additional redirects in place
-		$base_path = str_replace(array($request->server['DOCUMENT_ROOT'], 'index.php'), '', $request->server['SCRIPT_FILENAME']);
+		/*$base_path = str_replace(array($request->server['DOCUMENT_ROOT'], 'index.php'), '', $request->server['SCRIPT_FILENAME']);
 
 		// Retrieve the uri using the best available method
 		if (isset($request->server['REDIRECT_URL'])) {
@@ -85,7 +87,13 @@ class Route {
 
 		$request_method = isset($request->server['REQUEST_METHOD']) ? $request->server['REQUEST_METHOD'] : 'GET';
 
-		$route = str_replace($base_path, '', $request_uri);
+		$route = str_replace($base_path, '', $request_uri);*/
+
+		if (isset($request->get['_route_'])) {
+			$route = trim($request->get['_route_'], '/');
+		} elseif (!isset($request->get['_resource_'])) {
+			$route = 'common/home';
+		}
 
 		return $route;
 	}
