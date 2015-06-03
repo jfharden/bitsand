@@ -44,11 +44,10 @@ class Autoloader {
 			// Core Bitsand
 			$file_path = str_replace('\\', DIRECTORY_SEPARATOR, Config::getBasePath() . $class . '.php');
 		} else {
-			$app_parts = explode('\\', $class);
+			$app_parts = explode('\\', preg_replace('/^' . Config::get('namespace') . '/i', Config::getAppDirectory(), $class));
 			$class_name = array_pop($app_parts);
 			$file_path = str_replace('/', DIRECTORY_SEPARATOR, Config::getBasePath() . strtolower(implode('/', $app_parts)) . '/');
 			$path = '';
-
 			$parts = preg_split('/(?=[A-Z])/', $class_name, 0 , PREG_SPLIT_NO_EMPTY);
 
 			// We need to loop through until we match everything
