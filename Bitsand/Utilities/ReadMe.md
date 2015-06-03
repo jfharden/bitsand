@@ -1,0 +1,1 @@
+This folder contains various stand alone classes and routines that are common throughout the site
