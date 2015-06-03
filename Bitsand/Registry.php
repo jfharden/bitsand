@@ -30,8 +30,10 @@ namespace Bitsand;
 class Registry {
 	protected static $_registered = array();
 
-	public static function set($item, $class) {
-		self::$_registered[strtolower($item)] = new $class;
+	public static function set($item, $class, $overwrite = false) {
+		if (!isset(self::$_registered[strtolower($item)]) || $overwrite) {
+			self::$_registered[strtolower($item)] = new $class;
+		}
 	}
 
 	public static function get($item) {
