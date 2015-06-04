@@ -210,8 +210,8 @@ class Router {
 	 * @param string $name Optional name of this route. Supply if you want to reverse route this url in your application.
 	 */
 	public function map($method, $route, $controller, $name = null) {
-		// If no name passed but this is a GET request, store as a named route
-		if ($name === null && strpos($method, 'GET') !== false) {
+		// If no name passed store as a named route
+		if ($name === null) {
 			$name = $controller;
 		}
 		if ($route != '/') {
