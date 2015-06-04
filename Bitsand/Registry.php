@@ -27,8 +27,8 @@
 
 namespace Bitsand;
 
-const SSL = true;
-const NONSSL = false;
+const SSL = 1;
+const NONSSL = 0;
 
 class Registry {
 	protected static $_registered = array();
