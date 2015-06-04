@@ -45,12 +45,16 @@ final class Front {
 		$this->pre_action[] = $pre_action;
 	}
 
-	public function dispatch($error) {
+	public function dispatch(ActionRoute $error) {
 		// Holds the error action to call if there is a problem
 		$this->error = $error;
 
 		//$action = Registry::get('route')->getRoute(true);
 		$action = Registry::get('router')->matchCurrentRoute(true);
+
+		if (!$action && $error) {
+			$action = $error;
+		}
 
 		foreach ($this->pre_action as $pre_action) {
 			$result = $this->execute($pre_action);
