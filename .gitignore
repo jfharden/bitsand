@@ -2,5 +2,6 @@ inc/inc_config.php
 inc/admin.css
 inc/body.css
 inc/help.css
+lt-booking/custom/*
 terms.php
 *-tmp
