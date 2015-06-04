@@ -44,6 +44,10 @@ class CommonHeader extends Controller {
 		$this->data['rss_feed'] = $this->router->link('feed/booking-rss', null, \Bitsand\SSL, true);
 		$this->data['rss_feed_title'] = $this->document->getTitle() . ' Booking List';
 
+		// Login
+		$this->data['register'] = $this->router->link('user/register');
+		$this->data['login'] = $this->router->link('user/login');
+
 		$this->setView('common/header');
 
 		return $this->render();
