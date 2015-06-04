@@ -54,9 +54,10 @@ if ($resource && $resource->exists()) {
 	$resource->output();
 }
 
-$router->map('GET|POST', '/', 'common/home', 'home');
-
-
+$router->map('GET|POST', '/', 'common/home', 'common/home');
+if (file_exists(Config::getAppPath() . 'routes.php')) {
+	include(Config::getAppPath() . 'routes.php');
+}
 
 // Initialise Bitsand
 include($root_path . 'Bitsand' . DIRECTORY_SEPARATOR . 'init.php');
