@@ -2,10 +2,7 @@
 /*+----------------------------------------------------------------------------
  || Bitsand - an online booking system for Live Role Play events
  ||
- || File lt-booking/routes.php
- ||    Summary: This holds all of the routes for the lt-booking front-end of
- ||             Bitsand.
- ||
+ || File public/controller/user/login.php
  ||     Author: Pete Allison
  ||  Copyright: (C) 2006 - 2015 The Bitsand Project
  ||             (http://github.com/PeteAUK/bitsand)
@@ -24,14 +21,32 @@
  || Bitsand.  If not, see <http://www.gnu.org/licenses/>.
  ++--------------------------------------------------------------------------*/
 
+namespace LTBooking\Controller;
 
-$router->addRoutes(array(
-	array('GET', 'download.html', 'common/download'),
-	array('GET', 'login.html', 'user/login'),
-	array('POST', 'login.html', 'user/login/login'),
-	array('GET|POST', 'forgotten.html', 'user/forgotten'),
-	array('GET|POST', 'register.html', 'user/register'),
-	array('GET', 'terms.html', 'common/terms'),
-	array('GET', 'booking_feed.rss', 'feed/booking-rss'),
-	array('GET|POST', 'events/[a:event]', 'event/event')
-));
+use Bitsand\Controllers\Controller;
+
+class UserLogin extends Controller {
+	public function index() {}
+
+	public function login() {
+		$this->load->model('user/user');
+
+		$response = $this->model_user_user->login($this->request->post['email'], $this->request->post['password']);
+
+		if ($response === $this->model_user_user::LOGGED_IN) {
+			var_dump('ok');
+		} elseif ($response === $this->model_user_user::INCORRECT) {
+			var_dump('wrong/not recognised');
+		} elseif ($response === $this->model_user_user::JUST_LOCKED) {
+			var_dump('wrong again, now locked');
+		} elseif ($response === $this->model_user_user::LOCKED) {
+			var_dump('locked out');
+		} else {
+			var_dump('no idea how we`ve got here');
+		}
+
+
+		// Perform a redirect now
+		var_dump($this->request->post);
+	}
+}

@@ -23,13 +23,27 @@
 <?php endif; ?>
 </head>
 <body>
-  <div class="content">
-    <div id="login-header">
-      <form action="<?php echo $login; ?>" method="post">
-        <label for="email">Log In:</label>
-        <input type="email" name="email" id="email" placeholder="Registered e-mail" value="" />
-        <input type="password" name="password" placeholder="Password" />
-        <input type="submit" value="Log In" class="button" />
-      </form>
-      <a href="<?php $_($register); ?>" class="button">Register</a>
+  <header id="login-header">
+    <div class="content">
+      <h1><?php $_($title); ?></h1>
+      <div class="login">
+        <form action="<?php echo $login; ?>" method="post">
+          <label for="email">Log In:</label>
+          <input type="email" name="email" id="email" placeholder="Registered e-mail" value="" />
+          <input type="password" name="password" placeholder="Password" />
+          <input type="submit" value="Log In" class="button" />
+        </form>
+        <a href="<?php $_($register); ?>" class="button">Register</a>
+      </div>
     </div>
+  </header>
+  <nav id="menu">
+    <div class="content">
+      <ul>
+<?php foreach ($navigation as $link) : ?>
+        <li<?php if ($link['selected']) echo ' selected="selected"'; ?>><a href="<?php $_($link['href']); ?>"><?php $_($link['text']); ?></a></li>
+<?php endforeach; ?>
+      </ul>
+    </div>
+  </nav>
+  <div class="content" id="content">

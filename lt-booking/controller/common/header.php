@@ -46,10 +46,25 @@ class CommonHeader extends Controller {
 
 		// Login
 		$this->data['register'] = $this->router->link('user/register');
-		$this->data['login'] = $this->router->link('user/login');
+		$this->data['login'] = $this->router->link('user/login/login');
+
+		// Navigation
+		$this->data['navigation'] = array();
+		$this->addNavigationItem($this->data['navigation'], 'common/home', 'Home');
+		$this->addNavigationItem($this->data['navigation'], 'event/list', 'Event List');
+
+
 
 		$this->setView('common/header');
 
 		return $this->render();
+	}
+
+	private function addNavigationItem(&$arr, $route, $text) {
+		$arr[] = array(
+			'href'     => $this->router->link($route),
+			'text'     => $text,
+			'selected' => $this->router->currentRoute() == $route
+		);
 	}
 }
