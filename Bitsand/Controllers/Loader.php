@@ -36,6 +36,8 @@ class Loader {
 	 * @return mixed
 	 */
 	public function model($model) {
-		return Registry::set('model_' . str_replace(array('/', '-'), '_', $model), Config::getVal('namespace') . '/model/' . $model);
+		$class = preg_replace('/[^a-zA-Z0-9]/', '', ucwords(str_replace(array('_', '/'), ' ', $model)));
+
+		return Registry::set('model_' . str_replace(array('/', '-'), '_', $model), str_replace('/','\\',Config::getVal('namespace') . '/Model/' . $class));
 	}
 }
