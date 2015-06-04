@@ -38,6 +38,14 @@ Config::setVal('compress', true);
 Config::setVal('ssl', false);
 Config::setVal('git_repository', 'https://github.com/PeteAUK/bitsand/');
 Config::setVal('display_errors', true);
+Config::setVal('db_driver',   'MySQLi');
+Config::setVal('db_host',     'localhost');
+Config::setVal('db_user',     'root');
+Config::setVal('db_password', 'password');
+Config::setVal('db_database', 'ba');
+Config::setVal('db_prefix',   'ba');
+Config::setVal('salt',        'salt');
+Config::setVal('login_tries', 3);
 
 // Any customisations can occur here
 if (file_exists(Config::getAppPath() . 'custom.php')) {
