@@ -38,8 +38,10 @@ class CommonHeader extends Controller {
 
 		// See if we have a favicon
 		$favicon_file = $this->config->getAppPath() . 'view' . DIRECTORY_SEPARATOR . $this->config->get('theme') . DIRECTORY_SEPARATOR . 'favicon.ico';
-		$this->data['favicon'] = file_exists($favicon_file) ? HTTPS_BOOKING . 'favicon.ico' : '';
-		$this->data['rss_feed'] = $this->router->link('feed/booking-rss', '', \Bitsand\SSL);
+		$this->data['favicon'] = file_exists($favicon_file) ? HTTPS_SERVER . $this->router->getBaseUrl() . 'favicon.ico' : '';
+
+		// Rss feed
+		$this->data['rss_feed'] = $this->router->link('feed/booking-rss', null, \Bitsand\SSL, true);
 		$this->data['rss_feed_title'] = $this->document->getTitle() . ' Booking List';
 
 		$this->setView('common/header');

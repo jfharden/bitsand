@@ -73,11 +73,11 @@ Registry::set('load', 'Bitsand\Controllers\Loader');
 //Registry::set('db', '\Bitsand\Database\DB');
 
 // Define urls here
-define('HTTP_BOOKING', 'http://' . $router->getBaseUrl());
+$host = $request->server['HTTP_HOST'];
+
+define('HTTP_SERVER', 'http://' . $host);
 if (Config::getVal('ssl') === true) {
-	define('HTTPS_BOOKING', 'https://' . $router->getBaseUrl());
-	define('HTTP_SCHEMA', isset($request->server['HTTPS']) && $request->server['HTTPS'] != 'off' ? 'https://' : 'http://');
+	define('HTTPS_SERVER', 'https://' . $host);
 } else {
-	define('HTTPS_BOOKING', HTTP_BOOKING);
-	define('HTTP_SCHEMA', 'http://');
+	define('HTTPS_SERVER', HTTP_SERVER);
 }
