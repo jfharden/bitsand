@@ -29,10 +29,32 @@
 namespace Bitsand\Routing;
 
 class Router {
+	/**
+	 * @var string $base_path Contains the relative path to the root
+	 */
+	protected $base_path = '';
+
+	/**
+	 * @var string $current_route The current route
+	 */
+	protected $current_route = '';
+
+	/**
+	 * @var array $routes Holds all of the routes defined
+	 */
 	protected $routes = array();
-	protected $namedRoutes = array();
-	protected $basePath = '';
-	protected $matchTypes = array(
+
+	/**
+	 * @var array $named_routes Holds the name (or controller route) for all
+	 * defined routes
+	 */
+	protected $named_routes = array();
+
+	/**
+	 * @var array $match_types The various match types for translating routes
+	 * into their appropriate variables
+	 */
+	protected $match_types = array(
 		'i'  => '[0-9]++',
 		'a'  => '[0-9A-Za-z]++',
 		'h'  => '[0-9A-Fa-f]++',
@@ -46,6 +68,11 @@ class Router {
 		$this->base_path = str_replace('index.php', '', $_SERVER['SCRIPT_NAME']);
 	}
 
+	/**
+	 * Returns a resource file if the we're requesting a resource
+	 *
+	 * @return Resource|boolean
+	 */
 	public function getResource() {
 		if (isset($_GET['_resource_'])) {
 			return new \Bitsand\Controllers\Resource(htmlentities($_GET['_resource_'], ENT_QUOTES, 'UTF-8', true));
@@ -53,6 +80,13 @@ class Router {
 		return false;
 	}
 
+	/**
+	 * Returns the base url.  This is the root path of Bitsand relative to the
+	 * server:
+	 * http://localhost/Bitsand9/ would return /Bitsand9/
+	 *
+	 * @return string
+	 */
 	public function getBaseUrl() {
 		return $this->base_path;
 	}

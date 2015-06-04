@@ -27,14 +27,16 @@ use Bitsand\Config\Config;
 use Bitsand\Utilities\Functions;
 
 class ActionRoute extends Action {
+	/**
+	 * @var string $type Holds the type of action this is - always controller
+	 */
 	protected $type = 'controller';
 
 	/**
 	 * Main constructor
-	 * @param string $route <p>Route to the controller file within the main
-	 *                      application folder.</p>
-	 * @param array $args <p>Any arguments to use.</p>
-	 * @return null
+	 * @param string $route Route to the controller file within the main
+	 * application folder.
+	 * @param array $args Any arguments to use.
 	 */
 	public function __construct($route, $args = array()) {
 		$this->action = $route;
