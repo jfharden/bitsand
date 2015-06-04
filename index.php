@@ -38,6 +38,8 @@ Config::setVal('compress', true);
 Config::setVal('ssl', false);
 Config::setVal('git_repository', 'https://github.com/PeteAUK/bitsand/');
 Config::setVal('display_errors', true);
+Config::setVal('error_handler', 'Tracy');
+
 Config::setVal('db_driver',   'MySQLi');
 Config::setVal('db_host',     'localhost');
 Config::setVal('db_user',     'root');
