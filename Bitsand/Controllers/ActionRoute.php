@@ -51,6 +51,10 @@ class ActionRoute extends Action {
 				$this->file = str_replace('/', DIRECTORY_SEPARATOR, Config::getBasePath() . 'Bitsand/Builtin/Controller/' . $class . '.php');
 				$parts = array();
 			}
+		} else {
+			$this->class = $controller_file['class'];
+			$this->file = $controller_file['file'];
+			$parts = $controller_file['parts'];
 		}
 
 		// Flick the slashes round so they become namespaces
