@@ -30,7 +30,7 @@ class CommonFooter extends Controller {
 	public function index() {
 		$this->setView('common/footer');
 
-		$this->data['link_download'] = $this->route->link('common/download');
+		$this->data['link_download'] = $this->router->link('common/download');
 
 		//$git_repository = new GitRepository($this->config->getVal('git_repository'));
 		$this->data['version'] = 'v' . BITSAND_VERSION;
