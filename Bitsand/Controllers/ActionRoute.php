@@ -41,34 +41,10 @@ class ActionRoute extends Action {
 	public function __construct($route, $args = array()) {
 		$this->action = $route;
 
-		$path = '';
-		$class = '';
-		$parts = explode('/', str_replace(array('../', '..\\', '..'), '', (string)$route));
-
-		foreach ($parts as $part) {
-			$path .= $part;
-			$class .= ucwords(preg_replace_callback('/[_|-]([a-zA-Z0-9])/', function($c) {
-				return strtoupper($c[1]);
-			}, $part));
-
-			// All routes point to a controller file
-			if (is_dir(Config::getAppPath() . 'controller' . DIRECTORY_SEPARATOR . $path)) {
-				$path .= DIRECTORY_SEPARATOR;
-				$class .= ' ';
-				array_shift($parts);
-				continue;
-			}
-
-			if (is_file(Config::getAppPath() . 'controller' . DIRECTORY_SEPARATOR . str_replace('../', '', $path) . '.php')) {
-				$this->file = Config::getAppPath() . 'controller' . DIRECTORY_SEPARATOR . str_replace('../', '', $path) . '.php';
-				$this->class = Config::getVal('namespace') . '/Controller/' . preg_replace('/[^a-zA-Z0-9]/', '', $class);
-				array_shift($parts);
-				break;
-			}
-		}
+		$controller_file = self::controllerExists($route);
 
 		// If no controller has been found, look in the built in folder
-		if (is_null($this->class) && is_null($this->file)) {
+		if (!$controller_file) {
 			$class = preg_replace('/[^a-zA-Z0-9]/', '', ucwords(str_replace(array('_', '/'), ' ', $route)));
 			if (file_exists(str_replace('/', DIRECTORY_SEPARATOR, Config::getBasePath() . 'Bitsand/Builtin/Controller/' . $class . '.php'))) {
 				$this->class = 'Bitsand/Builtin/Controller/' . $class;
@@ -133,5 +109,50 @@ class ActionRoute extends Action {
 	 */
 	public function getAction() {
 		return $this->action;
+	}
+
+	/**
+	 * Checks to see if a controller file exists for the passed route and
+	 * returns the file, class name, method and controller route name.
+	 *
+	 * @param string $route
+	 * @return array|boolean
+	 */
+	static function controllerExists($route) {
+		$path = '';
+		$class = '';
+		$controller = '';
+		$parts = explode('/', str_replace(array('../', '..\\', '..'), '', $route));
+		$result = false;
+
+		foreach ($parts as $part) {
+			$path .= $part;
+			$class .= ucwords(preg_replace_callback('/[_|-]([a-zA-Z0-9])/', function($c) {
+				return strtoupper($c[1]);
+			}, $part));
+			$controller .= $part;
+
+			// All routes point to a controller file
+			if (is_dir(Config::getAppPath() . 'controller' . DIRECTORY_SEPARATOR . $path)) {
+				$path .= DIRECTORY_SEPARATOR;
+				$class .= ' ';
+				$controller .= '/';
+				array_shift($parts);
+				continue;
+			}
+
+			if (is_file(Config::getAppPath() . 'controller' . DIRECTORY_SEPARATOR . str_replace('../', '', $path) . '.php')) {
+				array_shift($parts);
+				$result = array(
+					'controller' => $controller,
+					'file'       => Config::getAppPath() . 'controller' . DIRECTORY_SEPARATOR . str_replace('../', '', $path) . '.php',
+					'class'      => Config::getVal('namespace') . '/Controller/' . preg_replace('/[^a-zA-Z0-9]/', '', $class),
+					'parts'      => $parts
+				);
+				break;
+			}
+		}
+
+		return $result;
 	}
 }
