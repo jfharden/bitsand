@@ -64,7 +64,11 @@ class ActionRoute extends Action {
 			$this->args = $args;
 		}
 
-		$method = array_shift($parts);
+		if (!empty($parts)) {
+			$method = array_shift($parts);
+		} else {
+			$method = '';
+		}
 
 		if ($method) {
 			$this->method = $method;
