@@ -91,10 +91,6 @@ class Router {
 		return $this->base_path;
 	}
 
-	public function setRoutes($routes) {
-		$this->routes = $routes;
-	}
-
 	public function matchCurrentRoute($as_action = false) {
 		$matched = $this->match();
 
