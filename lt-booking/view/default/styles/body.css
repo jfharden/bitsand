@@ -1,7 +1,10 @@
 @import url(http://fonts.googleapis.com/css?family=Droid+Serif:400,700);
 
-body {
+html, input, table, textarea {
 	font-family: "Droid Serif", "Times New Roman", Times, serif;
+}
+
+body {
 	background-color: rgb(223, 223, 223);
 }
 
@@ -16,6 +19,45 @@ a:visited {
 .content {
 	max-width: 960px;
 	margin: 0px auto;
+}
+
+input[type="text"], input[type="email"], input[type="tel"], input[type="password"] {
+	border: 1px solid rgb(68, 68, 68);
+	padding: 3px 4px;
+}
+
+input.button, a.button {
+	display: inline-block;
+	line-height: normal;
+	white-space: nowrap;
+	vertical-align: middle;
+	text-align: center;
+	cursor: pointer;
+	-webkit-user-drag: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	font-size: 0.8rem;
+	padding: 0.35rem 1rem;
+	margin: 0px 0.15rem;
+	color: rgb(68, 68, 68);
+	color: rgba(0, 0, 0, 0.8);
+	border: 0px none;
+	text-decoration: none;
+	border-radius: 2px;
+	box-shadow: 0 0 0 1px rgba(0,0,0,.15) inset,0 0 6px rgba(0,0,0,.2) inset;
+}
+
+
+#login-header {
+	text-align: right;
+	padding: 1rem;
+}
+#login-header a.register, #login-header form {
+	display: inline-block;
+}
+#login-header form {
+	padding-right: 0.9rem;
 }
 
 #footer p {
