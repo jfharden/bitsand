@@ -121,6 +121,10 @@ class Router {
 		}
 	}
 
+	public function currentRoute() {
+		return $this->getCurrentRoute();
+	}
+
 	/**
 	 * Retrieves the current route from either the _route_ or the raw url
 	 * @return string
@@ -241,7 +245,7 @@ class Router {
 		}
 
 		// Prepend base path to route url again
-		$url = $this->base_path . $route;
+		$url = $this->base_path . ($route !== '/' ? $route : '');
 		if (preg_match_all('`(/|\.|)\[([^:\]]*+)(?::([^:\]]*+))?\](\?|)`', $route, $matches, PREG_SET_ORDER)) {
 			foreach ($matches as $match) {
 				list($block, $pre, $type, $param, $optional) = $match;
