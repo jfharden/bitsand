@@ -27,6 +27,7 @@ use Bitsand\Controllers\Controller;
 
 class CommonHeader extends Controller {
 	public function index() {
+		$this->document->addStyle('styles/reset.css');
 		$this->document->addStyle('styles/body.css');
 
 		$this->data['title'] = $this->document->getTitle();
