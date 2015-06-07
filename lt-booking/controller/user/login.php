@@ -26,27 +26,48 @@ namespace LTBooking\Controller;
 use Bitsand\Controllers\Controller;
 
 class UserLogin extends Controller {
+	private $errors = array();
+
 	public function index() {}
 
 	public function login() {
-		$this->load->model('user/user');
+		if ($this->request->method() !== 'POST' && !$this->user->isLogged() && $this->validateLogin()) {
+			$this->load->model('user/user');
 
-		$response = $this->model_user_user->login($this->request->post['email'], $this->request->post['password']);
+			$response = $this->model_user_user->login($this->request->post['email'], $this->request->post['password']);
 
-		if ($response === $this->model_user_user::LOGGED_IN) {
-			var_dump('ok');
-		} elseif ($response === $this->model_user_user::INCORRECT) {
-			var_dump('wrong/not recognised');
-		} elseif ($response === $this->model_user_user::JUST_LOCKED) {
-			var_dump('wrong again, now locked');
-		} elseif ($response === $this->model_user_user::LOCKED) {
-			var_dump('locked out');
+			var_dump($this->model_user_user);die();
+
+			/*if ($response === $this->model_user_user::LOGGED_IN) {
+				var_dump('ok');
+			} elseif ($response === $this->model_user_user::INCORRECT) {
+				var_dump('wrong/not recognised');
+			} elseif ($response === $this->model_user_user::JUST_LOCKED) {
+				var_dump('wrong again, now locked');
+			} elseif ($response === $this->model_user_user::LOCKED) {
+				var_dump('locked out');
+			} else {
+				var_dump('no idea how we`ve got here');
+			}*/
+
+
+			// Perform a redirect now
+			var_dump($this->request->post);
 		} else {
-			var_dump('no idea how we`ve got here');
+			// Pass errors back
+			$this->redirect($this->router->link('user/login'), null, \Bitsand\SSL);
+		}
+	}
+
+	public function validateLogin() {
+		if (!isset($this->request->post['email'])) {
+			$this->errors['error_email'] = 'No e-mail';
 		}
 
+		if (!isset($this->request->post['password'])) {
+			$this->errors['error_password'] = 'No password';
+		}
 
-		// Perform a redirect now
-		var_dump($this->request->post);
+		return empty($this->errors);
 	}
 }

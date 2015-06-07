@@ -26,9 +26,9 @@ namespace LTBooking\Model;
 use Bitsand\Controllers\Model;
 
 class UserUser extends Model {
-	private const LOCKED_USER = 'ACCOUNT DISABLED';
+	const LOCKED_USER = 'ACCOUNT DISABLED';
 
-	const INCORRECT = 0
+	const INCORRECT = 0;
 	const JUST_LOCKED = 1;
 	const LOCKED = 2;
 	const LOGGED_IN = 3;
@@ -37,7 +37,7 @@ class UserUser extends Model {
 		$email = strtolower(trim($email));
 
 		// Pull the whole user from the database, sort by login in case of duplicate registrations
-		$user_query = $this->db->query("SELECT plPlayerID, plPassword, plOldSalt, plLoginCounter FROM " . DB_PREFIX . "players WHERE LOWER(plEmail) = '" . $this->db->escape($email) . " ORDER BY plLastLogin DESC");
+		$user_query = $this->db->query("SELECT plPlayerID, plPassword, plOldSalt, plLoginCounter FROM " . DB_PREFIX . "players WHERE LOWER(plEmail) = '" . $this->db->escape($email) . "' ORDER BY plLastLogin DESC");
 
 		if ($user_query->num_rows == 0) {
 			// No e-mails match so just say "incorrect"
@@ -66,10 +66,10 @@ class UserUser extends Model {
 
 			// Not an admin so record that we've logged in and sort out the password if necessary
 			if ((int)$user_query->row['plOldSalt'] == 0) {
-				$this->db->query("UPDATE " DB_PREFIX . "players SET plLastLogin = NOW(), plLoginCounter = '0' WHERE plPlayerID = '" . $user_id . "'");
+				$this->db->query("UPDATE " . DB_PREFIX . "players SET plLastLogin = NOW(), plLoginCounter = '0' WHERE plPlayerID = '" . $user_id . "'");
 			} else {
 				$new_password = $this->encryptPassword($password);
-				$this->db->query("UPDATE " DB_PREFIX . "players SET plLastLogin = NOW(), plLoginCounter = '0', plPassword = '" . $this->db->escape($new_password) . "', plOldSalt = '0' WHERE plPlayerID = '" . $user_id . "'");
+				$this->db->query("UPDATE " . DB_PREFIX . "players SET plLastLogin = NOW(), plLoginCounter = '0', plPassword = '" . $this->db->escape($new_password) . "', plOldSalt = '0' WHERE plPlayerID = '" . $user_id . "'");
 			}
 
 			/*
@@ -84,7 +84,7 @@ class UserUser extends Model {
 			$this->user->logIn(array(
 				'user_id' => $user_id,
 				'is_admin' => $player['plAccess'] == 'admin',
-				'session_hash' => $model_user_session->getHash();
+				'session_hash' => $model_user_session->getHash()
 			));
 
 			return self::LOGGED_IN;
@@ -120,6 +120,4 @@ class UserUser extends Model {
 			return sha1($password . Config::get('old_salt'));
 		}
 	}
-
-	private function
 }
