@@ -98,6 +98,7 @@ class Router {
 	 *
 	 * @param boolean $as_action If true then will return an ActionRoute.
 	 * @return ActionRoute|string|boolean
+	 * @todo If we match the named route prevent anything else accessing it directly
 	 */
 	public function matchCurrentRoute($as_action = false) {
 		$matched = $this->match();
