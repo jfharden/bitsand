@@ -79,6 +79,14 @@ class Request {
 	}
 
 	/**
+	 * Returns the current method being used
+	 * @return string
+	 */
+	public function method() {
+		return isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : 'GET';
+	}
+
+	/**
 	 * Checks to see if the request has been made via an AJAX call
 	 * @return boolean
 	 */
