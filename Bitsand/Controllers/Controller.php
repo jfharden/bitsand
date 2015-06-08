@@ -33,6 +33,7 @@ use Bitsand\Controllers\ActionRoute;
 use Bitsand\Utilities\Functions;
 
 abstract class Controller {
+	protected $parent = '';
 	protected $template = '';
 	protected $view_route = '';
 	protected $children = array();
@@ -107,6 +108,7 @@ abstract class Controller {
 
 		if (method_exists($class, $method)) {
 			$controller = new $class();
+			$controller->parent = get_class($this);
 			call_user_func_array(array($controller, $method), $args);
 
 			if (empty($controller->output)) {
