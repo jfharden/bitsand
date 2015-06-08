@@ -44,8 +44,6 @@ class MySQLi {
 	public function query($sql) {
 		$query = $this->link->query($sql);
 
-		var_dump($sql);die();
-
 		if (!$this->link->errno) {
 			if (isset($query->num_rows)) {
 				$data = array();
@@ -54,7 +52,7 @@ class MySQLi {
 					$data[] = $row;
 				}
 
-				$result = new stdClass();
+				$result = new \stdClass();
 				$result->num_rows = $query->num_rows;
 				$result->row = isset($data[0]) ? $data[0] : array();
 				$result->rows = $data;

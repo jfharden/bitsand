@@ -42,7 +42,9 @@ class Database {
 			throw new \Bitsand\Exceptions\DriverNotFoundException('The driver "' . Config::get('db_driver') . '" does not exist');
 		}
 
-		define('DB_PREFIX', Config::get('db_prefix'));
+		if (!defined('DB_PREFIX')) {
+			define('DB_PREFIX', Config::get('db_prefix'));
+		}
 	}
 
 	/**
