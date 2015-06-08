@@ -45,15 +45,23 @@ class CommonHeader extends Controller {
 		$this->data['rss_feed_title'] = $this->document->getTitle() . ' Booking List';
 
 		// Login
-		$this->data['register'] = $this->router->link('user/register');
-		$this->data['login'] = $this->router->link('user/login/login');
+		$this->data['show_login'] = !$this->user->isLogged() && substr($this->parent, -9) !== 'UserLogin';
+
+		if (!$this->user->isLogged()) {
+			$this->data['register'] = $this->router->link('user/register');
+			$this->data['login'] = $this->router->link('user/login/login');
+		} else {
+			$this->data['name'] = $this->user->getName();
+			$this->data['account'] = $this->router->link('user/account');
+			$this->data['logout'] = $this->router->link('user/login/logout');
+		}
 
 		// Navigation
 		$this->data['navigation'] = array();
 		$this->addNavigationItem($this->data['navigation'], 'common/home', 'Home');
 		$this->addNavigationItem($this->data['navigation'], 'event/list', 'Event List');
 
-
+		$this->data['is_logged'] = $this->user->isLogged();
 
 		$this->setView('common/header');
 

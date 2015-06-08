@@ -29,9 +29,12 @@ $router->addRoutes(array(
 	array('GET', 'download.html', 'common/download'),
 	array('GET', 'login.html', 'user/login'),
 	array('POST', 'login.html', 'user/login/login'),
+	array('GET|POST', 'logout.html', 'user/login/logout'),
 	array('GET|POST', 'forgotten.html', 'user/forgotten'),
 	array('GET|POST', 'register.html', 'user/register'),
+	array('GET', 'account.html', 'user/account'),
 	array('GET', 'terms.html', 'common/terms'),
 	array('GET', 'booking_feed.rss', 'feed/booking-rss'),
+	array('GET', 'events/', 'event/list'),
 	array('GET|POST', 'events/[a:event]', 'event/event')
 ));

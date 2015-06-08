@@ -28,38 +28,85 @@ use Bitsand\Controllers\Controller;
 class UserLogin extends Controller {
 	private $errors = array();
 
-	public function index() {}
+	public function index() {
+		// If already logged in then send back to home page
+		if ($this->user->isLogged()) {
+			$this->redirect($this->router->link('common/home'));
+		}
+
+		$this->document->setTitle('Log In');
+
+		if (isset($this->session->data['success'])) {
+			$this->data['success'] = $this->session->data['success'];
+			unset($this->session->data['success']);
+		}
+
+		if (isset($this->session->data['error_email'])) {
+			$this->data['error_email'] = $this->session->data['error_email'];
+			unset($this->session->data['error_email']);
+		}
+
+		if (isset($this->session->data['error_password'])) {
+			$this->data['error_password'] = $this->session->data['error_password'];
+			unset($this->session->data['error_password']);
+		}
+
+		$this->children = array(
+			'common/header',
+			'common/footer'
+		);
+
+		$this->setView('user/login');
+
+		$this->view->setOutput($this->render());
+	}
 
 	public function login() {
-		if ($this->request->method() !== 'POST' && !$this->user->isLogged() && $this->validateLogin()) {
+		if ($this->request->method() === 'POST' && !$this->user->isLogged() && $this->validateLogin()) {
 			$this->load->model('user/user');
 
 			$response = $this->model_user_user->login($this->request->post['email'], $this->request->post['password']);
 
-			var_dump($this->model_user_user);die();
-
-			/*if ($response === $this->model_user_user::LOGGED_IN) {
+			if ($response === \LTBooking\Model\UserUser::LOGGED_IN) {
 				var_dump('ok');
-			} elseif ($response === $this->model_user_user::INCORRECT) {
+			} elseif ($response === \LTBooking\Model\UserUser::INCORRECT) {
 				var_dump('wrong/not recognised');
-			} elseif ($response === $this->model_user_user::JUST_LOCKED) {
+			} elseif ($response === \LTBooking\Model\UserUser::JUST_LOCKED) {
 				var_dump('wrong again, now locked');
-			} elseif ($response === $this->model_user_user::LOCKED) {
+			} elseif ($response === \LTBooking\Model\UserUser::LOCKED) {
 				var_dump('locked out');
 			} else {
 				var_dump('no idea how we`ve got here');
-			}*/
+			}
 
 
-			// Perform a redirect now
-			var_dump($this->request->post);
+			// Perform a redirect to the home page
+			$this->redirect($this->router->link('common/home'));
 		} else {
 			// Pass errors back
+			if (isset($this->errors['error_email'])) {
+				$this->session->data['error_email'] = $this->errors['error_email'];
+			}
+
+			if (isset($this->errors['error_password'])) {
+				$this->session->data['error_password'] = $this->errors['error_password'];
+			}
+
 			$this->redirect($this->router->link('user/login'), null, \Bitsand\SSL);
 		}
 	}
 
-	public function validateLogin() {
+	public function logout() {
+		$this->load->model('user/user');
+
+		$this->model_user_user->logout();
+
+		$this->session->data['success'] = 'You have successfully logged off';
+
+		$this->redirect($this->router->link('user/login'), null, \Bitsand\SSL);
+	}
+
+	private function validateLogin() {
 		if (!isset($this->request->post['email'])) {
 			$this->errors['error_email'] = 'No e-mail';
 		}

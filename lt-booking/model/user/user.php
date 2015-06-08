@@ -81,18 +81,30 @@ class UserUser extends Model {
 
 			$this->model_user_session->register($user_id);
 
+
 			$this->user->logIn(array(
 				'user_id' => $user_id,
 				'is_admin' => $player['plAccess'] == 'admin',
-				'session_hash' => $model_user_session->getHash()
+				'firstname' => $player['plFirstName'],
+				'lastname' => $player['plSurname'],
+				'session_hash' => $this->model_user_session->getHash()
 			));
 
 			return self::LOGGED_IN;
 		}
 	}
 
+	/**
+	 * Logs the user out
+	 */
+	public function logout() {
+		if ($this->user->isLogged()) {
+			$this->user->logout();
+		}
+	}
+
 	private function registerIncorrect($user_id, $current_incorrect, $is_locked = false) {
-		$lock_after = (int)Config::getVal('login_tries');
+		$lock_after = (int)$this->config->get('login_tries');
 
 		// If lock is set to zero, then never lock
 		if ($lock_after == 0) {
@@ -115,9 +127,9 @@ class UserUser extends Model {
 
 	private function encryptPassword($password, $old_salt = false) {
 		if (!$old_salt) {
-			return sha1($password . Config::get('salt'));
+			return sha1($password . $this->config->get('salt'));
 		} else {
-			return sha1($password . Config::get('old_salt'));
+			return sha1($password . $this->config->get('old_salt'));
 		}
 	}
 }
