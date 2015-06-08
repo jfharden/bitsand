@@ -40,7 +40,7 @@ class Registry {
 		return self::$_registered[strtolower($item)];
 	}
 
-	public static function get($item) {
+	public static function &get($item) {
 		if (isset(self::$_registered[strtolower($item)])) {
 			return self::$_registered[strtolower($item)];
 		} else {
