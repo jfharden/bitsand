@@ -29,12 +29,6 @@ namespace Bitsand\Controllers;
 use Bitsand\Registry;
 
 abstract class Model {
-	protected $db;
-
-	public function __construct() {
-		$this->db = Registry::get('database');
-	}
-
 	public function __get($key) {
 		return Registry::get($key);
 	}

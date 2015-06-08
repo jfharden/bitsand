@@ -69,7 +69,7 @@ Registry::set('document', 'Bitsand\Controllers\Document');
 //Registry::set('device', 'Bitsand\Utilities\Device');
 Registry::set('config', 'Bitsand\Config\Config');
 Registry::set('load', 'Bitsand\Controllers\Loader');
-Registry::set('database', 'Bitsand\Utilities\Database');
+Registry::set('db', 'Bitsand\Utilities\Database');
 Registry::set('user', 'Bitsand\Controllers\User');
 
 //Registry::set('db', '\Bitsand\Database\DB');
