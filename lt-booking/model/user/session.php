@@ -29,7 +29,7 @@ class UserSession extends Model {
 	private $session_hash;
 
 	/**
-	 * Registers that a user has successfully logged on and records various 
+	 * Registers that a user has successfully logged on and records various
 	 * bits of information within a table for each login success.
 	 * @param integer $user_id
 	 */
@@ -64,7 +64,14 @@ WHERE ssPlayerID = '" . (int)$user_id . "'
 		$this->db->query($sql);
 	}
 
+	/**
+	 * Retrieves the unique hash for the current session
+	 * @return string
+	 */
 	public function getHash() {
+		if (isset($this->session->data['session_hash'])) {
+			return $this->session->data['session_hash'];
+		}
 		return $this->session_hash;
 	}
 }
