@@ -77,8 +77,6 @@ class Config {
 	 * @param string $base_path
 	 */
 	public static function setBasePath($base_path) {
-		$base_path = rtrim($base_path, '/');
-
 		Config::$_base_path = $base_path;
 	}
 
@@ -88,12 +86,8 @@ class Config {
 	 * @return type
 	 */
 	public static function setAppDirectory($app_directory) {
-		$app_directory = rtrim($app_directory, '/');
-
 		Config::$_app_directory = $app_directory;
 	}
-
-
 
 	/**
 	 * Retrieves the base path
