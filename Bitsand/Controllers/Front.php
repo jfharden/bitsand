@@ -81,6 +81,7 @@ final class Front {
 		$is_controller = $action_details->isController();
 
 		$action = '';
+
 		if ($is_controller === true && method_exists($class, $method)) {
 			$controller = new $class();
 			call_user_func_array(array($controller, $method), $args);

@@ -94,6 +94,20 @@ class UserUser extends Model {
 	}
 
 	/**
+	 * Retrieves some basic details from the passed e-mail
+	 * @param string $email
+	 * @return array
+	 */
+	public function getBasicDetails($email) {
+		$email = strtolower(trim($email));
+
+		// Pull the whole user from the database, sort by login in case of duplicate registrations
+		$user_query = $this->db->query("SELECT plPlayerID AS `user_id`, plFirstName AS `firstname`, plSurname AS `lastname` FROM " . DB_PREFIX . "players WHERE LOWER(plEmail) = '" . $this->db->escape($email) . "' ORDER BY plLastLogin DESC");
+
+		return $user_query->row;
+	}
+
+	/**
 	 * Logs the user out
 	 */
 	public function logout() {
