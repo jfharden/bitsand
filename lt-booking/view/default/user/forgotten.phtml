@@ -1,0 +1,21 @@
+<?php echo $header; ?>
+
+<div id="login-form">
+  <p>If you've forgotten your password (it happens to us all), enter your e-mail address in the box below and click the Get New Password button.  A link to reset your password will be e-mailed to you.</p>
+
+  <form action="<?php echo $forgotten; ?>" method="post" class="fixed-form">
+    <div class="row">
+      <label for="email">E-mail:</label>
+      <input type="email" name="email" id="email" placeholder="Registered e-mail" value="<?php $_($email); ?>" required="required" />
+<?php if (isset($error_email)) : ?>
+      <span class="error"><?php $_($error_email); ?></span>
+<?php endif; ?>
+    </div>
+    <div class="row center">
+      <input type="submit" value="Get New Password" class="button" />
+    </div>
+  </form>
+</div>
+
+
+<?php echo $footer; ?>

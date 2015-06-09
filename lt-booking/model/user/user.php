@@ -102,6 +102,26 @@ class UserUser extends Model {
 		}
 	}
 
+	/**
+	 * Checks to see if the e-mail exists within the database
+	 * @param string $email
+	 * @return boolean
+	 */
+	public function emailExists($email) {
+		$email = strtolower(trim($email));
+
+		$user_query = $this->db->query("SELECT plEmail FROM " . DB_PREFIX . "players WHERE LOWER(plEmail) = '" . $this->db->escape($email) . "' ORDER BY plLastLogin DESC");
+
+		return $user_query->num_rows > 0;
+	}
+
+	/**
+	 * Handles an incorrect log in attempt, sending out the automated e-mail
+	 * @param integer $user_id
+	 * @param integer $current_incorrect
+	 * @param boolean $is_locked
+	 * @return integer
+	 */
 	private function registerIncorrect($user_id, $current_incorrect, $is_locked = false) {
 		$lock_after = (int)$this->config->get('login_tries');
 
