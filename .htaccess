@@ -1,5 +1,5 @@
-php_flag xdebug.profiler_enable on
-php_value xdebug.profiler_output_dir "D:/tmp/"
+# php_flag xdebug.profiler_enable on
+# php_value xdebug.profiler_output_dir "D:\Uniform\UniServerZ\www\bitsand9\var"
 
 Options +FollowSymlinks
 
@@ -32,3 +32,22 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_URI} !.*\.(ico|gif|jpg|jpeg|png|js|css|woff|ttf)
 RewriteRule ^([^?]*) index.php?_route_=$1 [L,QSA,END]
+
+<IfModule mod_expires.c>
+	ExpiresActive On
+	ExpiresByType image/gif "access plus 1 year"
+	ExpiresByType image/jpeg "access plus 1 year"
+	ExpiresByType image/png "access plus 1 year"
+	ExpiresByType image/x-icon "access plus 1 year"
+	ExpiresByType text/css "access plus 1 year"
+	ExpiresByType text/javascript "access plus 1 year"
+	ExpiresByType application/x-javascript "access plus 1 year"
+	ExpiresByType application/x-shockwave-flash "access plus 1 year"
+</IfModule>
+
+<IfModule mod_headers.c>
+	<FilesMatch "\.(js|css|xml|gz|html|jpeg|jpg|png|ico|php|swf)$">
+		Header set Connection keep-alive
+		Header append Vary: Accept-Encoding
+	</FilesMatch>
+</IfModule>
