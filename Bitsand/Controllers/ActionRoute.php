@@ -71,7 +71,9 @@ class ActionRoute extends Action {
 		}
 
 		if ($method) {
-			$this->method = $method;
+			$this->method = preg_replace_callback('/[_|-]([a-zA-Z0-9])/', function($c) {
+				return strtoupper($c[1]);
+			}, $method);
 		} else {
 			// Controllers have an index file
 			$this->method = 'index';
