@@ -74,18 +74,15 @@ abstract class Controller {
 	 */
 	protected function setView($view_route, $built_in = null) {
 		$this->view_route = $view_route;
-		$template = str_replace('/', DIRECTORY_SEPARATOR , $this->config->getAppPath() . 'view/' . $this->config->getVal('theme') . '/' . $view_route . '.phtml');
-		if (file_exists($template)) {
+		if (file_exists(($template = str_replace('/', DIRECTORY_SEPARATOR , $this->config->getAppPath() . 'view/' . $this->config->getVal('theme') . '/' . $view_route . '.phtml')))) {
 			$this->template = $template;
 		} elseif (!empty($built_in)) {
-			$template = str_replace('/', DIRECTORY_SEPARATOR , $this->config->getBasePath() . 'Bitsand/Builtin/View/' . $built_in . '.phtml');
-			if (file_exists($template)) {
+			if (file_exists(($template = str_replace('/', DIRECTORY_SEPARATOR , $this->config->getBasePath() . 'Bitsand/Builtin/View/' . $built_in . '.phtml')))) {
 				$this->template = $template;
 			}
 		} else {
 			// If there isn't one in the theme folder and a built in isn't specified then see if there is one in the default folder
-			$template = str_replace('/', DIRECTORY_SEPARATOR , $this->config->getAppPath() . 'view/default/' . $view_route . '.phtml');
-			if (file_exists($template)) {
+			if (file_exists(($template = str_replace('/', DIRECTORY_SEPARATOR , $this->config->getAppPath() . 'view/default/' . $view_route . '.phtml')))) {
 				$this->template = $template;
 			}
 		}
