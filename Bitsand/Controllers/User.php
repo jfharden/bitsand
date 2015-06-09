@@ -100,4 +100,18 @@ class User {
 
 		return $this->name;
 	}
+
+	/**
+	 * Checks to see if the e-mail is valid.
+	 * Note: PHP 5.2+
+	 * @param string $email
+	 * @return boolean
+	 */
+	public function isValidEmail($email) {
+		return filter_var($email, FILTER_VALIDATE_EMAIL)
+			&& preg_match('/@.+\./', $email)
+			&& !preg_match('/@\[/', $email)
+			&& !preg_match('/".+@/', $email)
+			&& !preg_match('/=.+@/', $email);
+	}
 }
