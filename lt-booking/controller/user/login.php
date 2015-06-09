@@ -36,11 +36,6 @@ class UserLogin extends Controller {
 
 		$this->document->setTitle('Log In');
 
-		if (isset($this->session->data['success'])) {
-			$this->data['success'] = $this->session->data['success'];
-			unset($this->session->data['success']);
-		}
-
 		if (isset($this->session->data['error_email'])) {
 			$this->data['error_email'] = $this->session->data['error_email'];
 			unset($this->session->data['error_email']);
@@ -50,6 +45,18 @@ class UserLogin extends Controller {
 			$this->data['error_password'] = $this->session->data['error_password'];
 			unset($this->session->data['error_password']);
 		}
+
+		if (isset($this->request->post['email'])) {
+			$this->data['email'] = $this->request->post['email'];
+		} else {
+			$this->data['email'] = '';
+		}
+
+
+		$this->data['login'] = $this->router->link('user/login/login');
+		$this->data['forgotten'] = $this->router->link('user/forgotten');
+		$this->data['register'] = $this->router->link('user/register');
+		$this->data['terms'] = $this->router->link('common/terms');
 
 		$this->children = array(
 			'common/header',
@@ -68,20 +75,16 @@ class UserLogin extends Controller {
 			$response = $this->model_user_user->login($this->request->post['email'], $this->request->post['password']);
 
 			if ($response === \LTBooking\Model\UserUser::LOGGED_IN) {
-				var_dump('ok');
+				$this->session->data['success'] = 'Succesfully logged on';
 			} elseif ($response === \LTBooking\Model\UserUser::INCORRECT) {
-				var_dump('wrong/not recognised');
+				$this->session->data['warning'] = 'E-mail or password wrong or not recognised';
 			} elseif ($response === \LTBooking\Model\UserUser::JUST_LOCKED) {
-				var_dump('wrong again, now locked');
+				$this->session->data['error'] = 'Password incorrect, your account has now been locked out';
 			} elseif ($response === \LTBooking\Model\UserUser::LOCKED) {
-				var_dump('locked out');
+				$this->session->data['error'] = 'Account has been locked out';
 			} else {
-				var_dump('no idea how we`ve got here');
+				var_dump('no idea how we`ve got here');die();
 			}
-
-
-			// Perform a redirect to the home page
-			$this->redirect($this->router->link('common/home'));
 		} else {
 			// Pass errors back
 			if (isset($this->errors['error_email'])) {
@@ -91,9 +94,9 @@ class UserLogin extends Controller {
 			if (isset($this->errors['error_password'])) {
 				$this->session->data['error_password'] = $this->errors['error_password'];
 			}
-
-			$this->redirect($this->router->link('user/login'), null, \Bitsand\SSL);
 		}
+
+		$this->redirect($this->router->link('user/login'), null, \Bitsand\SSL);
 	}
 
 	public function logout() {
@@ -109,6 +112,8 @@ class UserLogin extends Controller {
 	private function validateLogin() {
 		if (!isset($this->request->post['email'])) {
 			$this->errors['error_email'] = 'No e-mail';
+		} elseif (!$this->user->isValidEmail($this->request->post['email'])) {
+			$this->errors['error_email'] = 'E-mail appears to be invalid';
 		}
 
 		if (!isset($this->request->post['password'])) {

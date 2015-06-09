@@ -1,3 +1,30 @@
 <?php echo $header; ?>
-<?php $_('log in page'); ?>
+
+<div id="login-form">
+  <p>To log in, please enter your registered e-mail address and password below.</p>
+
+  <form action="<?php echo $login; ?>" method="post" class="fixed-form">
+    <div class="row">
+      <label for="email">Log In:</label>
+      <input type="email" name="email" id="email" placeholder="Registered e-mail" value="<?php $_($email); ?>" required="required" />
+<?php if (isset($error_email)) : ?>
+      <span class="error"><?php $_($error_email); ?></span>
+<?php endif; ?>
+    </div>
+    <div class="row">
+      <label for="password">Password:</label>
+      <input type="password" name="password" id="password" placeholder="Password" />
+<?php if (isset($error_password)) : ?>
+      <span class="error"><?php $_($error_password); ?></span>
+<?php endif; ?>
+    </div>
+    <div class="row center">
+      <input type="submit" value="Log In" class="button" /> <a href="<?php $_($register); ?>" class="button">Not registered?</a>
+      <p><a href="<?php $_($forgotten); ?>">Forgotten your password?</a></p>
+      <p>By using this booking system you agree to our <a href="<?php $_($terms); ?>">Terms and Conditions</a></p>
+    </div>
+  </form>
+</div>
+
+
 <?php echo $footer; ?>

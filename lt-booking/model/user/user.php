@@ -55,9 +55,8 @@ class UserUser extends Model {
 
 		// If not logging on as an admin or the password doesn't match, fail
 		if (!$override && $encrypted_password !== $user_query->row['plPassword']) {
-			$this->session->data['error'] = 'Password incorrect';
 			// We need to record a login attempt
-			return $this->markIncorrect($user_id, $user_query->row['plLoginCounter'], $user_query->row['plPassword'] == self::LOCKED_USER);
+			return $this->registerIncorrect($user_id, $user_query->row['plLoginCounter'], $user_query->row['plPassword'] == self::LOCKED_USER);
 		}
 
 		// If we're here, then we're legitimately meant to be!
@@ -120,6 +119,7 @@ class UserUser extends Model {
 			}
 		} elseif (!$is_locked) {
 			// Lock the user and send out an automated e-mail
+			// @todo automated e-mail
 			$this->db->query("UPDATE " . DB_PREFIX . "players SET plLoginCounter = plLoginCounter + 1, plPassword = '" . $this->db->escape(self::LOCKED_USER) . "' WHERE plPlayerID = '" . (int)$user_id . "'");
 			return self::JUST_LOCKED;
 		}
