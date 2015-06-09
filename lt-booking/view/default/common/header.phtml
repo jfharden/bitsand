@@ -54,4 +54,16 @@
       </ul>
     </div>
   </nav>
+<?php if ($error) : ?>
+  <div class="box error" onclick="this.style.opacity = 0;"><?php $_($error); ?></div>
+
+<?php endif; ?>
+<?php if ($warning) : ?>
+  <div class="box warning" onclick="this.style.opacity = 0;"><?php $_($warning); ?></div>
+
+<?php endif; ?>
+<?php if ($success) : ?>
+  <div class="box success" onclick="this.style.opacity = 0;"><?php $_($success); ?></div>
+
+<?php endif; ?>
   <div class="content" id="content">

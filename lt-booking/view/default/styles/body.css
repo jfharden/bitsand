@@ -121,9 +121,76 @@ input.button:hover, a.button:hover, button.button:hover {
 #content {
 	padding: 1rem;
 }
+#content p {
+	margin-bottom: 0.5rem;
+}
 
 #footer p {
 	font-family: sans-serif;
 	text-align: center;
 	font-size: 0.6rem;
+}
+
+
+.fixed-form div.row {
+	display: block;
+	margin-bottom: 0.75rem;
+}
+.fixed-form label {
+	display: inline-block;
+	width: 38%;
+}
+.fixed-form input[type="text"], .fixed-form input[type="email"], .fixed-form input[type="password"] {
+	width: 60%;
+}
+.fixed-form span.error {
+	text-align: center;
+	color: rgb(205,97,85);
+	display: block;
+}
+
+
+#login-form {
+	width: 50%;
+	margin: 4rem 25%;
+}
+
+.box {
+	position: absolute;
+	width: 50%;
+	left: 25%;
+	margin-top: 1rem;
+	border-radius: 4px 4px;
+	padding: 1rem;
+	color: rgb(250, 250, 250);
+	font-size: 1rem;
+	text-align: center;
+	opacity: 1;
+	cursor: pointer;
+	-webkit-transition: opacity 0.15s ease-out;
+	-moz-transition: opacity 0.15s ease-out;
+	-ms-transition: opacity 0.15s ease-out;
+	-o-transition: opacity 0.15s ease-out;
+	transition: opacity 0.15s ease-out;
+}
+.box:after {
+	content: '';
+	position: absolute;
+	top: 0px; right: 0px;
+	width: 1rem; height: 1rem;
+	padding: 1rem;
+	background: url('../images/icon-close.png') no-repeat 50% 50%;
+}
+
+.box.error {
+	background-color: rgb(205,97,85);
+	background-color: rgba(205,97,85, 0.75);
+}
+.box.success {
+	background-color: rgb(88,214,141);
+	background-color: rgba(88,214,141, 0.75);
+}
+.box.warning {
+	background-color: rgb(245,176,65);
+	background-color: rgba(245,176,65, 0.75);
 }

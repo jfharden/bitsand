@@ -61,6 +61,28 @@ class CommonHeader extends Controller {
 		$this->addNavigationItem($this->data['navigation'], 'common/home', 'Home');
 		$this->addNavigationItem($this->data['navigation'], 'event/list', 'Event List');
 
+		// Messages
+		if (isset($this->session->data['error'])) {
+			$this->data['error'] = $this->session->data['error'];
+			unset($this->session->data['error']);
+		} else {
+			$this->data['error'] = '';
+		}
+
+		if (isset($this->session->data['warning'])) {
+			$this->data['warning'] = $this->session->data['warning'];
+			unset($this->session->data['warning']);
+		} else {
+			$this->data['warning'] = '';
+		}
+
+		if (isset($this->session->data['success'])) {
+			$this->data['success'] = $this->session->data['success'];
+			unset($this->session->data['success']);
+		} else {
+			$this->data['success'] = '';
+		}
+
 		$this->data['is_logged'] = $this->user->isLogged();
 
 		$this->setView('common/header');
