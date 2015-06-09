@@ -37,5 +37,6 @@ $router->addRoutes(array(
 	array('GET', 'terms.html', 'common/terms'),
 	array('GET', 'booking_feed.rss', 'feed/booking-rss'),
 	array('GET', 'events/', 'event/list'),
-	array('GET|POST', 'events/[a:event]', 'event/event')
+	array('GET|POST', 'events/[a:event]', 'event/event'),
+	array('GET', 'icalendar/', 'feed/icalendar')
 ));
