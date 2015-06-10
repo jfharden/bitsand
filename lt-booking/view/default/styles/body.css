@@ -69,6 +69,22 @@ input.button:hover, a.button:hover, button.button:hover,
 	background-color: rgb(204, 204, 204);
 }
 
+label {
+	cursor: pointer;
+	-webkit-user-drag: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	-webkit-transition: color 0.15s ease;
+	-moz-transition: color 0.15s ease;
+	-ms-transition: color 0.15s ease;
+	-o-transition: color 0.15s ease;
+	transition: color 0.15s ease;
+}
+label:hover {
+	color: rgb(43, 114, 187);
+}
+
 
 #login-header, #menu, #footer {
 	padding-top: 1rem;
@@ -256,6 +272,15 @@ input.button:hover, a.button:hover, button.button:hover,
 #my-account .change-email { background-image: url('../images/icons/36/setting.png'); }
 #my-details .ooc { background-image: url('../images/icons/36/note.png'); }
 #my-details .ic { background-image: url('../images/icons/36/wizard.png'); }
+
+
+#content.user.mailing form .row {
+	padding-left: 1rem;
+}
+#content.user.mailing form .row input[type="checkbox"] + label {
+	padding-left: 1rem;
+}
+
 @media (min-width: 840px) {
 	#content.user.account .row {
 		display: inline-block;

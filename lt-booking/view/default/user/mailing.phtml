@@ -1,0 +1,33 @@
+<?php echo $header; ?>
+
+
+<div id="mailing-form">
+  <p>Use the settings below to control when you receive automated notification e-mails.</p>
+
+  <form action="<?php $_($mailing); ?>" method="post" class="fixed-form">
+    <div class="row">
+      <input type="checkbox" name="ooc" value="1" id="ooc" />
+      <label for="ooc">Personal details change</label>
+    </div>
+    <div class="row">
+      <input type="checkbox" name="ic" value="1" id="ic" />
+      <label for="ic">Character details change</label>
+    </div>
+    <div class="row">
+      <input type="checkbox" name="payment" value="1" id="payment" />
+      <label for="payment">Payment marked as received</label>
+    </div>
+    <div class="row">
+      <input type="checkbox" name="queue" value="1" id="queue" />
+      <label for="queue">Booking is removed from queue</label>
+    </div>
+    <div class="row center">
+      <input type="submit" value="Update e-mail preferences" class="button" /> <a href="<?php $_($account); ?>" class="button">Back to Manage Account</a>
+    </div>
+  </form>
+
+  <p><br/><br/>Note: The above settings do not prevent the event organiser contacting you regarding your booking.</p>
+</div>
+
+
+<?php echo $footer;
