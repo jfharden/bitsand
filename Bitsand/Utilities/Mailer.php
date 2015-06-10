@@ -209,8 +209,6 @@ class Mailer {
 		$plain_text = $this->render(self::PLAIN_TEXT);
 		$subject = $this->_parseTemplate($this->_subject, $this->data);
 
-		echo 'Render time: ' , (microtime(true) - $start) * 1000 , '<br/>';
-
 		$boundary = '----=_NextPart_' . md5(time());
 
 		$header = 'MIME-Version: 1.0' . self::NL;
@@ -255,8 +253,6 @@ class Mailer {
 		// Attachment mechanism would go here
 
 		$message .= '--' . $boundary . '--' . self::NL;
-
-		echo 'Compose time: ' , (microtime(true) - $start) * 1000 , '<br/>';
 
 		if ($this->config->get('mail_protocol') == 'mail') {
 			ini_set('sendmail_from', $this->_from);
@@ -464,8 +460,6 @@ class Mailer {
 
 			fclose($handle);
 		}
-
-		echo 'Total time: ' , (microtime(true) - $start) * 1000 , '<br/>';
 	}
 
 	/**
