@@ -102,6 +102,14 @@ class User {
 	}
 
 	/**
+	 * Returns the user id of the logged in user
+	 * @return integer
+	 */
+	public function getId() {
+		return $this->user_id;
+	}
+
+	/**
 	 * Checks to see if the e-mail is valid.
 	 * Note: PHP 5.2+
 	 * @param string $email
