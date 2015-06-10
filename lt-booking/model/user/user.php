@@ -98,11 +98,35 @@ class UserUser extends Model {
 	 * @param string $email
 	 * @return array
 	 */
-	public function getBasicDetails($email) {
+	public function getBasicDetails($email, $include_reset_token = false) {
 		$email = strtolower(trim($email));
 
-		// Pull the whole user from the database, sort by login in case of duplicate registrations
-		$user_query = $this->db->query("SELECT plPlayerID AS `user_id`, plFirstName AS `firstname`, plSurname AS `lastname` FROM " . DB_PREFIX . "players WHERE LOWER(plEmail) = '" . $this->db->escape($email) . "' ORDER BY plLastLogin DESC");
+		if (!$include_reset_token) {
+			$sql = "SELECT plPlayerID AS `user_id`, plFirstName AS `firstname`, plSurname AS `lastname` FROM " . DB_PREFIX . "players WHERE LOWER(plEmail) = '" . $this->db->escape($email) . "' ORDER BY plLastLogin DESC";
+		} else {
+			/*
+			 * The reset token is used to allow the user the option to reset their
+			 * password.  Although a purely random token is preferable, we want to
+			 * keep as true to the v8.x Bitsand database format so we composite it
+			 * together from the password, last login and user.  This will be
+			 * unique to a user and automatically expires once the password has
+			 * been changed or the user remembered it.
+			 */
+			$sql = "SELECT plPlayerID AS `user_id`, plFirstName AS `firstname`, plSurname AS `lastname`, MD5(CONCAT(plPlayerID, plPassword, plLastLogin)) AS `reset_token` FROM " . DB_PREFIX . "players WHERE LOWER(plEmail) = '" . $this->db->escape($email) . "' ORDER BY plLastLogin DESC";
+		}
+
+		$user_query = $this->db->query($sql);
+
+		return $user_query->row;
+	}
+
+	/**
+	 * Retrieves the user id from the passed token
+	 * @param string $token
+	 * @return array
+	 */
+	public function getUserByToken($token) {
+		$user_query = $this->db->query("SELECT plPlayerID as `user_id` FROM " . DB_PREFIX . "players WHERE MD5(CONCAT(plPlayerID, plPassword, plLastLogin)) = '" . $this->db->escape($token) . "'");
 
 		return $user_query->row;
 	}
