@@ -101,7 +101,7 @@ class CommonHeader extends Controller {
 		$arr[] = array(
 			'href'     => $this->router->link($route),
 			'text'     => $text,
-			'selected' => $this->router->currentRoute() == $route
+			'selected' => str_replace(' ', '/', $this->data['route']) == $route
 		);
 	}
 }
