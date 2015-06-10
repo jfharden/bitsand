@@ -254,7 +254,7 @@ label:hover {
 	width: 4rem;
 	height: 4rem;
 	border-radius: 50% 50%;
-	margin: 0px 1rem;
+	margin: 1rem;
 	background-position: 50% 50%;
 	background-repeat: no-repeat;
 }
