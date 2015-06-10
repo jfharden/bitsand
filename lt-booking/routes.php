@@ -32,6 +32,8 @@ $router->addRoutes(array(
 	array('GET|POST', 'logout.html', 'user/login/logout'),
 	array('GET', 'forgotten.html', 'user/forgotten'),
 	array('POST', 'forgotten.html', 'user/forgotten/send-link'),
+	array('GET|POST', 'reset-password.html?token=[a:token]', 'user/reset/forgotten'),
+	array('GET|POST', 'reset-password.html', 'user/reset'),
 	array('GET|POST', 'register.html', 'user/register'),
 	array('GET', 'account.html', 'user/account'),
 	array('GET', 'terms.html', 'common/terms'),

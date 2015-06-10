@@ -16,6 +16,10 @@ a {
 a:visited {
 	color: rgb(33, 92, 152);
 }
+.mono {
+	font-family: monospace;
+	font-size: 1rem;
+}
 
 .content {
 	max-width: 960px;

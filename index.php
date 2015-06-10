@@ -48,6 +48,7 @@ Config::setVal('db_database',         'ba');
 Config::setVal('db_prefix',           'ba');
 Config::setVal('salt',                'salt');
 Config::setVal('login_tries',         3);
+Config::setVal('password_minimum',    8);
 Config::setVal('site_name',           'Bitsand'); // DB
 Config::setVal('site_title',          'BA TEST'); // DB
 Config::setVal('mail_protocol',       'mail');    // Can be mail or smtp

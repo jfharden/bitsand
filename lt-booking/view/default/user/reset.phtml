@@ -1,0 +1,38 @@
+<?php echo $header; ?>
+
+<div id="login-form">
+  <p>Please enter a new password for your account.  This needs to be <?php $_($password_length);?> characters in length or longer.</p>
+
+  <form action="<?php echo $reset; ?>" method="post" class="fixed-form">
+    <div class="row">
+      <label for="password">Password:</label>
+      <input type="password" name="password" id="password" placeholder="Password" value="<?php $_($password); ?>" required="required" />
+<?php if (isset($error_password)) : ?>
+      <span class="error"><?php $_($error_password); ?></span>
+<?php endif; ?>
+    </div>
+    <div class="row">
+      <label for="confirm">Confirm:</label>
+      <input type="password" name="confirm" id="confirm" placeholder="Confirm Password" value="<?php $_($confirm); ?>" required="required" />
+<?php if (isset($error_confirm)) : ?>
+      <span class="error"><?php $_($error_confirm); ?></span>
+<?php endif; ?>
+    </div>
+    <div class="row">
+      <label>Suggestion:</label>
+      <span class="mono" id="suggestion"><?php $_($suggested); ?></span> <a class="button" onclick="useSuggested();">Use This</a>
+    </div>
+    <div class="row center">
+      <input type="submit" value="Set New Password" class="button" />
+    </div>
+  </form>
+</div>
+<script type="text/javascript"><!--//
+function useSuggested() {
+  var suggestion = document.getElementById('suggestion').value;
+  document.getElementById('password').value = suggestion;
+  document.getElementById('confirm').value = suggestion;
+}
+//--></script>
+
+<?php echo $footer; ?>
