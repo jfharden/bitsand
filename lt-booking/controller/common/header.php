@@ -30,7 +30,8 @@ class CommonHeader extends Controller {
 		$this->document->addStyle('styles/reset.css');
 		$this->document->addStyle('styles/body.css');
 
-		$this->data['title'] = $this->document->getTitle();
+		$this->data['title'] = (!empty($this->document->getTitle()) ? $this->document->getTitle() . ' - ' : '') . $this->config->get('site_title');
+		$this->data['page_title'] = !empty($this->document->getTitle()) ? $this->document->getTitle() : $this->config->get('site_title');
 		$this->data['description'] = $this->document->getDescription();
 		$this->data['keywords'] = $this->document->getKeywords();
 		$this->data['styles'] = $this->document->getStyles();
