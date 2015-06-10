@@ -37,6 +37,12 @@ class CommonHeader extends Controller {
 		$this->data['styles'] = $this->document->getStyles();
 		$this->data['scripts'] = $this->document->getScripts();
 
+		// Calculate out a route to use as a class
+		$class = str_replace('common', '', substr($this->parent, strrpos($this->parent, '\\') + 1));
+		$this->data['route'] = trim(preg_replace_callback('/([A-Z])/', function($m) {
+			return ' ' . strtolower($m[1]);
+		}, $class));;
+
 		// See if we have a favicon
 		$favicon_file = $this->config->getAppPath() . 'view' . DIRECTORY_SEPARATOR . $this->config->get('theme') . DIRECTORY_SEPARATOR . 'favicon.ico';
 		$this->data['favicon'] = file_exists($favicon_file) ? HTTPS_SERVER . $this->router->getBaseUrl() . 'favicon.ico' : '';
