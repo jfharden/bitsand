@@ -45,20 +45,27 @@ input.button, a.button, button.button {
 	font-size: 0.8rem;
 	padding: 0.35rem 1rem;
 	margin: 0px 0.15rem;
-	color: rgb(68, 68, 68);
-	color: rgba(0, 0, 0, 0.8);
-	background-color: rgb(230, 230, 230);
 	border: 0px none;
 	text-decoration: none;
 	border-radius: 2px;
-	box-shadow: 0 0 0 1px rgba(0,0,0,.15) inset,0 0 6px rgba(0,0,0,.2) inset;
+
+}
+
+input.button, a.button, button.button,
+.icon {
+	color: rgb(68, 68, 68);
+	color: rgba(0, 0, 0, 0.8);
+	background-color: rgb(230, 230, 230);
+		box-shadow: 0 0 0 1px rgba(0,0,0,.15) inset,0 0 6px rgba(0,0,0,.2) inset;
 	-webkit-transition: background 0.15s ease;
 	-moz-transition: background 0.15s ease;
 	-ms-transition: background 0.15s ease;
 	-o-transition: background 0.15s ease;
 	transition: background 0.15s ease;
 }
-input.button:hover, a.button:hover, button.button:hover {
+
+input.button:hover, a.button:hover, button.button:hover,
+.icon:hover, a:hover .icon {
 	background-color: rgb(204, 204, 204);
 }
 
@@ -109,11 +116,11 @@ input.button:hover, a.button:hover, button.button:hover {
 	line-height: 2rem;
 	padding: 0.35rem 1rem;
 	cursor: pointer;
-	-webkit-transition: background 0.15s ease;
-	-moz-transition: background 0.15s ease;
-	-ms-transition: background 0.15s ease;
-	-o-transition: background 0.15s ease;
-	transition: background 0.15s ease;
+	-webkit-transition: all 0.15s ease;
+	-moz-transition: all 0.15s ease;
+	-ms-transition: all 0.15s ease;
+	-o-transition: all 0.15s ease;
+	transition: all 0.15s ease;
 }
 #menu li a:hover {
 	background-color: rgb(204, 204, 204);
@@ -197,4 +204,61 @@ input.button:hover, a.button:hover, button.button:hover {
 .box.warning {
 	background-color: rgb(245,176,65);
 	background-color: rgba(245,176,65, 0.75);
+}
+
+#content h1 {
+	line-height: 2.25rem;
+	background-repeat: no-repeat;
+	background-position: 0px 50%;
+}
+#content.user h1 {
+	padding-left: 2.25rem;
+	margin-bottom: 0.75rem;
+}
+#content.user.login h1 { background-image: url('../images/icons/24/private.png'); }
+#content.user.account h1 { background-image: url('../images/icons/24/user.png'); }
+#content.user.reset h1 { background-image: url('../images/icons/24/padlock.png'); }
+#content.user.change-email h1 { background-image: url('../images/icons/24/setting.png'); }
+#content.user.forgotten h1 { background-image: url('../images/icons/24/forgotten.png'); }
+#content.user.mailing h1 { background-image: url('../images/icons/24/mail.png'); }
+
+.block .row {
+	font-size: 1.4rem;
+	line-height: 4rem;
+	margin-bottom: 0.75rem;
+}
+.block .icon {
+	display: inline-block;
+	width: 4rem;
+	height: 4rem;
+	border-radius: 50% 50%;
+	margin: 0px 1rem;
+	background-position: 50% 50%;
+	background-repeat: no-repeat;
+}
+.block .row a {
+	color: rgb(68, 68, 68);
+	-webkit-user-drag: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+}
+.block .row a:hover {
+	color: rgb(43, 114, 187);
+}
+
+#content hr {
+	border: 1px solid rgb(68, 68, 68);
+}
+
+#my-account .mailing { background-image: url('../images/icons/36/mail.png'); }
+#my-account .password { background-image: url('../images/icons/36/padlock.png'); }
+#my-account .change-email { background-image: url('../images/icons/36/setting.png'); }
+#my-details .ooc { background-image: url('../images/icons/36/note.png'); }
+#my-details .ic { background-image: url('../images/icons/36/wizard.png'); }
+@media (min-width: 840px) {
+	#content.user.account .row {
+		display: inline-block;
+		width: 49%;
+	}
 }
