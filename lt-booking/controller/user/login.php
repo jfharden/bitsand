@@ -104,7 +104,7 @@ class UserLogin extends Controller {
 
 		$this->model_user_user->logout();
 
-		$this->session->data['success'] = 'You have successfully logged off';
+		$this->session->data['success'] = 'You have successfully logged out';
 
 		$this->redirect($this->router->link('user/login'), null, \Bitsand\SSL);
 	}
