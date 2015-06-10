@@ -222,6 +222,12 @@ label:hover {
 	background-color: rgba(245,176,65, 0.75);
 }
 
+.footnote {
+	padding-top: 2rem;
+	font-size: 0.825rem;
+	line-height: 1.25rem;
+}
+
 #content h1 {
 	line-height: 2.25rem;
 	background-repeat: no-repeat;

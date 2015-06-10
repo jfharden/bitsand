@@ -6,19 +6,19 @@
 
   <form action="<?php $_($mailing); ?>" method="post" class="fixed-form">
     <div class="row">
-      <input type="checkbox" name="ooc" value="1" id="ooc" />
+      <input type="checkbox" name="ooc" value="1" id="ooc"<?php if ($ooc) echo ' checked="checked"'; ?> />
       <label for="ooc">Personal details change</label>
     </div>
     <div class="row">
-      <input type="checkbox" name="ic" value="1" id="ic" />
+      <input type="checkbox" name="ic" value="1" id="ic"<?php if ($ic) echo ' checked="checked"'; ?> />
       <label for="ic">Character details change</label>
     </div>
     <div class="row">
-      <input type="checkbox" name="payment" value="1" id="payment" />
+      <input type="checkbox" name="payment" value="1" id="payment"<?php if ($payment) echo ' checked="checked"'; ?> />
       <label for="payment">Payment marked as received</label>
     </div>
     <div class="row">
-      <input type="checkbox" name="queue" value="1" id="queue" />
+      <input type="checkbox" name="queue" value="1" id="queue"<?php if ($queue) echo ' checked="checked"'; ?> />
       <label for="queue">Booking is removed from queue</label>
     </div>
     <div class="row center">
@@ -26,7 +26,7 @@
     </div>
   </form>
 
-  <p><br/><br/>Note: The above settings do not prevent the event organiser contacting you regarding your booking.</p>
+  <p class="footnote">Note: The above settings do not prevent the event organiser contacting you regarding your bookings.</p>
 </div>
 
 

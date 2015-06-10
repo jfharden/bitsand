@@ -36,8 +36,28 @@ class UserMailing extends Controller {
 			$this->redirect($this->router->link('user/login', null, \Bitsand\SSL));
 		}
 
+		$this->load->model('user/user');
+
+		// No need to validate anything
+		if ($this->request->method() === 'POST') {
+			$data = array(
+				'ooc'     => isset($this->request->post['ooc']),
+				'ic'      => isset($this->request->post['ic']),
+				'payment' => isset($this->request->post['payment']),
+				'queue'   => isset($this->request->post['queue'])
+			);
+			$this->model_user_user->changeMailing($this->user->getId(), $data);
+
+			$this->data['success'] = 'Your e-mail preferences have been updated';
+
+			$this->redirect($this->router->link('user/account'), null, \Bitsand\SSL);
+		}
+
 		$this->document->setTitle('E-mail Preferences');
 
+		$mailing_details = $this->model_user_user->getMailingDetails($this->user->getId());
+
+		$this->data += $mailing_details;
 		$this->data['mailing'] = $this->router->link('user/mailing', null, \Bitsand\SSL);
 		$this->data['account'] = $this->router->link('user/account', null, \Bitsand\SSL);
 

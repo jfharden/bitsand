@@ -121,6 +121,23 @@ class UserUser extends Model {
 	}
 
 	/**
+	 * Retrieves the automated e-mail preferences for the requested user.
+	 *
+	 * @param integer $user_id
+	 * @return array
+	 */
+	public function getMailingDetails($user_id) {
+		$user_query = $this->db->query("SELECT plEmailICChange AS `ic`, plEmailOOCChange AS `ooc`, plEmailPaymentReceived AS `payment`, plEmailRemovedFromQueue AS `queue` FROM " . DB_PREFIX . "players WHERE plPlayerID = '" . (int)$user_id . "'");
+		$details = array(
+			'ooc'     => $user_query->row['ooc'] == 1,
+			'ic'      => $user_query->row['ic'] == 1,
+			'payment' => $user_query->row['payment'] == 1,
+			'queue'   => $user_query->row['queue'] == 1
+		);
+		return $details;
+	}
+
+	/**
 	 * Retrieves the user id from the passed token
 	 * @param string $token
 	 * @return array
@@ -167,6 +184,17 @@ class UserUser extends Model {
 		}
 
 		return $rows_changed;
+	}
+
+	/**
+	 * Updates the users e-mail preferences to the passed ones
+	 *
+	 * @param integer $user_id
+	 * @param integer $data
+	 */
+	public function changeMailing($user_id, $data) {
+		$sql = "UPDATE " . DB_PREFIX . "players SET plEmailOOCChange = '" . (int)$data['ooc'] . "', plEmailICChange = '" . (int)$data['ic'] . "', plEmailPaymentReceived = '" . (int)$data['payment'] . "', plEmailRemovedFromQueue = '" . (int)$data['queue'] . "' WHERE plPlayerID = '" . (int)$user_id . "'";
+		$this->db->query($sql);
 	}
 
 	/**
