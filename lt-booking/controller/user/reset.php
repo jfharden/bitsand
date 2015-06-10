@@ -30,6 +30,7 @@ class UserReset extends Controller {
 
 	public function index() {
 		if (!$this->user->isLogged()) {
+			$this->session->data['redirect'] = $this->router->link('user/reset', null, \Bitsand\SSL);
 			$this->redirect($this->router->link('user/login', null, \Bitsand\SSL));
 		}
 

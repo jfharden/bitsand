@@ -31,7 +31,13 @@ class UserLogin extends Controller {
 	public function index() {
 		// If already logged in then send back to home page
 		if ($this->user->isLogged()) {
-			$this->redirect($this->router->link('common/home'));
+			if (isset($this->session->data['redirect'])) {
+				$redirect_to = $this->session->data['redirect'];
+				unset($this->session->data['redirect']);
+			} else {
+				$redirect_to = $this->router->link('common/home');
+			}
+			$this->redirect($redirect_to);
 		}
 
 		$this->document->setTitle('Log In');
@@ -84,6 +90,12 @@ class UserLogin extends Controller {
 				$this->session->data['error'] = 'Account has been locked out';
 			} else {
 				var_dump('no idea how we`ve got here');die();
+			}
+
+			if (isset($this->session->data['redirect'])) {
+				$redirect_to = $this->session->data['redirect'];
+				unset($this->session->data['redirect']);
+				$this->redirect($redirect_to);
 			}
 		} else {
 			// Pass errors back
