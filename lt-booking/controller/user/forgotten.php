@@ -30,9 +30,9 @@ class UserForgotten extends Controller {
 	private $errors = array();
 
 	public function index() {
-		// If already logged in then send back to home page
+		// If already logged in then send to the account page
 		if ($this->user->isLogged()) {
-			$this->redirect($this->router->link('common/home'));
+			$this->redirect($this->router->link('user/account'));
 		}
 
 		$this->document->setTitle('Forgotten Password');
