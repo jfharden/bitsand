@@ -18,8 +18,10 @@ html {
  */
 body {
 	margin: 0;
-	font-size: 0.8125rem;
-	line-height: 1.25rem;
+	/*font-size: 0.8125rem;
+	line-height: 1.25rem;*/
+	font-size: 1rem;
+	line-height: 1.45rem;
 }
 
 html,
