@@ -161,7 +161,7 @@ input.button:hover, a.button:hover, button.button:hover {
 	left: 25%;
 	margin-top: 1rem;
 	border-radius: 4px 4px;
-	padding: 1rem;
+	padding: 1rem 2rem;
 	color: rgb(250, 250, 250);
 	font-size: 1rem;
 	text-align: center;
