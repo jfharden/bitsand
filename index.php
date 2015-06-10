@@ -40,14 +40,14 @@ Config::setVal('git_repository', 'https://github.com/PeteAUK/bitsand/');
 Config::setVal('display_errors', true);
 Config::setVal('error_handler', 'Tracy');
 
-Config::setVal('db_driver',   'MySQLi');
-Config::setVal('db_host',     'localhost');
-Config::setVal('db_user',     'root');
-Config::setVal('db_password', 'password');
-Config::setVal('db_database', 'ba');
-Config::setVal('db_prefix',   'ba');
-Config::setVal('salt',        'salt');
-Config::setVal('login_tries', 3);
+Config::setVal('db_driver',           'MySQLi');
+Config::setVal('db_host',             'localhost');
+Config::setVal('db_user',             'root');
+Config::setVal('db_password',         'password');
+Config::setVal('db_database',         'ba');
+Config::setVal('db_prefix',           'ba');
+Config::setVal('salt',                'salt');
+Config::setVal('login_tries',         3);
 Config::setVal('site_name',           'Bitsand'); // DB
 Config::setVal('site_title',          'BA TEST'); // DB
 Config::setVal('mail_protocol',       'mail');    // Can be mail or smtp
