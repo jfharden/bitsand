@@ -287,3 +287,12 @@ label:hover {
 		width: 49%;
 	}
 }
+@media (max-width: 450px) {
+	#content.user.account .row {
+		font-size: 1rem;
+	}
+	.block .icon {
+		margin-top: 0px;
+		margin-bottom: 0px;
+	}
+}
