@@ -51,12 +51,12 @@ class UserUser extends Model {
 		$user_id = (int)$user_query->row['plPlayerID'];
 
 		// Calculate the encrypted password, with either the current or previous salt
-		$encrypted_password = $this->encryptPassword($password, (int)$user_query->row['plOldSalt']);
+		$encrypted_password = $this->_encryptPassword($password, (int)$user_query->row['plOldSalt']);
 
 		// If not logging on as an admin or the password doesn't match, fail
 		if (!$override && $encrypted_password !== $user_query->row['plPassword']) {
 			// We need to record a login attempt
-			return $this->registerIncorrect($user_id, $user_query->row['plLoginCounter'], $user_query->row['plPassword'] == self::LOCKED_USER);
+			return $this->_registerIncorrect($user_id, $user_query->row['plLoginCounter'], $user_query->row['plPassword'] == self::LOCKED_USER);
 		}
 
 		// If we're here, then we're legitimately meant to be!
@@ -67,7 +67,7 @@ class UserUser extends Model {
 			if ((int)$user_query->row['plOldSalt'] == 0) {
 				$this->db->query("UPDATE " . DB_PREFIX . "players SET plLastLogin = NOW(), plLoginCounter = '0' WHERE plPlayerID = '" . $user_id . "'");
 			} else {
-				$new_password = $this->encryptPassword($password);
+				$new_password = $this->_encryptPassword($password);
 				$this->db->query("UPDATE " . DB_PREFIX . "players SET plLastLogin = NOW(), plLoginCounter = '0', plPassword = '" . $this->db->escape($new_password) . "', plOldSalt = '0' WHERE plPlayerID = '" . $user_id . "'");
 			}
 
@@ -136,7 +136,7 @@ class UserUser extends Model {
 	 * @param boolean $is_locked
 	 * @return integer
 	 */
-	private function registerIncorrect($user_id, $current_incorrect, $is_locked = false) {
+	private function _registerIncorrect($user_id, $current_incorrect, $is_locked = false) {
 		$lock_after = (int)$this->config->get('login_tries');
 
 		// If lock is set to zero, then never lock
@@ -159,7 +159,7 @@ class UserUser extends Model {
 		}
 	}
 
-	private function encryptPassword($password, $old_salt = false) {
+	private function _encryptPassword($password, $old_salt = false) {
 		if (!$old_salt) {
 			return sha1($password . $this->config->get('salt'));
 		} else {
