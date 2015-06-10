@@ -25,7 +25,7 @@
 <body>
   <header id="login-header">
     <div class="content">
-      <h1><?php $_($page_title); ?></h1>
+      <strong><?php $_($title); ?></strong>
       <div class="login">
 <?php if ($show_login) : ?>
         <form action="<?php echo $login; ?>" method="post">
@@ -67,3 +67,6 @@
 
 <?php endif; ?>
   <div class="content <?php echo $route; ?>" id="content">
+    <header>
+      <h1><?php $_($page_title); ?></h1>
+    </header>
