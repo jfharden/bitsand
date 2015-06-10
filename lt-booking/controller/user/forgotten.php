@@ -51,8 +51,8 @@ class UserForgotten extends Controller {
 			$this->data['email'] = '';
 		}
 
-
 		$this->data['forgotten'] = $this->router->link('user/forgotten');
+		$this->data['register'] = $this->router->link('user/register');
 
 		$this->children = array(
 			'common/header',
