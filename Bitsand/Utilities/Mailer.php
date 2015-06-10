@@ -3,7 +3,15 @@
  || Bitsand - an online booking system for Live Role Play events
  ||
  || File Bitsand/Utilities/Mailer.php
- ||    Summary: Allows us to send e-mails
+ ||    Summary: Provides a complete e-mail solution for Bitsand.
+ ||             It may seem a little counter-productive to have a bespoke
+ ||             mailing solution for Bitsand when there are many alternatives
+ ||             available (such as Swiftmail).  This class provides a simple
+ ||             templating system that allows variable replacement (similar to
+ ||             Smarty with it's curled brackets) in addition to sending a mail
+ ||             using PHP's mail() function and an SMTP connection.  This
+ ||             routine has been proven over many thousand mails and minimises
+ ||             the number of anti-spam errors.
  ||
  ||     Author: Pete Allison
  ||  Copyright: (C) 2006 - 2015 The Bitsand Project
@@ -28,15 +36,48 @@ namespace Bitsand\Utilities;
 use Bitsand\Registry;
 
 class Mailer {
+	const HTML = 'html';
+
+	const PLAIN_TEXT = 'plain';
+
+	const NL = "\n";
+
+	const CR = "\r\n";
+
 	/**
-	 * @var string Holds the name of the template file to use
+	 * @var string Holds the name of the HTML template file to use
 	 */
-	private $template;
+	private $_html_file;
+
+	/**
+	 * @var string Holds the name of the plain text template file to use
+	 */
+	private $_plain_text_file;
+
+	/**
+	 * @var string Holds the contents of the HTML template to use
+	 */
+	private $_html;
+
+	/**
+	 * @var string Holds the contents of the plain text template to use
+	 */
+	private $_plain_text;
+
+	/**
+	 * @var string Holds the subject heading
+	 */
+	private $_subject;
+
+	/**
+	 * @var string Holds the sender
+	 */
+	private $_from;
 
 	/**
 	 * @var string Holds the tagging pattern in use within the template
 	 */
-	private $tag_pattern = '/{(\w+)}/';
+	private $_tag_pattern = '/{(\w+)}/';
 
 	/**
 	 * Holds all of the variables to pass to the mail template
@@ -50,46 +91,392 @@ class Mailer {
 	public function __construct() {
 		$this->data['year'] = date('Y');
 		$this->data['month'] = date('F');
+
+		$this->config = Registry::get('config');
+	}
+
+
+	/**
+	 * Sets the subject line
+	 * @param string $subject
+	 */
+	public function setSubject($subject) {
+		$this->_subject = $subject;
+	}
+
+	/**
+	 * Sets the e-mail of the sender
+	 * @param string $from
+	 */
+	public function setFrom($from) {
+		$this->_from = $from;
+	}
+
+	/**
+	 * Sets the textual name of the sender
+	 * @param string $sender
+	 */
+	public function setSender($sender) {
+		$this->_sender = $sender;
 	}
 
 	/**
 	 * All e-mail templates should live within the view folder in a directory
 	 * called 'email'.
 	 *
-	 * @param string $template
+	 * @param string $template The template file to use
+	 * @param string $type
 	 */
-	public function setMail($mail_route) {
-		if (strpos($mail_route, '/') === false) {
-			$mail_route = 'email/' . $mail_route;
+	public function setMail($template = '', $type = self::HTML) {
+		if (strpos($template, '/') === false) {
+			$template = 'email/' . $template;
 		}
 
-		if (file_exists(($template = str_replace('/', DIRECTORY_SEPARATOR, $this->config->getAppPath() . 'view/' . $this->config->getVal('theme') . '/' . $mail_route . '.html')))) {
-			$this->template = $template;
+		if (file_exists(($file = str_replace('/', DIRECTORY_SEPARATOR, $this->config->getAppPath() . 'view/' . $this->config->getVal('theme') . '/' . $template . '.html')))) {
+			$template_file = $file;
 		} else {
 			// Look in the default theme folder if we don't have one
-			if (file_exists(($template = str_replace('/', DIRECTORY_SEPARATOR , $this->config->getAppPath() . 'view/default/' . $mail_route . '.html')))) {
-				$this->template = $template;
+			if (file_exists(($file = str_replace('/', DIRECTORY_SEPARATOR , $this->config->getAppPath() . 'view/default/' . $template . '.html')))) {
+				$template_file = $file;
+			}
+		}
+
+		if (isset($template_file)) {
+			if ($type == self::HTML) {
+				$this->_html_file = $template_file;
+			} elseif ($type == self::PLAIN_TEXT) {
+				$this->_plain_text_file = $template_file;
 			}
 		}
 	}
 
-	public function render() {
-		if ($this->template) {
-			$template = file_get_contents($this->template);
-
-			$template = $this->_parseTemplate($template);
-
-			$template = $this->_htmlwrap($template, 76);
-
-			echo $template;
-		} else {
-			throw new \Bitsand\Exceptions\TemplateNotFoundException('Template file not found: ' . $this->template);
+	/**
+	 * Processes a template.  Used internally, but left as
+	 * a public method as you never know if it might be useful.
+	 *
+	 * @param string $type Indicates what template to use
+	 * @return string
+	 */
+	public function render($type = self::HTML) {
+		if ($type === self::HTML) {
+			$content = $this->_html;
+			$file = $this->_html_file;
+		} elseif ($type === self::PLAIN_TEXT) {
+			$content = $this->_plain_text;
+			$file = $this->_plain_text_file;
 		}
+		if (empty($content) && !empty($file)) {
+			if (file_exists($file)) {
+				$content = file_get_contents($file);
+			} else {
+				throw new \Bitsand\Exceptions\TemplateNotFoundException('Template file not found: ' . $file);
+			}
+		}
+
+		if (!empty($content)) {
+			$parsed_content = $this->_parseTemplate($content);
+
+			if ($type === self::HTML) {
+				$parsed_content = $this->_htmlwrap($parsed_content, 76);
+				// This ensures that we don't need to load the file again
+				$this->_html = $content;
+			} else {
+				$parsed_content = wordwrap($parsed_content, 76);
+				// This ensures that we don't need to load the file again
+				$this->_plain_text = $content;
+			}
+		} else {
+			$parsed_content = '';
+		}
+
+		return $parsed_content;
 	}
 
-	private function _parseTemplate($template) {
+	/**
+	 * Composes and sends the e-mail to the recipients
+	 *
+	 * @param string $recipient
+	 * @return boolean
+	 */
+	public function sendTo($recipient, $extra_mail_parameters = '') {
+		if (!$this->_validateData()) {
+			throw new \Bitsand\Exceptions\IncompleteMailerException('Mailer does not have all fields configured');
+		}
+
+		$start = microtime(true);
+
+		$html = $this->render(self::HTML);
+		$plain_text = $this->render(self::PLAIN_TEXT);
+		$subject = $this->_parseTemplate($this->_subject, $this->data);
+
+		echo 'Render time: ' , (microtime(true) - $start) * 1000 , '<br/>';
+
+		$boundary = '----=_NextPart_' . md5(time());
+
+		$header = 'MIME-Version: 1.0' . self::NL;
+
+		if ($this->config->get('mail_protocol') != 'mail') {
+			$header .= 'To: ' . $recipient . self::NL;
+			$header .= 'Subject: ' . $subject . self::NL;
+		}
+
+		$header .= 'Date: ' . date('D, d M Y H:i:s O') . self::NL;
+		$header .= 'From: ' . $this->_sender . ' <' . $this->_from . '>' . self::NL;
+		$header .= 'Sender: =?UTF-8?B?' . base64_encode($this->_sender) . '?= <' . $this->_from . '>' . self::NL;
+		$header .= 'Return-Path: ' . $this->_from . self::NL;
+		$header .= 'X-Mailer: PHP/' . phpversion() . self::NL;
+		$header .= 'Content-Type: multipart/alternative; boundary="' . $boundary . '"' . self::NL . self::NL;
+
+		if (empty($html)) {
+			$message  = '--' . $boundary . self::NL;
+			$message .= 'Content-Type: text/plain; charset="utf-8"' . self::NL;
+			$message .= 'Content-Transfer-Encoding: 8bit' . self::NL . self::NL;
+			$message .= $plain_text . self::NL;
+		} else {
+			$message  = '--' . $boundary . self::NL;
+			$message .= 'Content-Type: multipart/alternative; boundary="' . $boundary . '_alt"' . self::NL . self::NL;
+			$message .= '--' . $boundary . '_alt' . self::NL;
+			$message .= 'Content-Type: text/plain; charset="utf-8"' . self::NL;
+			$message .= 'Content-Transfer-Encoding: 8bit' . self::NL . self::NL;
+
+			if (!empty($plain_text)) {
+				$message .= $plain_text . self::NL . self::NL;
+			} else {
+				$message .= 'This is a HTML e-mail and your e-mail client software does not support HTML e-mail' . self::NL . self::NL;
+			}
+
+			$message .= '--' . $boundary . '_alt' . self::NL;
+			$message .= 'Content-Type: text/html; charset="utf-8"' . self::NL;
+			$message .= 'Content-Transfer-Encoding: 8bit' . self::NL . self::NL;
+			$message .= $html . self::NL . self::NL;
+			$message .= '--' . $boundary . '_alt--' . self::NL;
+		}
+
+		// Attachment mechanism would go here
+
+		$message .= '--' . $boundary . '--' . self::NL;
+
+		echo 'Compose time: ' , (microtime(true) - $start) * 1000 , '<br/>';
+
+		if ($this->config->get('mail_protocol') == 'mail') {
+			ini_set('sendmail_from', $this->_from);
+			if (empty($extra_mail_parameters)) {
+				mail($recipient, '=?UTF-8?B?' . base64_encode($subject) . '?=', $message, $header);
+			} else {
+				mail($recipient, '=?UTF-8?B?' . base64_encode($subject) . '?=', $message, $header, $extra_mail_parameters);
+			}
+		} elseif ($this->config->get('mail_protocol') == 'smtp') {
+			$error_no = 0;
+			$error_string = '';
+
+			$handle = fsockopen($this->config->get('mail_hostname'), (int)$this->config->get('mail_port'), $error_no, $error_string, (float)$this->config->get('mail_timeout'));
+
+			if (!$handle) {
+				Registry::get('log')->write('[SMTP Error] ' . $error_string . ' (' . $error_no . ')', __FILE__, __LINE__);
+				return false;
+			}
+
+			if (substr(PHP_OS, 0, 3) != 'WIN') {
+				socket_set_timeout($handle, $this->config->get('mail_timeout'), 0);
+			}
+
+			while ($line = fgets($handle, 515)) {
+				if (substr($line, 3, 1) == ' ') {
+					break;
+				}
+			}
+
+			if (substr($this->config->get('mail_hostname'), 0, 3) == 'tls') {
+				fputs($handle, 'STARTTTLS' . self::CR);
+
+				$reply = '';
+				while ($line = fgets($handle, 515)) {
+					$reply .= $line;
+					if (substr($line, 3, 1) == ' ') {
+						break;
+					}
+				}
+
+				if (substr($reply, 0, 3) != '220') {
+					Registry::get('log')->write('[SMTP Error] STARTTLS not accepted from server', __FILE__, __LINE__);
+					return false;
+				}
+			}
+
+			fputs($handle, 'EHLO ' . getenv('SERVER_NAME') . self::CR);
+
+			$reply = '';
+			while ($line = fgets($handle, 515)) {
+				$reply .= $line;
+				if (substr($line, 3, 1) == ' ') {
+					break;
+				}
+			}
+
+			if (substr($reply, 0, 3) != '250') {
+				Registry::get('log')->write('[SMTP Error] EHLO not accepted from server', __FILE__, __LINE__);
+				return false;
+			}
+
+			if (!empty($this->config->get('mail_username')) && !empty($this->config->get('mail_password'))) {
+				fputs($handle, 'AUTH LOGIN' . self::CR);
+
+				$reply = '';
+				while ($line = fgets($handle, 515)) {
+					$reply .= $line;
+					if (substr($line, 3, 1) == ' ') {
+						break;
+					}
+				}
+
+				if (substr($reply, 0, 3) != '334') {
+					Registry::get('log')->write('[SMTP Error] AUTH LOGIN not accepted from server', __FILE__, __LINE__);
+					return false;
+				}
+
+				//
+				fputs($handle, base64_encode($this->config->get('mail_username')) . self::CR);
+
+				$reply = '';
+				while ($line = fgets($handle, 515)) {
+					$reply .= $line;
+					if (substr($line, 3, 1) == ' ') {
+						break;
+					}
+				}
+
+				if (substr($reply, 0, 3) != '334') {
+					Registry::get('log')->write('[SMTP Error] Username "' . $this->config->get('mail_username') . '" not accepted from server', __FILE__, __LINE__);
+					return false;
+				}
+
+				//
+				fputs($handle, base64_encode($this->config->get('mail_password')) . self::CR);
+
+				$reply = '';
+				while ($line = fgets($handle, 515)) {
+					$reply .= $line;
+					if (substr($line, 3, 1) == ' ') {
+						break;
+					}
+				}
+
+				if (substr($reply, 0, 3) != '235') {
+					Registry::get('log')->write('[SMTP Error] Password not accepted from server', __FILE__, __LINE__);
+					return false;
+				}
+			}
+
+			fputs($handle, 'MAIL FROM: <' . $this->_from . '>' . ($this->config->get('mail_verp') ? 'XVERP' : '') . self::CR);
+
+			$reply = '';
+			while ($line = fgets($handle, 515)) {
+				$reply .= $line;
+				if (substr($line, 3, 1) == ' ') {
+					break;
+				}
+			}
+
+			if (substr($reply, 0, 3) != '250') {
+				Registry::get('log')->write('[SMTP Error] MAIL FROM "' . $this->_from . '" not accepted from server', __FILE__, __LINE__);
+				return false;
+			}
+
+			//
+			fputs($handle, 'RCPT TO: <' . $recipient. '>' . self::CR);
+
+			$reply = '';
+			while ($line = fgets($handle, 515)) {
+				$reply .= $line;
+				if (substr($line, 3, 1) == ' ') {
+					break;
+				}
+			}
+
+			if (substr($reply, 0, 3) != '250' && substr($reply, 0, 3) != '251') {
+				Registry::get('log')->write('[SMTP Error] RCPT TO "' . $recipient . '" not accepted from server', __FILE__, __LINE__);
+				return false;
+			}
+
+			//
+			fputs($handle, 'DATA' . self::CR);
+
+			$reply = '';
+			while ($line = fgets($handle, 515)) {
+				$reply .= $line;
+				if (substr($line, 3, 1) == ' ') {
+					break;
+				}
+			}
+
+			if (substr($reply, 0, 3) != '354') {
+				Registry::get('log')->write('[SMTP Error] DATA not accepted from server', __FILE__, __LINE__);
+				return false;
+			}
+
+			// According to rfc 821 we shouldn't send more than 1000 characters including the CR
+			$message = str_replace("\r\n", "\n", $header . $message);
+			$message = str_replace("\r", "\n", $message);
+			$lines = explode("\n", $message);
+
+			foreach ($lines as $line) {
+				$results = str_split($line, 998);
+
+				foreach ($results as $result) {
+					if (substr(PHP_OS, 0, 3) != 'WIN') {
+						fputs($handle, $result . self::CR);
+					} else {
+						fputs($handle, str_replace("\n", "\r\n", $result) . self::CR);
+					}
+				}
+			}
+
+			fputs($handle, '.' . self::CR);
+
+			$reply = '';
+			while ($line = fgets($handle, 515)) {
+				$reply .= $line;
+				if (substr($line, 3, 1) == ' ') {
+					break;
+				}
+			}
+
+			if (substr($reply, 0, 3) != '250') {
+				Registry::get('log')->write('[SMTP Error] Message not accepted from server', __FILE__, __LINE__);
+				return false;
+			}
+
+			//
+			fputs($handle, 'QUIT' . self::CR);
+
+			$reply = '';
+			while ($line = fgets($handle, 515)) {
+				$reply .= $line;
+				if (substr($line, 3, 1) == ' ') {
+					break;
+				}
+			}
+
+			if (substr($reply, 0, 3) != '221') {
+				Registry::get('log')->write('[SMTP Error] QUIT not accepted from server', __FILE__, __LINE__);
+				return false;
+			}
+
+			fclose($handle);
+		}
+
+		echo 'Total time: ' , (microtime(true) - $start) * 1000 , '<br/>';
+	}
+
+	/**
+	 * Enumerates the passed content for smarty style tags and merges the
+	 * necessary variables in.  Also removes any HTML comments if they exist.
+	 * @param string $content
+	 * @return string
+	 */
+	private function _parseTemplate($content) {
 		// Yoink out all of the html encoding
-		$template = html_entity_decode($template, ENT_QUOTES, 'UTF-8');
+		$content = html_entity_decode($content, ENT_QUOTES, 'UTF-8');
 
 		// Strip out all of the comments
 		// Strip out all comments
@@ -99,10 +486,10 @@ class Mailer {
 			'#/\*.*?\*/#s',        // Any /* */ blocks
 			'#(?<!:)//.*#'         // Any // comments
 		);
-		$template = preg_replace($comment_regex, null, $template);
+		$content = preg_replace($comment_regex, null, $content);
 
 		// Handle any if queries, these check for the existance of a variable and if it exists
-		while (preg_match('/{if:(.*?)}(.*?){\/if:.*}/i', $template, $ifs)) {
+		while (preg_match('/{if:(.*?)}(.*?){\/if:.*}/simxU', $content, $ifs)) {
 			$replace = '';
 
 			$value = isset($this->data[$ifs[1]]) ? $this->data[$ifs[1]] : null;
@@ -119,12 +506,11 @@ class Mailer {
 				}
 			}
 
-			$template = str_replace($ifs[0], $replace, $template);
+			$content = str_replace($ifs[0], $replace, $content);
 		}
 
-
 		// Handle any loops in the format {loop:variable}
-		preg_match_all('/{loop:(.*?)}(.*?){\/loop}/i', $template, $loops);
+		preg_match_all('/{loop:(.*?)}(.*?){\/loop}/i', $content, $loops);
 
 		if (isset($loops[1]) && !empty($loops[1])) {
 			foreach ($loops[1] as $loop_index => $loop_variable) {
@@ -134,15 +520,15 @@ class Mailer {
 						$loop_data .= $this->_replaceTags($loops[2][$loop_index], $data);
 					}
 				}
-				$template = str_replace('{loop:' . $loop_variable . '}' . $loops[2][$loop_index] . '{/loop}', $loop_data, $template);
+				$content = str_replace('{loop:' . $loop_variable . '}' . $loops[2][$loop_index] . '{/loop}', $loop_data, $content);
 			}
 		}
 
 		// Now handle the main transplants
-		$template = $this->_replaceTags($template, $this->data);
+		$content = $this->_replaceTags($content, $this->data);
 
 		// We now need to correctly html-ify the template
-		return $this->_htmlentities($template);
+		return $this->_htmlentities($content);
 	}
 
 	/**
@@ -154,7 +540,7 @@ class Mailer {
 	private function _replaceTags($text, $data) {
 		$this->_cdata = $data;
 		$markup = preg_replace_callback(
-			$this->tag_pattern, array(&$this, '_getDataVariable'), $text
+			$this->_tag_pattern, array(&$this, '_getDataVariable'), $text
 		);
 
 		unset($this->_cdata);
@@ -268,5 +654,31 @@ class Mailer {
 			$current_line .= $letter;
 		}
 		return $wrapped . $current_line;
+	}
+
+	/**
+	 * Checks that we've set all of the fields
+	 * @return boolean
+	 */
+	private function _validateData() {
+		$errors = array();
+
+		if (empty($this->_from)) {
+			$errors['from'] = true;
+		}
+
+		if (empty($this->_sender)) {
+			$errors['sender'] = true;
+		}
+
+		if (empty($this->subject)) {
+			$errors['subject'] = true;
+		}
+
+		if (empty($this->_html) && empty($this->_html_file) && empty($this->_plain_text) && empty($this->_plain_text_file)) {
+			$errors['message'] = true;
+		}
+
+		return empty($errors);
 	}
 }

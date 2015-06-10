@@ -48,6 +48,18 @@ Config::setVal('db_database', 'ba');
 Config::setVal('db_prefix',   'ba');
 Config::setVal('salt',        'salt');
 Config::setVal('login_tries', 3);
+Config::setVal('site_name',           'Bitsand'); // DB
+Config::setVal('site_title',          'BA TEST'); // DB
+Config::setVal('mail_protocol',       'mail');    // Can be mail or smtp
+Config::setVal('mail_hostname',       '');
+Config::setVal('mail_username',       '');
+Config::setVal('mail_password',       '');
+Config::setVal('mail_port',           25);
+Config::setVal('mail_timeout',        5);
+Config::setVal('event_contact_email', 'webmonkeypete@googlemail.com'); // DB
+Config::setVal('event_contact',       'wmp');                          // DB
+Config::setVal('tech_contact_email',  'pete@pa-sy.com');               // DB
+Config::setVal('tech_contact',        'Pete');                         // DB
 
 // Any customisations can occur here
 if (file_exists(Config::getAppPath() . 'custom.php')) {
