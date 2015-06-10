@@ -671,7 +671,7 @@ class Mailer {
 			$errors['sender'] = true;
 		}
 
-		if (empty($this->subject)) {
+		if (empty($this->_subject)) {
 			$errors['subject'] = true;
 		}
 
