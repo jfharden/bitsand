@@ -42,6 +42,11 @@ class Router {
 	protected $current_route = '';
 
 	/**
+	 * @var string $query_string The arguments for the current url
+	 */
+	protected $query_string = '';
+
+	/**
 	 * @var array $routes Holds all of the routes defined
 	 */
 	protected $routes = array();
@@ -114,7 +119,7 @@ class Router {
 		}
 
 		if ($matched && $as_action) {
-			return new ActionRoute($matched['controller']);
+			return new ActionRoute($matched['controller'], $matched['params']);
 		} elseif ($matched) {
 			return $matched['controller'];
 		} else {
@@ -130,11 +135,18 @@ class Router {
 	 * Retrieves the current route from either the _route_ or the raw url
 	 * @return string
 	 */
-	private function getCurrentRoute() {
+	private function getCurrentRoute($append_arguments = false) {
 		if (empty($this->current_route)) {
+			$query_string = '';
+
 			if (isset($_GET['_route_'])) {
 				// Use the passed route if we can, it's a lot less processing
 				$request_url = htmlentities($_GET['_route_']);
+
+				// Strip query string (?a=b) from Request Url
+				if (($strpos = strpos($_SERVER['REQUEST_URI'], '?')) !== false) {
+					$query_string = substr($_SERVER['REQUEST_URI'], $strpos);
+				}
 			} else {
 				// Set Request Url if it isn't passed as parameter
 				$request_url = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '/';
@@ -145,12 +157,18 @@ class Router {
 				// Strip query string (?a=b) from Request Url
 				if (($strpos = strpos($request_url, '?')) !== false) {
 					$request_url = substr($request_url, 0, $strpos);
+					$query_string = substr($request_url, $strpos);
 				}
 			}
 			$this->current_route = $request_url;
+			$this->query_string = $query_string;
 		}
 
-		return $this->current_route;
+		if (!$append_arguments) {
+			return $this->current_route;
+		} else {
+			return $this->current_route . $this->query_string;
+		}
 	}
 
 	/**
@@ -218,7 +236,8 @@ class Router {
 		if ($route != '/') {
 			$route = ltrim($route, '/');
 		}
-		$this->routes[] = array($method, $route, $controller, $name);
+		// The route needs any question marks escaped with a slash, else it'll stop it being matched
+		$this->routes[] = array($method, str_replace('?','\?', $route), $controller, $name);
 		if ($name) {
 			if (isset($this->named_routes[$name])) {
 				throw new \Exception("Can not redeclare route '{$name}'");
@@ -281,7 +300,7 @@ class Router {
 		$match = false;
 
 		if ($request_url === null) {
-			$request_url = $this->getCurrentRoute();
+			$request_url = $this->getCurrentRoute(true);
 		}
 
 		if (empty($request_url)) {
@@ -369,7 +388,7 @@ class Router {
 	 * @return string
 	 */
 	private function compileRoute($route) {
-		if (preg_match_all('`(/|\.|)\[([^:\]]*+)(?::([^:\]]*+))?\](\?|)`', $route, $matches, PREG_SET_ORDER)) {
+		if (preg_match_all('#(/|\.|)\[([^:\]]*+)(?::([^:\]]*+))?\](\?|)#', $route, $matches, PREG_SET_ORDER)) {
 			$match_types = $this->match_types;
 			foreach ($matches as $match) {
 				list($block, $pre, $type, $param, $optional) = $match;
@@ -390,6 +409,6 @@ class Router {
 				$route = str_replace($block, $pattern, $route);
 			}
 		}
-		return "`^$route$`u";
+		return "#^$route$#u";
 	}
 }
