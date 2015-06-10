@@ -141,6 +141,35 @@ class UserUser extends Model {
 	}
 
 	/**
+	 * Changes the password for the passed user to a new one
+	 *
+	 * @param integer $user_id
+	 * @param string $new_password
+	 * @return integer
+	 * @todo Send an e-mail to the user to inform them a new password has been
+	 * set
+	 */
+	public function changePassword($user_id, $new_password) {
+		$encrypted_password = $this->_encryptPassword($new_password, false);
+
+		$user_query = $this->db->query("UPDATE " . DB_PREFIX . "players SET plPassword = '" . $this->db->escape($encrypted_password) . "', plOldSalt = '0', plLoginCounter = '0' WHERE plPlayerID = '" . (int)$user_id . "'");
+
+		$rows_changed = $this->db->countAffected();
+
+		/*
+		 * If rows_changed is zero, then either something went wrong, or the
+		 * user is changing the password to the currently set password. Either
+		 * way we need to validate this.
+		 */
+		if ($rows_changed == 0) {
+			$verify_query = $this->db->query("SELECT COUNT(plPlayerID) AS `rows_affected` FROM " . DB_PREFIX . "players WHERE plPlayerID = '" . (int)$user_id . "' AND plPassword = '" . $this->db->escape($encrypted_password) . "'");
+			$rows_changed = (int)$verify_query->row['rows_affected'];
+		}
+
+		return $rows_changed;
+	}
+
+	/**
 	 * Checks to see if the e-mail exists within the database
 	 * @param string $email
 	 * @return boolean
