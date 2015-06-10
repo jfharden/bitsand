@@ -65,29 +65,44 @@ class UserForgotten extends Controller {
 	}
 
 	/**
-	 * Handler for sending a link to reset the password
+	 * Handler for sending a link to reset the password.
 	 */
 	public function sendLink() {
 		if ($this->request->method() === 'POST' && !$this->user->isLogged() && $this->validateEmail()) {
 			$this->load->model('user/user');
 
-			$mailer = new Mailer;
-			$mailer->setMail('forgotten');
+			$email = strtolower(trim($this->request->post['email']));
 
-			$mailer->data['email'] = strtolower($this->request->post['email']);
+			$user = $this->model_user_user->getBasicDetails($email, true);
 
-			$this->load->model('user/user');
-			$user = $this->model_user_user->getBasicDetails($mailer->data['email']);
-			var_dump($user);
+			/*
+			 * Check that the user exists.  If the user doesn't exist then
+			 * still display the same message, this ensures that the forgotten
+			 * password page can't be used to validate that an e-mail exists
+			 * which will prevent potential hacking against that e-mail
+			 * address.
+			 */
+			if (!empty($user)) {
+				$mailer = new Mailer;
+				$mailer->setMail('forgotten');
+				$mailer->setMail('forgotten-plain', Mailer::PLAIN_TEXT);
 
-			$mailer->data['firstname'] = $user['firstname'];
-			$mailer->data['url'] = $this->router->link('common/home', null, \Bitsand\NONSSL, true);
-			$mailer->data['reset_link'] = $this->router->link('user/forgotten/setnew', null, \Bitsand\SSL, true);
+				$mailer->data['email'] = strtolower($email);
 
-			$mailer->render();
-			die();
+				$mailer->data['firstname'] = $user['firstname'];
+				$mailer->data['url'] = $this->router->link('common/home', null, \Bitsand\NONSSL, true);
+				$mailer->data['reset_link'] = $this->router->link('user/reset/forgotten', array('token'=>$user['reset_token']), \Bitsand\SSL, true);
+				$mailer->data['site_name'] = $this->config->get('site_name');
 
-			$this->session->data['success'] = 'An e-mail has been sent, please check your inbox and follow the instructions.';
+				// @todo - This needs to be setable within the backend
+				$mailer->setSubject('Password Reset for {site_name}');
+				$mailer->setFrom($this->config->get('event_contact_email'));
+				$mailer->setSender($this->config->get('event_contact'));
+
+				$mailer->sendTo($email);
+			}
+
+			$this->session->data['success'] = 'A password request email has been sent to the address you provided. If an email doesn\'t arrive shortly, please check your spam folder. If no email arrives, then no account exists with the email you provided.';
 
 			$this->redirect($this->router->link('user/login'), null, \Bitsand\SSL);
 		} else {
@@ -109,18 +124,13 @@ class UserForgotten extends Controller {
 
 	/**
 	 * Checks that the person has entered something legitimate
-	 * @return type
+	 * @return boolean
 	 */
 	private function validateEmail() {
 		if (!isset($this->request->post['email'])) {
 			$this->errors['error_email'] = 'No e-mail';
 		} elseif (!$this->user->isValidEmail($this->request->post['email'])) {
 			$this->errors['error_email'] = 'E-mail appears to be invalid';
-		} else {
-			$this->load->model('user/user');
-			if (!$this->model_user_user->emailExists($this->request->post['email'])) {
-				$this->errors['error_email'] = 'E-mail does not exist';
-			}
 		}
 
 		return empty($this->errors);
