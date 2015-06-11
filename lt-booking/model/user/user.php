@@ -37,7 +37,7 @@ class UserUser extends Model {
 		$email = strtolower(trim($email));
 
 		// Pull the whole user from the database, sort by login in case of duplicate registrations
-		$user_query = $this->db->query("SELECT plPlayerID, plPassword, plOldSalt, plLoginCounter FROM " . DB_PREFIX . "players WHERE LOWER(plEmail) = '" . $this->db->escape($email) . "' ORDER BY plLastLogin DESC");
+		$user_query = $this->db->query("SELECT plPlayerID, plPassword, plOldSalt, plLoginCounter, plAccess, plFirstName, plSurname FROM " . DB_PREFIX . "players WHERE LOWER(plEmail) = '" . $this->db->escape($email) . "' ORDER BY plLastLogin DESC");
 
 		if ($user_query->num_rows == 0) {
 			// No e-mails match so just say "incorrect"
@@ -80,12 +80,11 @@ class UserUser extends Model {
 
 			$this->model_user_session->register($user_id);
 
-
 			$this->user->logIn(array(
 				'user_id' => $user_id,
-				'is_admin' => $player['plAccess'] == 'admin',
-				'firstname' => $player['plFirstName'],
-				'lastname' => $player['plSurname'],
+				'is_admin' => $user['plAccess'] == 'admin',
+				'firstname' => $user['plFirstName'],
+				'lastname' => $user['plSurname'],
 				'session_hash' => $this->model_user_session->getHash()
 			));
 
