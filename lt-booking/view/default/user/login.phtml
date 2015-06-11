@@ -13,7 +13,7 @@
     </div>
     <div class="row">
       <label for="password">Password:</label>
-      <input type="password" name="password" id="password" placeholder="Password" />
+      <input type="password" name="password" id="password" placeholder="Password" required="required" />
 <?php if (isset($error_password)) : ?>
       <span class="error"><?php $_($error_password); ?></span>
 <?php endif; ?>

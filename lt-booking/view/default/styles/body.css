@@ -84,7 +84,25 @@ label {
 label:hover {
 	color: rgb(43, 114, 187);
 }
-
+input {
+	background-repeat: no-repeat;
+	background-position: 98% 50%;
+}
+input:required {
+	background-image: url('../images/stop-red.png');
+}
+input[type="date"]:required {
+	padding-right: 1rem;
+}
+input:required:valid {
+	background-image: url('../images/stop-green.png');
+}
+input[type="text"]:not(:required), input[type="tel"]:not(:required), input[type="email"]:not(:required), input[type="password"]:not(:required) {
+	background-image: url('../images/stop-blue-50.png');
+}
+textarea {
+	padding: 0.25rem 0.45rem;
+}
 
 #login-header, #menu, #footer {
 	padding-top: 1rem;

@@ -30,8 +30,8 @@
 <?php if ($show_login) : ?>
         <form action="<?php echo $login; ?>" method="post">
           <label for="email">Log In:</label>
-          <input type="email" name="email" id="email" placeholder="Registered e-mail" value="" />
-          <input type="password" name="password" placeholder="Password" />
+          <input type="email" name="email" id="email" placeholder="Registered e-mail" value="" required="required" />
+          <input type="password" name="password" placeholder="Password" required="required" />
           <input type="submit" value="Log In" class="button" />
         </form>
         <a href="<?php $_($register); ?>" class="button">Register</a>
