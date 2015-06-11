@@ -36,6 +36,21 @@ class UserSession extends Model {
 	public function register($user_id) {
 		$this->session_hash = sha1(microtime() . $user_id . '-' . rand(1000,9999));
 
+		if (isset($_SERVER['HTTP_CLIENT_IP']) && !empty($_SERVER['HTTP_CLIENT_IP'])) {
+			$ip = $_SERVER['HTTP_CLIENT_IP'];
+		} elseif (isset($_SERVER['HTTP_X_FORWARDED_FOR']) && !empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+			$ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+		} elseif (isset($_SERVER['REMOTE_ADDR']) && !empty($_SERVER['REMOTE_ADDR'])) {
+			$ip = $_SERVER['REMOTE_ADDR'];
+		} else {
+			$ip = 'unknown';
+		}
+
+		// For IPv4 addresses, only store the first two bytes of data
+		if (preg_match('/([0-9]{1,3}\.[0-9]{1,3})/', $ip, $trimmed_ip)) {
+			$ip = $trimmed_ip[1];
+		}
+
 		// See if there is already an entry for the user
 		$session_query = $this->db->query("SELECT ssPlayerID FROM " . DB_PREFIX . "sessions WHERE ssPlayerID = '" . (int)$user_id . "'");
 
