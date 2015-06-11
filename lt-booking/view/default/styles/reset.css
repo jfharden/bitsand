@@ -23,13 +23,9 @@ body {
 	font-size: 1rem;
 	line-height: 1.45rem;
 }
-
+html { height: 100%; }
 html,
-body,
-#page {
-	height: 100%;
-	width: 100%;
-}
+body { width: 100%; }
 
 /* HTML5 display definitions
 	 ========================================================================== */

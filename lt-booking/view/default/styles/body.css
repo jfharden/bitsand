@@ -26,7 +26,8 @@ a:visited {
 	margin: 0px auto;
 }
 
-input[type="text"], input[type="email"], input[type="tel"], input[type="password"] {
+input[type="text"], input[type="email"], input[type="tel"], input[type="password"], input[type="date"],
+select {
 	border: 1px solid rgb(68, 68, 68);
 	padding: 3px 4px;
 }
@@ -177,8 +178,12 @@ textarea {
 }
 
 
-.fixed-form div.row {
+.fixed-form div.row,
+.advanced-form .row {
 	display: block;
+	margin-bottom: 0.75rem;
+}
+.advanced-form fieldset {
 	margin-bottom: 0.75rem;
 }
 .fixed-form label {
@@ -194,6 +199,41 @@ textarea {
 	display: block;
 }
 
+.advanced-form label {
+	display: block;
+	vertical-align: middle;
+}
+.advanced-form .row > label {
+	font-weight: 600;
+	margin-bottom: 0.2rem;
+}
+.advanced-form .double .field {
+	vertical-align: top;
+	display: inline-block;
+	width: 49%;
+}
+.advanced-form input[type="text"], .advanced-form input[type="tel"] {
+	width: 100%;
+	margin-bottom: 2px;
+}
+.advanced-form .double .field label {
+	font-size: 0.825rem;
+	color: rgb(104, 104, 104);
+}
+.advanced-form .block > label {
+	display: inline-block;
+	min-width: 20%;
+	width: auto;
+	vertical-align: top;
+}
+.advanced-form .block .group {
+	display: inline-block;
+	width: 78%;
+}
+
+.advanced-form input[name="postcode"], .advanced-form input[name="car_registration"] {
+	width: 25%;
+}
 
 #login-form {
 	width: 50%;
@@ -261,6 +301,8 @@ textarea {
 #content.user.change-email h1 { background-image: url('../images/icons/24/setting.png'); }
 #content.user.forgotten h1 { background-image: url('../images/icons/24/forgotten.png'); }
 #content.user.mailing h1 { background-image: url('../images/icons/24/mail.png'); }
+#content.user.personal h1 { background-image: url('../images/icons/24/note.png'); }
+#content.user.character h1 { background-image: url('../images/icons/24/wizard.png'); }
 
 .block .row {
 	font-size: 1.4rem;
@@ -272,7 +314,7 @@ textarea {
 	width: 4rem;
 	height: 4rem;
 	border-radius: 50% 50%;
-	margin: 1rem;
+	margin: 1rem 1rem 1rem 0rem;
 	background-position: 50% 50%;
 	background-repeat: no-repeat;
 }
@@ -303,6 +345,38 @@ textarea {
 }
 #content.user.mailing form .row input[type="checkbox"] + label {
 	padding-left: 1rem;
+}
+
+#ooc-form .medical {
+	margin-top: 0.25rem;
+}
+#ooc-form .medical label {
+	padding-right: 0.85rem;
+}
+#ooc-form .medical .button {
+	margin-left: 0px;
+	margin-bottom: 0.25rem;
+}
+#ooc-form .medical .group {
+	width: auto;
+}
+#ooc-form #medical-info, #ooc-form #marshal-number {
+	overflow: hidden;
+	-webkit-transition: max-height 0.25s ease-out;
+	-moz-transition: max-height 0.25s ease-out;
+	-ms-transition: max-height 0.25s ease-out;
+	-o-transition: max-height 0.25s ease-out;
+	transition: max-height 0.25s ease-out;
+}
+#ooc-form .visible, #ooc-form #marshal-number .visible {
+	max-height: 300px;
+}
+#ooc-form .hidden, #ooc-form #marshal-number .hidden {
+	max-height: 0px;
+}
+textarea[name="notes"] {
+	width: 100%;
+	max-width: 100%;
 }
 
 @media (min-width: 840px) {

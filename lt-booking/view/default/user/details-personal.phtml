@@ -1,0 +1,175 @@
+<?php echo $header; ?>
+
+<div id="ooc-form">
+  <form action="<?php $_($personal); ?>" method="post" enctype="multipart/form" class="advanced-form">
+    <fieldset class="row double">
+      <legend>Your name:</legend>
+      <div class="field">
+        <input type="text" name="firstname" id="firstname" placeholder="Your first name" value="" autocomplete="given-name" required="required" />
+        <label for="firstname">First name</label>
+      </div>
+      <div class="field">
+        <input type="text" name="lastname" id="lastname" placeholder="Your last name" value="" autocomplete="family-name" required="required" />
+        <label for="lastname">Last name</label>
+      </div>
+    </fieldset>
+
+    <fieldset name="address">
+      <legend>Contact details:</legend>
+      <div class="block">
+        <label for="address-1">Address:</label>
+        <div class="group">
+          <input type="text" name="address-1" id="address-1" value="" autocomplete="address-line1" required="required" />
+          <input type="text" name="address-2" placeholder="(optional)" value="" autocomplete="address-line2" />
+          <input type="text" name="address-3" placeholder="(optional)" value="" autocomplete="address-level2" />
+          <input type="text" name="address-4" placeholder="(optional)" value="" autocomplete="address-level1" />
+        </div>
+      </div>
+      <div class="block">
+        <label for="postcode">Postcode:</label>
+        <input type="text" name="postcode" placeholder="Postcode" value="" autocomplete="postal-code" required="required" />
+      </div>
+      <div class="block">
+        <label>Telephone:</label>
+        <div class="group double">
+          <div class="field">
+            <input type="tel" name="telephone" id="telephone" placeholder="Land line" value="" autocomplete="tel" />
+            <label for="telephone">Land line</label>
+          </div>
+          <div class="field">
+            <input type="tel" name="mobile" id="mobile" placeholder="Mobile" value="" autocomplete="mobile" />
+            <label for="mobile">Mobile</label>
+          </div>
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset name="personal">
+      <legend>Personal details:</legend>
+      <div class="block">
+        <label>Date of birth:</label>
+        <select name="dob[d]">
+<?php for ($d = 1; $d <= 31; $d++) : ?>
+          <option value="<?php echo $d; ?>"><?php echo $d; ?></option>
+<?php endfor; ?>
+        </select>
+        <select name="dob[m]">
+<?php for ($m = 1; $m <= 12; $m++) : ?>
+          <option value="<?php echo $m; ?>"><?php echo date('F', mktime(0, 0, 0, $m, 1, 2015)); ?></option>
+<?php endfor; ?>
+        </select>
+        <select name="dob[y]">
+<?php for ($y = date('Y'); $y >= 1935; $y--) : ?>
+          <option value="<?php echo $y; ?>"><?php echo $y; ?></option>
+<?php endfor; ?>
+        </select>
+      </div>
+      <div class="block medical">
+        <label for="medical">Medical conditions:</label>
+        <div class="group">
+          <a class="button" onclick="toggleMedical()">Enter medical conditions</a>
+          <div id="medical-info" class="hidden">
+            <textarea name="medical" cols="50" rows="5" placeholder="Medical contitions"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="block">
+        <label>Emergency contact:</label>
+        <div class="group double">
+          <div class="field">
+            <input type="text" name="emergency_contact" id="emergency_contact" placeholder="Name of emergency contact" required="required" />
+            <label for="emergency_contact">Name of contact</label>
+          </div>
+          <div class="field">
+            <input type="text" name="emergency_relation" id="emergency_relation" placeholder="Relationship to you" required="required" />
+            <label for="emergency_relation">Relationship</label>
+          </div>
+          <div class="field">
+            <input type="text" name="emergency_method" id="emergency_method" placeholder="Contact method" required="required" />
+            <label for="emergency_method">Contact method <small>(On site is OK)</small></label>
+          </div>
+        </div>
+      </div>
+      <div class="block">
+        <label for="car_registration">Car registration:</label>
+        <input type="text" name="car_registration" id="car_registration" placeholder="Car Registration" required="required" /> <small>Enter "NA" if you don't drive</small>
+      </div>
+      <div class="block">
+        <label for="diet">Dietry requirements:</label>
+        <select name="diet" onchange="checkDiet(this);">
+          <option>Please select</option>
+          <option value="Omnivore">No special requirements</option>
+          <option value="Vegetarian">Vegetarian</option>
+          <option value="Vegan">Vegan</option>
+          <option value="Other/allergy (details in Medical Information box)">Other / allergy - please detail in medical conditions</option>
+        </select>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Lorien Trust</legend>
+      <div class="block">
+        <label>Referee / marshal?</label>
+        <div class="group double">
+          <div class="field">
+            <select name="marshal" onchange="checkMarshal(this);">
+              <option value="No">Neither</option>
+              <option value="Marshal">Marshal</option>
+              <option value="Referee">Referee</option>
+              <option value="Senior Referee">Senior Referee</option>
+            </select>
+          </div>
+          <div class="field hidden" id="marshal-number">
+            <input type="text" name="marshal_number" id="marshal_number" placeholder="Number" />
+            <label for="marshal_number" id="marshal-number-label">Number</label>
+          </div>
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Notes</legend>
+      <div>
+        <textarea name="notes" cols="50" rows="7"></textarea>
+        <p><small>Please use the above box to enter any relevant notes about yourself that may be useful.  <u>Do not</u> enter medical or allergy details here.  Also <u>Do not</u> enter any In Character items (use the box on the Character Details page).</small></p>
+      </div>
+    </fieldset>
+
+    <div class="row center">
+      <input type="submit" value="Save Your Details (OOC)" class="button" />
+    </div>
+  </form>
+</div>
+
+<script type="text/javascript">//<!--
+function toggleMedical() {
+  var medicalBlock = document.getElementById('medical-info'),
+    medicalVisible = medicalBlock.getAttribute('class') == 'visible';
+  if (medicalVisible) {
+    medicalBlock.setAttribute('class', 'hidden');
+  } else {
+    medicalBlock.setAttribute('class', 'visible');
+  }
+}
+
+function checkDiet(diet) {
+  if (diet.selectedIndex == 4) {
+    document.getElementById('medical-info').setAttribute('class', 'visible');
+  }
+}
+
+function checkMarshal(marshal) {
+  if (marshal.selectedIndex > 0) {
+    var marshalType = marshal.options[marshal.selectedIndex].value;
+    document.getElementById('marshal-number-label').innerHTML = marshalType + ' Number';
+    document.getElementById('marshal_number').setAttribute('placeholder', marshalType + ' Number');
+    document.getElementById('marshal_number').setAttribute('required', 'required');
+    document.getElementById('marshal-number').setAttribute('class', 'field visible');
+  } else {
+    document.getElementById('marshal-number').setAttribute('class', 'field hidden');
+    document.getElementById('marshal_number').removeAttribute('required');
+    document.getElementById('marshal_number').value = '';
+  }
+}
+//--></script>
+<?php echo $footer;
