@@ -41,9 +41,9 @@ class UserAccount extends Controller {
 
 		$this->data['reset'] = $this->router->link('user/reset', null, \Bitsand\SSL);
 		$this->data['mailing'] = $this->router->link('user/mailing', null, \Bitsand\SSL);
-		$this->data['change_email'] = $this->router->link('user/change_email', null, \Bitsand\SSL);
-		$this->data['personal_details'] = $this->router->link('user/details/personal', null, \Bitsand\SSL);
-		$this->data['character_details'] = $this->router->link('user/details/character', null, \Bitsand\SSL);
+		$this->data['change_email'] = $this->router->link('user/change-mail', null, \Bitsand\SSL);
+		$this->data['personal_details'] = $this->router->link('user/details-personal', null, \Bitsand\SSL);
+		$this->data['character_details'] = $this->router->link('user/details-character', null, \Bitsand\SSL);
 
 		$this->children = array(
 			'common/header',
