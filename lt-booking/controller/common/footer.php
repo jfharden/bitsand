@@ -30,6 +30,8 @@ class CommonFooter extends Controller {
 	public function index() {
 		$this->setView('common/footer');
 
+		$this->data['scripts'] = $this->document->getScripts(false);
+
 		$this->data['link_download'] = $this->router->link('common/download');
 
 		//$git_repository = new GitRepository($this->config->getVal('git_repository'));

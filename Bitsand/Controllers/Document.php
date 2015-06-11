@@ -34,6 +34,7 @@ class Document {
 	private $keywords;
 	private $styles = array();
 	private $scripts = array();
+	private $footer_scripts = array();
 
 	public function __construct() {
 		$this->route = Registry::get('router');
@@ -113,15 +114,23 @@ class Document {
 	 * Adds javascript to the document
 	 * @param string $script
 	 */
-	public function addScript($script) {
-		$this->scripts[md5($script)] = $script;
+	public function addScript($script, $header = true) {
+		if ($header) {
+			$this->scripts[md5($script)] = $this->route->getBaseUrl(false) . $script;
+		} else {
+			$this->footer_scripts[md5($script)] = $this->route->getBaseUrl(false) . $script;
+		}
 	}
 
 	/**
 	 * Retrieves all scripts within the document
 	 * @return array
 	 */
-	public function getScripts() {
-		return $this->scripts;
+	public function getScripts($header = true) {
+		if ($header) {
+			return $this->scripts;
+		} else {
+			return $this->footer_scripts;
+		}
 	}
 }
