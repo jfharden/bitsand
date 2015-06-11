@@ -33,15 +33,19 @@ $router->addRoutes(array(
 	array('GET', 'forgotten.html', 'user/forgotten'),
 	array('POST', 'forgotten.html', 'user/forgotten/send-link'),
 	array('GET|POST', 'reset-password.html?token=[a:token]', 'user/reset/forgotten'),
-	array('GET|POST', 'reset-password.html', 'user/reset'),
+	array('GET|POST', 'details/reset-password.html', 'user/reset'),
 	array('GET|POST', 'register.html', 'user/register'),
-	array('GET|POST', 'mail-settings.html', 'user/mailing'),
-	array('GET|POST', 'change-email.html', 'user/change-mail'),
+	array('GET|POST', 'details/mail-settings.html', 'user/mailing'),
+	array('GET|POST', 'details/change-email.html', 'user/change-mail'),
 	array('GET', 'change-email.html?token=[a:token]', 'user/change-mail/change'),
 	array('GET', 'account.html', 'user/account'),
 	array('GET', 'terms.html', 'common/terms'),
 	array('GET', 'booking_feed.rss', 'feed/booking-rss'),
 	array('GET', 'events/', 'event/list'),
 	array('GET|POST', 'events/[a:event]', 'event/event'),
-	array('GET', 'icalendar/', 'feed/icalendar')
+	array('GET', 'icalendar/', 'feed/icalendar'),
+
+	array('GET|POST', 'details/ooc.html', 'user/details-personal'),
+
+	array('GET|POST', 'details/ic.html', 'user/details-character'),
 ));
