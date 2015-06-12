@@ -268,6 +268,9 @@ class UserUser extends Model {
 	public function changePersonalDetails($user_id, $data) {
 		$encryption_key = $this->config->get('encryption_key');
 
+		// @todo Change into standard MySQL DATE
+		$dob_format = '%04s%02s%02s';
+
 		$sql = "UPDATE " . DB_PREFIX . "players SET
 			  pleAddress1 = AES_ENCRYPT('" . $this->db->escape($data['address_1']) . "', '{$encryption_key}'),
 			  pleAddress2 = AES_ENCRYPT('" . $this->db->escape($data['address_2']) . "', '{$encryption_key}'),
@@ -280,7 +283,7 @@ class UserUser extends Model {
 			  pleEmergencyNumber = AES_ENCRYPT('" . $this->db->escape($data['emergency_number']) . "', '{$encryption_key}'),
 			  plFirstName = '" . $this->db->escape($data['firstname']) . "',
 			  plSurname = '" . $this->db->escape($data['lastname']) . "',
-			  plDOB = '" . $this->db->escape($data['dob']['y'] . $data['dob']['m'] . $data['dob']['d']) . "',
+			  plDOB = '" . $this->db->escape(sprintf($dob_format, $data['dob']['y'], $data['dob']['m'], $data['dob']['d'])) . "',
 			  plEmergencyName = '" . $this->db->escape($data['emergency_contact']) . "',
 			  plEmergencyRelationship = '" . $this->db->escape($data['emergency_relation']) . "',
 			  plCarRegistration = '" . $this->db->escape($data['car_registration']) . "',
@@ -289,6 +292,7 @@ class UserUser extends Model {
 			  plMarshal = '" . $this->db->escape($data['marshal']) . "',
 			  plRefNumber = '" . $this->db->escape($data['marshal_number']) . "'
 			WHERE plPlayerID = '" . (int)$user_id . "'";
+
 		$this->db->query($sql);
 
 		// Now see if the user needs an e-mail
