@@ -87,7 +87,7 @@ class View {
 	 * perform various processor intensive functions without it impacting the
 	 * viewer.  Care should be taken however as this will place additional load
 	 * onto the server, so some form of control needs to be put in place.
-	 * @param PaMVC\Controllers\Action $action
+	 * @param Bitsand\Controllers\Action $action
 	 */
 	public function addPostCallback($action) {
 		$this->_post_output_callbacks[] = $action;
@@ -121,33 +121,45 @@ class View {
 			}
 
 			echo $output;
+		}
+	}
 
-			if (!empty($this->_post_output_callbacks)) {
-				$size = ob_get_length();
+	/**
+	 * Sends the post callbacks
+	 */
+	public function sendPostCallbacks() {
+		if (!empty($this->_post_output_callbacks)) {
+			$size = ob_get_length();
 
-				set_time_limit(5 * 60);
+			set_time_limit(5 * 60);
 
-				header('Content-Length: ' . $size);
-				header('Connection: close');
+			header('Content-Length: ' . $size);
+			header('Connection: close');
 
-				ob_end_flush();
-				ob_flush();
-				flush();
+			ob_end_flush();
+			@ob_flush();
+			flush();
 
-				if (session_id()) {
-					session_write_close();
-				}
+			if (session_id()) {
+				session_write_close();
+			}
 
-				foreach ($this->_post_output_callbacks as $action_details) {
-					$class = $action_details->getClass();
-					$method = $action_details->getMethod();
-					$args = $action_details->getArgs();
+			foreach ($this->_post_output_callbacks as $action_details) {
+				$class = $action_details->getClass();
+				$method = $action_details->getMethod();
+				$args = $action_details->getArgs();
 
-					if (method_exists($class, $method)) {
-						$action = call_user_func_array(array($class, $method), $args);
+				if (method_exists($class, $method)) {
+					if ($action_details->isController()) {
+						$controller = new $class();
+						$action = call_user_func_array(array($controller, $method), $args);
+						Registry::get('log')->write($action);
 					} else {
-						throw new ClassNotFoundException('Class file not found: ' . $class . '->' . $method);
+						$action = call_user_func_array(array($class, $method), $args);
 					}
+				} else {
+					Registry::get('log')->write('Post callback class file not found: ' . $class . '->' . $method);
+					//throw new ClassNotFoundException('Class file not found: ' . $class . '->' . $method);
 				}
 			}
 		}
