@@ -68,6 +68,11 @@ class CommonHeader extends Controller {
 		$this->addNavigationItem('common/home', 'Home');
 		$this->addNavigationItem('event/list', 'Event List');
 
+		if ($this->user->isLogged()) {
+			$this->addNavigationItem('user/details-personal', 'Personal Details (OOC)');
+			$this->addNavigationItem('user/details-character', 'Character Details (IC)');
+		}
+
 		// Messages
 		if (isset($this->session->data['error'])) {
 			$this->data['error'] = $this->session->data['error'];
