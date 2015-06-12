@@ -46,7 +46,7 @@ class Tracy {
 		require($tracy_path . 'Debugger.php');
 		require($tracy_path . 'OutputDebugger.php');
 
-		\Tracy\Debugger::enable(\Tracy\Debugger::DEVELOPMENT, Registry::get('log')->getLogFile());
+		\Tracy\Debugger::enable(\Tracy\Debugger::DEVELOPMENT, Registry::get('log')->getLogPath());
 		if (Config::getVal('error_strict') == true) {
 			\Tracy\Debugger::$strictMode = true;
 		}

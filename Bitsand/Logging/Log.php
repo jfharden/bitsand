@@ -28,7 +28,7 @@ use Bitsand\Config\Config;
 class Log {
 	private $_log_file = '';
 
-	public function write($message, $file='', $line='') {
+	public function __construct() {
 		if (!$this->_log_file) {
 			$this->_log_file = str_replace('/', DIRECTORY_SEPARATOR, Config::getVal('log') ? Config::getVal('log') : Config::getBasePath() . 'var/logs/errors.log');
 
@@ -36,7 +36,9 @@ class Log {
 				mkdir(dirname($this->_log_file));
 			}
 		}
+	}
 
+	public function write($message, $file='', $line='') {
 		$file_handle = fopen($this->_log_file, 'a+');
 		// Don't log the LogFolderNotCreatable exception!
 		if (!$file_handle && strpos($file, 'Log.php') === false) {
@@ -50,5 +52,9 @@ class Log {
 
 	public function getLogFile() {
 		return $this->_log_file;
+	}
+
+	public function getLogPath() {
+		return dirname($this->_log_file);
 	}
 }
