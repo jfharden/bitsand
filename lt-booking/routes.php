@@ -45,6 +45,8 @@ $router->addRoutes(array(
 	array('GET|POST', 'events/[a:event]', 'event/event'),
 	array('GET', 'icalendar/', 'feed/icalendar'),
 
+	array('GET|POST', 'address.html?postcode=[*:postcode]', 'user/details-personal/postcode-lookup'),
+
 	array('GET|POST', 'details/ooc.html', 'user/details-personal'),
 
 	array('GET|POST', 'details/ic.html', 'user/details-character'),

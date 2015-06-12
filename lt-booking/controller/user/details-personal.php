@@ -78,8 +78,69 @@ class UserDetailsPersonal extends Controller {
 			$this->data['address_2'] = $details['address_2'];
 		} else {
 			$this->data['address_2'] = '';
+
+	/**
+	 * Hooks in a postcode lookup mechanism.  Must be requested via AJAX
+	 * @param string $postcode
+	 */
+	public function postcodeLookup($postcode) {
+		$result = array('p'=>$postcode, 'a'=>$this->request->isAJAX());
+
+		if ($this->request->isAJAX() && !empty($this->config->get('postcode_lookup')) && !empty($postcode)) {
+			$postcode = strtoupper(str_replace(' ', '', $postcode));
+			if ($this->config->get('postcode_lookup') == 'postcodes.io') {
+				// Postcodes.io - returns the county and town only
+				$answer = \Bitsand\Utilities\Functions\url_get_contents('http://api.postcodes.io/postcodes/' . $postcode);
+				if (!empty($answer)) {
+					$answer = json_decode($answer, true);
+					if ($answer['status'] == '200') {
+						$result['postcode'] = $answer['result']['postcode'];
+						$result['city'] = $answer['result']['parliamentary_constituency'];
+						$result['county'] = $answer['result']['admin_district'];
+					}
+				} else {
+					$result['error'] = 'Postcode not found';
+				}
+			} elseif (substr($this->config->get('postcode_lookup'), 0, 7) == 'custom:') {
+				// A custom api, we expect it to return a json encoded object, containing an item called "results"
+				$url = substr($this->config->get('postcode_lookup'), 7) . '?postcode=' . $postcode;
+				$answer = \Bitsand\Utilities\Functions\url_get_contents($url);
+				if (!empty($answer)) {
+					$answer = json_decode($answer, true);
+					if (isset($answer['results'])) {
+						// Sort the addresses numerically (ensuring 1 comes before 10);
+						$sort = array();
+						foreach ($answer['results'] as $result_idx => $postcode) {
+							preg_match('/^([^\s]+)/', $postcode['address1'], $match);
+							// Look at the first item to see if it's a number to cater for 10A etc
+							if (is_numeric(substr($match[0], 0, 1))) {
+								$index = ((int)$match[0] + 10000) . $postcode['address1'];
+							} else {
+								$index = $postcode['address1'];
+							}
+							$sort[$index] = $result_idx;
+						}
+					}
+					ksort($sort);
+
+					foreach ($sort as $result_idx) {
+						$postcode = $answer['results'][$result_idx];
+						$result['addresses'][] = array(
+							'address_1' => $postcode['address1'],
+							'address_2' => $postcode['address2'],
+							'city'      => $postcode['town'],
+							'county'    => $postcode['county'],
+							'postcode'  => ''
+						);
+					}
+				} else {
+					$result['error'] = 'Postcode not found';
+				}
+			}
 		}
 
+		$this->view->setOutput(json_encode($result));
+	}
 		if (isset($this->request->post['address_3'])) {
 			$this->data['address_3'] = $this->request->post['address_3'];
 		} elseif (!empty($details)) {
