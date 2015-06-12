@@ -65,8 +65,8 @@ class CommonHeader extends Controller {
 
 		// Navigation
 		$this->data['navigation'] = array();
-		$this->addNavigationItem($this->data['navigation'], 'common/home', 'Home');
-		$this->addNavigationItem($this->data['navigation'], 'event/list', 'Event List');
+		$this->addNavigationItem('common/home', 'Home');
+		$this->addNavigationItem('event/list', 'Event List');
 
 		// Messages
 		if (isset($this->session->data['error'])) {
@@ -97,8 +97,13 @@ class CommonHeader extends Controller {
 		return $this->render();
 	}
 
-	private function addNavigationItem(&$arr, $route, $text) {
-		$arr[] = array(
+	/**
+	 * Quick routine to add a navigational menu item from its route
+	 * @param string $route
+	 * @param string $text
+	 */
+	private function addNavigationItem($route, $text) {
+		$this->data['navigation'][] = array(
 			'href'     => $this->router->link($route),
 			'text'     => $text,
 			'selected' => str_replace(' ', '/', $this->data['route']) == $route
