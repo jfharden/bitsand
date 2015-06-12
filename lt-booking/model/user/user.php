@@ -143,6 +143,9 @@ class UserUser extends Model {
 	 *
 	 * @param integer $user_id
 	 * @return array
+	 * @todo Change the dietary field into VARCHAR from ENUM.  There are very
+	 * few cases where ENUM is necessary.  The dietary field should allow
+	 * backend customisation of the requirements, e.g. celiac
 	 */
 	public function getPersonalDetails($user_id) {
 		$encryption_key = $this->config->get('encryption_key');
@@ -287,7 +290,7 @@ class UserUser extends Model {
 			  plEmergencyName = '" . $this->db->escape($data['emergency_contact']) . "',
 			  plEmergencyRelationship = '" . $this->db->escape($data['emergency_relation']) . "',
 			  plCarRegistration = '" . $this->db->escape($data['car_registration']) . "',
-			  plDietary = '" . $this->db->escape($data['diet']) . "',
+			  plDietary = '" . $this->db->escape($data['dietary']) . "',
 			  plNotes = '" . $this->db->escape($data['notes']) . "',
 			  plMarshal = '" . $this->db->escape($data['marshal']) . "',
 			  plRefNumber = '" . $this->db->escape($data['marshal_number']) . "'

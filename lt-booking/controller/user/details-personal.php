@@ -77,6 +77,7 @@ class UserDetailsPersonal extends Controller {
 
 		// Pass all of the necessary values to the view
 		$details = $this->model_user_user->getPersonalDetails($this->user->getId());
+
 		$this->handlePostData(array('firstname', 'lastname', 'address_1', 'address_2', 'address_3', 'address_4', 'postcode', 'telephone', 'mobile', 'medical', 'emergency_contact', 'emergency_relation', 'emergency_number', 'car_registration', 'dietary', 'marshal', 'marshal_number', 'notes'), $details);
 
 		// Handle the errors here
