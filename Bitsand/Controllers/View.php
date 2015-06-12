@@ -153,7 +153,6 @@ class View {
 					if ($action_details->isController()) {
 						$controller = new $class();
 						$action = call_user_func_array(array($controller, $method), $args);
-						Registry::get('log')->write($action);
 					} else {
 						$action = call_user_func_array(array($class, $method), $args);
 					}
