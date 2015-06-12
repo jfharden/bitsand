@@ -85,7 +85,7 @@ class UserReset extends Controller {
 		$this->document->setTitle('Reset Password');
 
 		$this->data['password_length'] = $this->config->get('password_minimum');
-		$this->data['suggested'] = file_get_contents('http://www.dinopass.com/password/strong');
+		$this->data['suggested'] = \Bitsand\Utilities\Functions\url_get_contents('http://www.dinopass.com/password/strong');
 
 		$this->data['reset'] = $url;
 
