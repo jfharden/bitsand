@@ -28,7 +28,7 @@ use Bitsand\Config\Config;
 class Log {
 	private $_log_file = '';
 
-	public function write($message, $file, $line) {
+	public function write($message, $file='', $line='') {
 		if (!$this->_log_file) {
 			$this->_log_file = str_replace('/', DIRECTORY_SEPARATOR, Config::getVal('log') ? Config::getVal('log') : Config::getBasePath() . 'var/logs/errors.log');
 
