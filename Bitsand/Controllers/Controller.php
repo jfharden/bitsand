@@ -57,6 +57,7 @@ abstract class Controller {
 	protected function redirect($url, $status = 302) {
 		header('Status: ' . $status);
 		header('Location: ' . str_replace(array('&amp;', "\n", "\r"), array('&', '', ''), $url));
+		$this->view->sendPostCallbacks();
 		// We MUST exit() after a redirection, this ensures the session is correctly saved
 		exit();
 	}
