@@ -148,6 +148,20 @@ class UserUser extends Model {
 	}
 
 	/**
+	 * Formats the player id based on the necessary setting.
+	 *
+	 * @param integer $player_id
+	 * @return string
+	 */
+	public function playerId($player_id) {
+		if (!($format = $this->config->get('player_id_format'))) {
+			$format = '%03s';
+		}
+		$format = $this->config->get('player_id_prefix') . $format;
+		return sprintf($format, $player_id);
+	}
+
+	/**
 	 * Logs the user out
 	 */
 	public function logout() {
