@@ -25,6 +25,7 @@
 namespace LTBooking\Controller;
 
 use Bitsand\Controllers\Controller;
+use Bitsand\Controllers\ActionRoute;
 use Bitsand\Utilities\Mailer;
 
 class UserDetailsPersonal extends Controller {
@@ -51,28 +52,14 @@ class UserDetailsPersonal extends Controller {
 
 			$this->session->data['success'] = 'Your personal details have been updated';
 
+			/*
+			 * Send an e-mail to the user if we've updated anything and they've
+			 * said they want to be notified.  Hook this in as a post page
+			 * callback as we don't want to hold up the output
+			 */
 			if ($send_email) {
 				// Need to send an e-mail saying they've been updated
-				$user = $this->model_user_user->getBasicDetails();
-
-				$mailer = new Mailer;
-				$mailer->setMail('personal-change');
-				$mailer->setMail('personal-change-plain', Mailer::PLAIN_TEXT);
-
-				$mailer->data['email'] = strtolower($send_email);
-				$mailer->data['player_id'] = $this->model_user_user->playerId($this->user->getId());
-
-				$mailer->data['firstname'] = $user['firstname'];
-				$mailer->data['lastname'] = $user['lastname'];
-				$mailer->data['url'] = $this->router->link('common/home', null, \Bitsand\NONSSL, true);
-				$mailer->data['site_name'] = $this->config->get('site_name');
-
-				// @todo - This needs to be setable within the backend
-				$mailer->setSubject('Personal details (OOC) changed on {site_name}');
-				$mailer->setFrom($this->config->get('event_contact_email'));
-				$mailer->setSender($this->config->get('event_contact'));
-
-				$mailer->sendTo($email);
+				$this->view->addPostCallback(new ActionRoute('user/details-personal/send-email', array('email'=>$send_email)));
 			}
 
 			$this->redirect($this->router->link('user/account'), null, \Bitsand\SSL);
@@ -134,6 +121,35 @@ class UserDetailsPersonal extends Controller {
 		$this->setView('user/details-personal');
 
 		$this->view->setOutput($this->render());
+	}
+
+	/**
+	 * Sends an e-mail to a user indicating that their personal details has
+	 * been changed.  This should be called using a response post callback.
+	 *
+	 * @param string $email
+	 */
+	public function sendEmail($email) {
+		$user = $this->model_user_user->getBasicDetails($email);
+
+		$mailer = new Mailer;
+		$mailer->setMail('personal-change');
+		$mailer->setMail('personal-change-plain', Mailer::PLAIN_TEXT);
+
+		$mailer->data['email'] = strtolower($email);
+		$mailer->data['player_id'] = $this->model_user_user->playerId($this->user->getId());
+
+		$mailer->data['firstname'] = $user['firstname'];
+		$mailer->data['lastname'] = $user['lastname'];
+		$mailer->data['url'] = $this->router->link('common/home', null, \Bitsand\NONSSL, true);
+		$mailer->data['site_name'] = $this->config->get('site_name');
+
+		// @todo - This needs to be setable within the backend
+		$mailer->setSubject('Personal details (OOC) changed on {site_name}');
+		$mailer->setFrom($this->config->get('event_contact_email'));
+		$mailer->setSender($this->config->get('event_contact'));
+
+		$mailer->sendTo($email);
 	}
 
 	/**
