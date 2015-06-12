@@ -57,3 +57,50 @@ function safeinclude($file, $data) {
 	extract($data);
 	include($file);
 }
+
+/**
+ * A simple wrapper function that performs the same function as
+ * file_get_contents but for a URL.  The big difference is that if the server
+ * has allow_url_fopen disabled this will fallback to using curl.
+ *
+ * If no response is received then this function will simply return an empty
+ * string.
+ *
+ * @param string $url
+ * @return string
+ */
+function url_get_contents($url) {
+	if ((int)ini_get('allow_url_fopen') == 0) {
+		// Need to use curl
+		$options = array(
+			CURLOPT_SSL_VERIFYPEER => false,
+			CURLOPT_SSL_VERIFYHOST => false,
+			CURLOPT_HEADER => false,
+			CURLOPT_FOLLOWLOCATION => true,
+			CURLOPT_URL => $url,
+			CURLOPT_REFERER => $path,
+			CURLOPT_RETURNTRANSFER => true,
+			CURLOPT_USERAGENT => 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.13) Gecko/20080311 Firefox/2.0.0.13'
+		);
+
+		$ch = curl_init();
+		foreach ($options as $option => $value) {
+			curl_setopt($ch, $option, $value);
+		}
+
+		$result = curl_exec($ch);
+		curl_close($ch);
+	} else {
+		// Can use file_get_contents
+		$headers = get_headers($url);
+		$response = substr($headers[0], 9, 3);
+
+		if ($response != '200') {
+			$result = '';
+		} else {
+			$result = file_get_contents($url);
+		}
+	}
+
+	return $result;
+}
