@@ -155,4 +155,29 @@ abstract class Controller {
 			throw new \Bitsand\Exceptions\TemplateNotFoundException('Template file not found: ' . $view_route);
 		}
 	}
+
+	/**
+	 * Bulk processing of post data.  Passed a list of fields to look for in
+	 * the post data, if not found then looks in the passed alternative data
+	 * and finally sets to the default value.  The list of fields can be
+	 * indexed with the data field to set.
+	 *
+	 * @param array $fields
+	 * @param array $alternative_data
+	 * @param mixed $default
+	 */
+	protected function handlePostData($fields, $alternative_data = array(), $default = '') {
+		foreach ($fields as $data_field => $field) {
+			if (is_numeric($data_field)) {
+				$data_field = $field;
+			}
+			if (isset($this->request->post[$field])) {
+				$this->data[$data_field] = trim($this->request->post[$field]);
+			} elseif (isset($alternative_data[$field])) {
+				$this->data[$data_field] = trim($alternative_data[$field]);
+			} else {
+				$this->data[$data_field] = $default;
+			}
+		}
+	}
 }
