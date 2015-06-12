@@ -24,6 +24,7 @@ body {
 	line-height: 1.45rem;
 }
 html { height: 100%; }
+body { min-height: 100%; }
 html,
 body { width: 100%; }
 
