@@ -137,6 +137,53 @@ class UserUser extends Model {
 	}
 
 	/**
+	 * Returns all of the personal details for the userl.  Bitand uses AES
+	 * encryption on most of the personal details, using a generic encryption
+	 * key.  Long term goal should be to improve this
+	 *
+	 * @param integer $user_id
+	 * @return array
+	 */
+	public function getPersonalDetails($user_id) {
+		$encryption_key = $this->config->get('encryption_key');
+
+		$user_query = $this->db->query("
+			SELECT
+			  AES_DECRYPT(pleAddress1, '{$encryption_key}') AS `address_1`,
+			  AES_DECRYPT(pleAddress2, '{$encryption_key}') AS `address_2`,
+			  AES_DECRYPT(pleAddress3, '{$encryption_key}') AS `address_3`,
+			  AES_DECRYPT(pleAddress4, '{$encryption_key}') AS `address_4`,
+			  AES_DECRYPT(plePostcode, '{$encryption_key}') AS `postcode`,
+			  AES_DECRYPT(pleTelephone, '{$encryption_key}') AS `telephone`,
+			  AES_DECRYPT(pleMobile, '{$encryption_key}') AS `mobile`,
+			  AES_DECRYPT(pleMedicalInfo, '{$encryption_key}') AS `medical`,
+			  AES_DECRYPT(pleEmergencyNumber, '{$encryption_key}') AS `emergency_number`,
+			  plFirstName AS `firstname`,
+			  plSurname AS `lastname`,
+			  plDOB AS `dob`,
+			  plEmergencyName AS `emergency_contact`,
+			  plEmergencyRelationship AS `emergency_relation`,
+			  plCarRegistration AS `car_registration`,
+			  plDietary AS `dietary`,
+			  plNotes AS `notes`,
+			  plMarshal AS `marshal`,
+			  plRefNumber AS `marshal_number`
+			FROM " . DB_PREFIX . "players WHERE plPlayerID = '" . (int)$user_id . "'");
+
+		/*
+		 * The dob field is configured to be a plain text field so convert it
+		 * into a traditional SQL timestamp here.  This needs to be modified at
+		 * some point.
+		 * @todo Convert the date of birth field into a DATE type
+		 */
+		if (isset($user_query->row['dob'])) {
+			$dob = $user_query->row['dob'];
+			$user_query->row['dob'] = substr($dob, 0, 4) . '-' . substr($dob, 4, 2) . '-' . substr($dob, 6, 2);
+		}
+		return $user_query->row;
+	}
+
+	/**
 	 * Retrieves the user id from the passed token
 	 * @param string $token
 	 * @return array
@@ -203,11 +250,58 @@ class UserUser extends Model {
 	 * Updates the users e-mail preferences to the passed ones
 	 *
 	 * @param integer $user_id
-	 * @param integer $data
+	 * @param array $data
 	 */
 	public function changeMailing($user_id, $data) {
 		$sql = "UPDATE " . DB_PREFIX . "players SET plEmailOOCChange = '" . (int)$data['ooc'] . "', plEmailICChange = '" . (int)$data['ic'] . "', plEmailPaymentReceived = '" . (int)$data['payment'] . "', plEmailRemovedFromQueue = '" . (int)$data['queue'] . "' WHERE plPlayerID = '" . (int)$user_id . "'";
 		$this->db->query($sql);
+	}
+
+	/**
+	 * Updates the users personal details to the passed one.  Returns if the
+	 * user needs to receive an email or not
+	 *
+	 * @param integer $user_id
+	 * @param array $data
+	 * @return boolean Indicates that the user needs to be e-mailed
+	 */
+	public function changePersonalDetails($user_id, $data) {
+		$encryption_key = $this->config->get('encryption_key');
+
+		$sql = "UPDATE " . DB_PREFIX . "players SET
+			  pleAddress1 = AES_ENCRYPT('" . $this->db->escape($data['address_1']) . "', '{$encryption_key}'),
+			  pleAddress2 = AES_ENCRYPT('" . $this->db->escape($data['address_2']) . "', '{$encryption_key}'),
+			  pleAddress3 = AES_ENCRYPT('" . $this->db->escape($data['address_3']) . "', '{$encryption_key}'),
+			  pleAddress4 = AES_ENCRYPT('" . $this->db->escape($data['address_4']) . "', '{$encryption_key}'),
+			  plePostcode = AES_ENCRYPT('" . $this->db->escape($data['postcode']) . "', '{$encryption_key}'),
+			  pleTelephone = AES_ENCRYPT('" . $this->db->escape($data['telephone']) . "', '{$encryption_key}'),
+			  pleMobile = AES_ENCRYPT('" . $this->db->escape($data['mobile']) . "', '{$encryption_key}'),
+			  pleMedicalInfo = AES_ENCRYPT('" . $this->db->escape($data['medical']) . "', '{$encryption_key}'),
+			  pleEmergencyNumber = AES_ENCRYPT('" . $this->db->escape($data['emergency_number']) . "', '{$encryption_key}'),
+			  plFirstName = '" . $this->db->escape($data['firstname']) . "',
+			  plSurname = '" . $this->db->escape($data['lastname']) . "',
+			  plDOB = '" . $this->db->escape($data['dob']['y'] . $data['dob']['m'] . $data['dob']['d']) . "',
+			  plEmergencyName = '" . $this->db->escape($data['emergency_contact']) . "',
+			  plEmergencyRelationship = '" . $this->db->escape($data['emergency_relation']) . "',
+			  plCarRegistration = '" . $this->db->escape($data['car_registration']) . "',
+			  plDietary = '" . $this->db->escape($data['diet']) . "',
+			  plNotes = '" . $this->db->escape($data['notes']) . "',
+			  plMarshal = '" . $this->db->escape($data['marshal']) . "',
+			  plRefNumber = '" . $this->db->escape($data['marshal_number']) . "'
+			WHERE plPlayerID = '" . (int)$user_id . "'";
+		$this->db->query($sql);
+
+		// Now see if the user needs an e-mail
+		if ($this->db->countAffected() > 0) {
+			$user_query = $this->db->query("SELECT plEmail, plEmailOOCChange FROM " . DB_PREFIX . "players WHERE plPlayerID = '" . (int)$user_id . "'");
+			if ((int)$user_query->row['plEmailOOCChange'] == 1) {
+				return $user_query->row['plEmail'];
+			}
+		} else {
+			// Nothing has been updated so never send an e-mail
+		}
+
+		return false;
 	}
 
 	/**

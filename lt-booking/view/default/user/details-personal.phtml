@@ -4,40 +4,43 @@
   <form action="<?php $_($personal); ?>" method="post" enctype="multipart/form" class="advanced-form">
     <fieldset class="row double">
       <legend>Your name:</legend>
-      <div class="field">
-        <input type="text" name="firstname" id="firstname" placeholder="Your first name" value="" autocomplete="given-name" required="required" />
+      <div class="field<?php if (!empty($error_firstname)) echo ' error'; ?>">
+        <input type="text" name="firstname" id="firstname" placeholder="Your first name" value="<?php $_($firstname); ?>" autocomplete="given-name" required="required" />
         <label for="firstname">First name</label>
       </div>
-      <div class="field">
-        <input type="text" name="lastname" id="lastname" placeholder="Your last name" value="" autocomplete="family-name" required="required" />
+      <div class="field<?php if (!empty($error_lastname)) echo ' error'; ?>">
+        <input type="text" name="lastname" id="lastname" placeholder="Your last name" value="<?php $_($lastname); ?>" autocomplete="family-name" required="required" />
         <label for="lastname">Last name</label>
       </div>
     </fieldset>
 
     <fieldset name="address">
       <legend>Contact details:</legend>
-      <div class="block">
+      <div class="block<?php if (!empty($error_address_1)) echo ' error'; ?>">
         <label for="address-1">Address:</label>
         <div class="group">
-          <input type="text" name="address-1" id="address-1" value="" autocomplete="address-line1" required="required" />
-          <input type="text" name="address-2" placeholder="(optional)" value="" autocomplete="address-line2" />
-          <input type="text" name="address-3" placeholder="(optional)" value="" autocomplete="address-level2" />
-          <input type="text" name="address-4" placeholder="(optional)" value="" autocomplete="address-level1" />
+          <input type="text" name="address_1" id="address-1" value="<?php $_($address_1); ?>" autocomplete="address-line1" required="required" />
+          <input type="text" name="address_2" id="address-2" placeholder="(optional)" value="<?php $_($address_2); ?>" autocomplete="address-line2" />
+          <input type="text" name="address_3" id="address-3" placeholder="(optional)" value="<?php $_($address_3); ?>" autocomplete="address-level2" />
+          <input type="text" name="address_4" id="address-4" placeholder="(optional)" value="<?php $_($address_4); ?>" autocomplete="address-level1" />
         </div>
       </div>
       <div class="block">
         <label for="postcode">Postcode:</label>
-        <input type="text" name="postcode" placeholder="Postcode" value="" autocomplete="postal-code" required="required" />
+        <input type="text" name="postcode" placeholder="Postcode" id="postcode" value="<?php $_($postcode); ?>"<?php if ($postcode_lookup) echo ' onchange="checkPostcode();" onkeyup="checkPostcode();"'; ?> autocomplete="postal-code" />
+<?php if ($postcode_lookup) : ?>
+        <button class="button" id="postcode-lookup" onclick="lookupPostcode();return false;"<?php if (empty($postcode)) echo ' disabled="disabled"'; ?>>Lookup</button>
+<?php endif; ?>
       </div>
-      <div class="block">
+      <div class="block<?php if (!empty($error_telephone)) echo ' error'; ?>">
         <label>Telephone:</label>
         <div class="group double">
           <div class="field">
-            <input type="tel" name="telephone" id="telephone" placeholder="Land line" value="" autocomplete="tel" />
+            <input type="tel" name="telephone" id="telephone" placeholder="Land line" value="<?php $_($telephone); ?>" autocomplete="tel" />
             <label for="telephone">Land line</label>
           </div>
           <div class="field">
-            <input type="tel" name="mobile" id="mobile" placeholder="Mobile" value="" autocomplete="mobile" />
+            <input type="tel" name="mobile" id="mobile" placeholder="Mobile" value="<?php $_($mobile); ?>" autocomplete="mobile" />
             <label for="mobile">Mobile</label>
           </div>
         </div>
@@ -46,21 +49,21 @@
 
     <fieldset name="personal">
       <legend>Personal details:</legend>
-      <div class="block">
+      <div class="block<?php if (!empty($error_dob)) echo ' error'; ?>">
         <label>Date of birth:</label>
         <select name="dob[d]">
 <?php for ($d = 1; $d <= 31; $d++) : ?>
-          <option value="<?php echo $d; ?>"><?php echo $d; ?></option>
+          <option value="<?php echo $d; ?>"<?php if ($dob['d'] == $d) echo ' selected="selected"'; ?>><?php echo $d; ?></option>
 <?php endfor; ?>
         </select>
         <select name="dob[m]">
 <?php for ($m = 1; $m <= 12; $m++) : ?>
-          <option value="<?php echo $m; ?>"><?php echo date('F', mktime(0, 0, 0, $m, 1, 2015)); ?></option>
+          <option value="<?php echo $m; ?>"<?php if ($dob['m'] == $m) echo ' selected="selected"'; ?>><?php echo date('F', mktime(0, 0, 0, $m, 1, 2015)); ?></option>
 <?php endfor; ?>
         </select>
         <select name="dob[y]">
 <?php for ($y = date('Y'); $y >= 1935; $y--) : ?>
-          <option value="<?php echo $y; ?>"><?php echo $y; ?></option>
+          <option value="<?php echo $y; ?>"<?php if ($dob['y'] == $y) echo ' selected="selected"'; ?>><?php echo $y; ?></option>
 <?php endfor; ?>
         </select>
       </div>
@@ -68,40 +71,39 @@
         <label for="medical">Medical conditions:</label>
         <div class="group">
           <a class="button" onclick="toggleMedical()">Enter medical conditions</a>
-          <div id="medical-info" class="hidden">
-            <textarea name="medical" cols="50" rows="5" placeholder="Medical contitions"></textarea>
+          <div id="medical-info" class="<?php echo !empty($medical) ? 'visible' : 'hidden'; ?>">
+            <textarea name="medical" cols="50" rows="5" placeholder="Medical contitions"><?php $_($medical); ?></textarea>
           </div>
         </div>
       </div>
       <div class="block">
         <label>Emergency contact:</label>
         <div class="group double">
-          <div class="field">
-            <input type="text" name="emergency_contact" id="emergency_contact" placeholder="Name of emergency contact" required="required" />
+          <div class="field<?php if (!empty($error_emergency_contact)) echo ' error'; ?>">
+            <input type="text" name="emergency_contact" id="emergency_contact" placeholder="Name of emergency contact" value="<?php $_($emergency_contact); ?>" required="required" />
             <label for="emergency_contact">Name of contact</label>
           </div>
-          <div class="field">
-            <input type="text" name="emergency_relation" id="emergency_relation" placeholder="Relationship to you" required="required" />
+          <div class="field<?php if (!empty($error_emergency_relation)) echo ' error'; ?>">
+            <input type="text" name="emergency_relation" id="emergency_relation" placeholder="Relationship to you" value="<?php $_($emergency_relation); ?>" required="required" />
             <label for="emergency_relation">Relationship</label>
           </div>
-          <div class="field">
-            <input type="text" name="emergency_method" id="emergency_method" placeholder="Contact method" required="required" />
-            <label for="emergency_method">Contact method <small>(On site is OK)</small></label>
+          <div class="field<?php if (!empty($error_emergency_number)) echo ' error'; ?>">
+            <input type="text" name="emergency_number" id="emergency_number" placeholder="Contact number/method" value="<?php $_($emergency_number); ?>" required="required" />
+            <label for="emergency_number">Contact number/method <small>(On site is OK)</small></label>
           </div>
         </div>
       </div>
-      <div class="block">
+      <div class="block<?php if (!empty($error_car_registration)) echo ' error'; ?>">
         <label for="car_registration">Car registration:</label>
-        <input type="text" name="car_registration" id="car_registration" placeholder="Car Registration" required="required" /> <small>Enter "NA" if you don't drive</small>
+        <input type="text" name="car_registration" id="car_registration" placeholder="Car Registration" value="<?php $_($car_registration); ?>" required="required" /> <small>Enter "NA" if you don't drive</small>
       </div>
       <div class="block">
         <label for="diet">Dietry requirements:</label>
         <select name="diet" onchange="checkDiet(this);">
-          <option>Please select</option>
-          <option value="Omnivore">No special requirements</option>
-          <option value="Vegetarian">Vegetarian</option>
-          <option value="Vegan">Vegan</option>
-          <option value="Other/allergy (details in Medical Information box)">Other / allergy - please detail in medical conditions</option>
+          <option value="Omnivore"<?php if (strtolower($dietary) == 'omnivore') echo ' selected="selected"'; ?>>No special requirements</option>
+          <option value="Vegetarian"<?php if (strtolower($dietary) == 'vegetarian') echo ' selected="selected"'; ?>>Vegetarian</option>
+          <option value="Vegan"<?php if (strtolower($dietary) == 'vegan') echo ' selected="selected"'; ?>>Vegan</option>
+          <option value="Other"<?php if (strtolower(substr($dietary, 0, 5)) == 'other') echo ' selected="selected"'; ?>>Other / allergy - please detail in medical conditions</option>
         </select>
       </div>
     </fieldset>
@@ -113,14 +115,14 @@
         <div class="group double">
           <div class="field">
             <select name="marshal" onchange="checkMarshal(this);">
-              <option value="No">Neither</option>
-              <option value="Marshal">Marshal</option>
-              <option value="Referee">Referee</option>
-              <option value="Senior Referee">Senior Referee</option>
+              <option value="No" <?php if (strtolower($marshal) == 'no') echo ' selected="selected"'; ?>>Neither</option>
+              <option value="Marshal" <?php if (strtolower($marshal) == 'marshal') echo ' selected="selected"'; ?>>Marshal</option>
+              <option value="Referee" <?php if (strtolower($marshal) == 'referee') echo ' selected="selected"'; ?>>Referee</option>
+              <option value="Senior Referee" <?php if (strtolower($marshal) == 'senior referee') echo ' selected="selected"'; ?>>Senior Referee</option>
             </select>
           </div>
-          <div class="field hidden" id="marshal-number">
-            <input type="text" name="marshal_number" id="marshal_number" placeholder="Number" />
+          <div class="field<?php echo !empty($marshal) && !empty($marshal_number) ? ' visible' : ' hidden'; ?><?php if (!empty($error_marshal_number)) echo ' error'; ?>" id="marshal-number">
+            <input type="text" name="marshal_number" id="marshal_number" placeholder="Number" value="<?php $_($marshal_number); ?>" />
             <label for="marshal_number" id="marshal-number-label">Number</label>
           </div>
         </div>
@@ -130,7 +132,7 @@
     <fieldset>
       <legend>Notes</legend>
       <div>
-        <textarea name="notes" cols="50" rows="7"></textarea>
+        <textarea name="notes" cols="50" rows="7"><?php $_($notes); ?></textarea>
         <p><small>Please use the above box to enter any relevant notes about yourself that may be useful.  <u>Do not</u> enter medical or allergy details here.  Also <u>Do not</u> enter any In Character items (use the box on the Character Details page).</small></p>
       </div>
     </fieldset>
@@ -171,5 +173,33 @@ function checkMarshal(marshal) {
     document.getElementById('marshal_number').value = '';
   }
 }
+<?php if ($postcode_lookup) : ?>
+
+document.write('<div id="postcode" class="popup hidden"><strong>Found Addresses</strong><ul></ul></div>');
+
+function lookupPostcode() {
+  var postcode = document.getElementById('postcode').value;
+  if (postcode.trim() != '') {
+    xhr('<?php $_($postcode_lookup); ?>' + postcode, showPostcode);
+  }
+}
+
+function showPostcode(response) {
+  response = JSON.parse(response);
+  if (response.addresses === undefined) {
+    document.getElementById('address-3').value = response.city;
+    document.getElementById('address-4').value = response.county;
+    document.getElementById('postcode').value = response.postcode;
+  }
+}
+
+function checkPostcode() {
+  if (document.getElementById('postcode').value.trim() == '') {
+    document.getElementById('postcode-lookup').setAttribute('disabled', 'disabled');
+  } else {
+    document.getElementById('postcode-lookup').removeAttribute('disabled');
+  }
+}
+<?php endif; ?>
 //--></script>
 <?php echo $footer;

@@ -25,6 +25,7 @@
 namespace LTBooking\Controller;
 
 use Bitsand\Controllers\Controller;
+use Bitsand\Utilities\Mailer;
 
 class UserDetailsPersonal extends Controller {
 	private $_errors = array();
@@ -35,6 +36,48 @@ class UserDetailsPersonal extends Controller {
 	 * between a normal reset or forgotten password
 	 */
 	public function index() {
+		$this->document->addScript('scripts/xhr.js', false);
+
+		if (!$this->user->isLogged()) {
+			$this->session->data['redirect'] = $this->router->link('user/details-personal', null, \Bitsand\SSL);
+			$this->redirect($this->router->link('user/login', null, \Bitsand\SSL));
+		}
+
+		$this->load->model('user/user');
+
+
+		if ($this->request->method() == 'POST' && $this->validate()) {
+			$send_email = $this->model_user_user->changePersonalDetails($this->user->getId(), $this->request->post);
+
+			$this->session->data['success'] = 'Your personal details have been updated';
+
+			if ($send_email) {
+				// Need to send an e-mail saying they've been updated
+				$user = $this->model_user_user->getBasicDetails();
+
+				$mailer = new Mailer;
+				$mailer->setMail('personal-change');
+				$mailer->setMail('personal-change-plain', Mailer::PLAIN_TEXT);
+
+				$mailer->data['email'] = strtolower($send_email);
+				$mailer->data['player_id'] = $this->model_user_user->playerId($this->user->getId());
+
+				$mailer->data['firstname'] = $user['firstname'];
+				$mailer->data['lastname'] = $user['lastname'];
+				$mailer->data['url'] = $this->router->link('common/home', null, \Bitsand\NONSSL, true);
+				$mailer->data['site_name'] = $this->config->get('site_name');
+
+				// @todo - This needs to be setable within the backend
+				$mailer->setSubject('Personal details (OOC) changed on {site_name}');
+				$mailer->setFrom($this->config->get('event_contact_email'));
+				$mailer->setSender($this->config->get('event_contact'));
+
+				$mailer->sendTo($email);
+			}
+
+			$this->redirect($this->router->link('user/account'), null, \Bitsand\SSL);
+		}
+
 		/*
 		 * Decided not to use a datepicker for the date of birth field as it's
 		 * easier to choose from 3 selectors than navigate back X years in a
@@ -47,37 +90,51 @@ class UserDetailsPersonal extends Controller {
 
 		// Pass all of the necessary values to the view
 		$details = $this->model_user_user->getPersonalDetails($this->user->getId());
+		$this->handlePostData(array('firstname', 'lastname', 'address_1', 'address_2', 'address_3', 'address_4', 'postcode', 'telephone', 'mobile', 'medical', 'emergency_contact', 'emergency_relation', 'emergency_number', 'car_registration', 'dietary', 'marshal', 'marshal_number', 'notes'), $details);
 
-		if (isset($this->request->post['firstname'])) {
-			$this->data['firstname'] = $this->request->post['firstname'];
-		} elseif (!empty($details)) {
-			$this->data['firstname'] = $details['firstname'];
-		} else {
-			$this->data['firstname'] = '';
+		// Handle the errors here
+		$this->data['error_firstname'] = isset($this->_errors['firstname']) ? $this->_errors['firstname'] : '';
+		$this->data['error_lastname'] = isset($this->_errors['lastname']) ? $this->_errors['lastname'] : '';
+		$this->data['error_address_1'] = isset($this->_errors['address_1']) ? $this->_errors['address_1'] : '';
+		$this->data['error_telephone'] = isset($this->_errors['telephone']) ? $this->_errors['telephone'] : '';
+		$this->data['error_dob'] = isset($this->_errors['dob']) ? $this->_errors['dob'] : '';
+		$this->data['error_emergency_contact'] = isset($this->_errors['emergency_contact']) ? $this->_errors['emergency_contact'] : '';
+		$this->data['error_emergency_relation'] = isset($this->_errors['emergency_relation']) ? $this->_errors['emergency_relation'] : '';
+		$this->data['error_emergency_number'] = isset($this->_errors['emergency_number']) ? $this->_errors['emergency_number'] : '';
+		$this->data['error_marshal_number'] = isset($this->_errors['marshal_number']) ? $this->_errors['marshal_number'] : '';
+		if (!empty($this->_errors)) {
+			$this->data['error'] = 'Please complete all fields';
 		}
 
-		if (isset($this->request->post['lastname'])) {
-			$this->data['lastname'] = $this->request->post['lastname'];
-		} elseif (!empty($details)) {
-			$this->data['lastname'] = $details['lastname'];
+		// DOB is slightly different as it's a date
+		if (isset($this->request->post['dob'])) {
+			$dob = mktime(0,0,0, (int)$this->request->post['dob']['m'], (int)$this->request->post['dob']['d'], (int)$this->request->post['dob']['y']);
+		} elseif (isset($details['dob']) && !empty($details['dob'])) {
+			$dob = strtotime($details['dob']);
 		} else {
-			$this->data['lastname'] = '';
+			$dob = strtotime('-20 years');
 		}
 
-		if (isset($this->request->post['address_1'])) {
-			$this->data['address_1'] = $this->request->post['address_1'];
-		} elseif (!empty($details)) {
-			$this->data['address_1'] = $details['address_1'];
+		$dob = explode('|',date('j|n|Y', $dob));
+		$this->data['dob']['d'] = $dob[0];
+		$this->data['dob']['m'] = $dob[1];
+		$this->data['dob']['y'] = $dob[2];
+
+		if (!empty($this->config->get('postcode_lookup'))) {
+			$this->data['postcode_lookup'] = $this->router->link('user/details-personal/postcode-lookup', array('postcode'=>''));
 		} else {
-			$this->data['address_1'] = '';
+			$this->data['postcode_lookup'] = false;
 		}
 
-		if (isset($this->request->post['address_2'])) {
-			$this->data['address_2'] = $this->request->post['address_2'];
-		} elseif (!empty($details)) {
-			$this->data['address_2'] = $details['address_2'];
-		} else {
-			$this->data['address_2'] = '';
+		$this->children = array(
+			'common/header',
+			'common/footer'
+		);
+
+		$this->setView('user/details-personal');
+
+		$this->view->setOutput($this->render());
+	}
 
 	/**
 	 * Hooks in a postcode lookup mechanism.  Must be requested via AJAX
@@ -141,37 +198,68 @@ class UserDetailsPersonal extends Controller {
 
 		$this->view->setOutput(json_encode($result));
 	}
-		if (isset($this->request->post['address_3'])) {
-			$this->data['address_3'] = $this->request->post['address_3'];
-		} elseif (!empty($details)) {
-			$this->data['address_3'] = $details['address_3'];
-		} else {
-			$this->data['address_3'] = '';
+
+	private function validate() {
+		$firstname_len = isset($this->request->post['firstname']) ? strlen(utf8_decode(trim($this->request->post['firstname']))) : 0;
+		if ($firstname_len < 2) {
+			$this->_errors['firstname'] = 'First name must be at least 2 characters in length';
 		}
 
-		if (isset($this->request->post['address_4'])) {
-			$this->data['address_4'] = $this->request->post['address_4'];
-		} elseif (!empty($details)) {
-			$this->data['address_4'] = $details['address_4'];
-		} else {
-			$this->data['address_4'] = '';
+		$lastname_len = isset($this->request->post['lastname']) ? strlen(utf8_decode(trim($this->request->post['lastname']))) : 0;
+		if ($lastname_len < 2) {
+			$this->_errors['lastname'] = 'Last name must be at least 2 characters in length';
 		}
 
-		if (isset($this->request->post['postcode'])) {
-			$this->data['postcode'] = $this->request->post['postcode'];
-		} elseif (!empty($details)) {
-			$this->data['postcode'] = $details['postcode'];
-		} else {
-			$this->data['postcode'] = '';
+		$address_len = isset($this->request->post['address_1']) ? strlen(utf8_decode(trim($this->request->post['address_1']))) : 0;
+		if ($address_len < 2) {
+			$this->_errors['address_1'] = 'Address must be completed';
 		}
 
-		$this->children = array(
-			'common/header',
-			'common/footer'
-		);
+		$telephone = isset($this->request->post['telephone']) ? trim($this->request->post['telephone']) : '';
+		$mobile = isset($this->request->post['mobile']) ? trim($this->request->post['mobile']) : '';
+		if (empty($telephone) && empty($mobile)) {
+			$this->_errors['telephone'] = 'Please enter at least one contact number';
+		}
 
-		$this->setView('user/details-personal');
+		// The following ensures the date of birth is valid, including dates that aren't real
+		if (isset($this->request->post['dob'])) {
+			$dob_entered = (int)$this->request->post['dob']['y'] . '|' . (int)$this->request->post['dob']['m'] . '|' . (int)$this->request->post['dob']['d'];
+			$dob = mktime(0,0,0, (int)$this->request->post['dob']['m'], (int)$this->request->post['dob']['d'], (int)$this->request->post['dob']['y']);
+		} else {
+			$dob_entered = 'not set';
+			$dob = 0;
+		}
+		if ($dob_entered != date('Y|n|j', $dob)) {
+			$this->_errors['dob'] = 'Please check, date of birth appears invalid';
+		}
 
-		$this->view->setOutput($this->render());
+		$emergency_contact_len = isset($this->request->post['emergency_contact']) ? strlen(utf8_decode(trim($this->request->post['emergency_contact']))) : 0;
+		if ($emergency_contact_len < 2) {
+			$this->_errors['emergency_contact'] = 'Emergency contact must be at least 2 characters in length';
+		}
+
+		$emergency_relation_len = isset($this->request->post['emergency_relation']) ? strlen(utf8_decode(trim($this->request->post['emergency_relation']))) : 0;
+		if ($emergency_relation_len < 2) {
+			$this->_errors['emergency_relation'] = 'Emergency relationship must be at least 2 characters in length';
+		}
+
+		$emergency_number_len = isset($this->request->post['emergency_number']) ? strlen(utf8_decode(trim($this->request->post['emergency_number']))) : 0;
+		if ($emergency_number_len < 2) {
+			$this->_errors['emergency_number'] = 'Emergency relationship must be at least 2 characters in length';
+		}
+
+		$car_registration_len = isset($this->request->post['car_registration']) ? strlen(utf8_decode(trim($this->request->post['car_registration']))) : 0;
+		if ($car_registration_len < 2) {
+			$this->_errors['car_registration'] = 'Car registration must be at least 2 characters in length';
+		}
+
+		$is_marshal = isset($this->request->post['marshal']) ? strtolower($this->request->post['marshal']) != 'no' : false;
+		$marshal_number_len = isset($this->request->post['marshal_number']) ? strlen(utf8_decode(trim($this->request->post['marshal_number']))) : 0;
+
+		if ($is_marshal && $marshal_number_len == 0) {
+			$this->_errors['marshal_number'] = 'Please enter a ' . strtolower($this->request->post['marshal']) . ' number';
+		}
+
+		return empty($this->_errors);
 	}
 }

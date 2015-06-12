@@ -63,6 +63,11 @@ Config::setVal('event_contact_email', 'webmonkeypete@googlemail.com'); // DB
 Config::setVal('event_contact',       'wmp');                          // DB
 Config::setVal('tech_contact_email',  'pete@pa-sy.com');               // DB
 Config::setVal('tech_contact',        'Pete');                         // DB
+// Encryption key (CRYPT_KEY) is used for encrypting values within the database
+Config::setVal('encryption_key',      'encryption key');
+// Config::setVal('player_id_prefix',    '');
+// Config::setVal('player_id_format',    '%03s');
+
 
 // Any customisations can occur here
 if (file_exists(Config::getAppPath() . 'custom.php')) {

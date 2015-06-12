@@ -239,6 +239,9 @@ textarea {
 .advanced-form input[name="postcode"], .advanced-form input[name="car_registration"] {
 	width: 25%;
 }
+.advanced-form input[name="postcode"] + .button {
+	vertical-align: top;
+}
 
 #login-form {
 	width: 50%;
