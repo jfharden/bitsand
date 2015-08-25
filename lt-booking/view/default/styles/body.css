@@ -26,6 +26,10 @@ a:visited {
 	margin: 0px auto;
 }
 
+.is-hidden {
+	display: none !important;
+}
+
 input[type="text"], input[type="email"], input[type="tel"], input[type="password"], input[type="date"],
 select {
 	border: 1px solid rgb(68, 68, 68);
@@ -50,6 +54,40 @@ input.button, a.button, button.button {
 	text-decoration: none;
 	border-radius: 2px;
 
+}
+
+ul.guild-list {
+	display: inline-block;
+	/*display: -webkit-box;
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;*/
+	font-size: 0px;
+}
+ul.guild-list li {
+	display: inline-block;
+	background-color: rgb(186, 186, 186);
+	border: 1px solid rgb(68, 68, 68);
+	color: rgb(43, 114, 187);
+	padding: 3px 5px 3px 8px;
+	border-radius: 2px;
+	font-size: 0.8rem;
+	overflow: hidden;
+	cursor: pointer;
+	margin: 0px 4px;
+	line-height: 1.3rem
+}
+ul.guild-list li:after {
+	content: '\00d7';
+	font-size: 1.2rem;
+	padding-left: 3px;
+	vertical-align: middle;
+	display: inline-block;
+}
+
+#gins {
+	width: auto;
 }
 
 input.button, a.button, button.button,
@@ -212,16 +250,21 @@ textarea {
 	font-weight: 600;
 	margin-bottom: 0.2rem;
 }
-.advanced-form .double .field {
+.advanced-form .double .field, .advanced-form .triple .field {
 	vertical-align: top;
 	display: inline-block;
+}
+.advanced-form .double .field {
 	width: 49%;
+}
+.advanced-form .triple .field {
+	width: 32.5%;
 }
 .advanced-form input[type="text"], .advanced-form input[type="tel"] {
 	width: 100%;
 	margin-bottom: 2px;
 }
-.advanced-form .double .field label {
+.advanced-form .double .field label, .advanced-form .triple .field label {
 	font-size: 0.825rem;
 	color: rgb(104, 104, 104);
 }
@@ -312,6 +355,9 @@ textarea {
 #content.user.personal h1 { background-image: url('../images/icons/24/note.png'); }
 #content.user.character h1 { background-image: url('../images/icons/24/wizard.png'); }
 
+.block {
+	margin-bottom: 0.25rem;
+}
 .block .row {
 	font-size: 1.4rem;
 	line-height: 4rem;
@@ -401,4 +447,9 @@ textarea[name="notes"] {
 		margin-top: 0px;
 		margin-bottom: 0px;
 	}
+}
+
+.advanced-form .block.guilds > label {
+	width: auto;
+	min-width: 10%
 }

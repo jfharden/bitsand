@@ -1,0 +1,228 @@
+<?php echo $header; ?>
+
+<div id="ic-form">
+  <form action="<?php $_($character); ?>" method="post" enctype="multipart/form" class="advanced-form">
+    <fieldset class="row double">
+      <legend>Character name:</legend>
+      <div class="field<?php if (!empty($error_character_name)) echo ' error'; ?>">
+        <input type="text" name="firstname" id="firstname" placeholder="Your character name" value="<?php $_($character_name); ?>" required="required" />
+        <label for="firstname">Actual name</label>
+      </div>
+      <div class="field">
+        <input type="text" name="alias" id="alias" placeholder="Preferred name" value="<?php $_($alias); ?>" />
+        <label for="alias">Preferred name</label>
+      </div>
+    </fieldset>
+
+    <fieldset name="address">
+      <legend>Character background:</legend>
+      <div class="block double">
+        <div class="field">
+          <select name="race" id="race">
+<?php foreach ($racial_types as $type) : ?>
+            <option value="<?php echo strtosafelower($type); ?>"<?php if (strtosafelower($type) == $race) echo ' selected="selected"'; ?>><?php $_($type); ?></option>
+<?php endforeach; ?>
+            <option value="other"<?php if (strtosafelower($race) == 'other') echo ' selected="selected"'; ?>>Lammie supported race</option>
+          </select>
+          <label for="race">Racial Group</label>
+          <div class="<?php if (!$race_other) echo 'is-hidden'; ?>" id="race-other">
+            <input type="text" name="race_other" id="race-other-name" value="<?php $_($race_other); ?>" placeholder="Race and Lammie ID"<?php if ($race_other) echo ' required="required"'; ?> />
+            <label for="race-other-name">Lammie supported race</label>
+          </div>
+        </div>
+        <div class="field">
+          <select name="gender" id="gender">
+<?php foreach ($gender_types as $type) : ?>
+            <option value="<?php echo strtosafelower($type); ?>"<?php if (strtosafelower($type) == $gender) echo ' selected="selected"'; ?>><?php $_($type); ?></option>
+<?php endforeach; ?>
+          </select>
+          <label for="gender">Gender</label>
+        </div>
+      </div>
+      <div class="block<?php if ($group_label) echo ' double'; ?>" id="faction-block">
+        <div class="field">
+          <select name="faction" id="faction">
+<?php foreach ($faction_names as $faction_name) : ?>
+            <option value="<?php echo strtosafelower($faction_name); ?>"<?php if (strtosafelower($faction_name) == $faction) echo ' selected="selected"'; ?>><?php $_($faction_name); ?></option>
+<?php endforeach; ?>
+          </select>
+          <label for="faction">Faction</label>
+        </div>
+<?php if ($group_label) : ?>
+        <div class="field">
+          <select name="group" id="group">
+            <option value=""<?php if ($group == '') echo ' selected="selected"'; ?>>None</option>
+<?php 	foreach ($group_names as $group_name) : ?>
+            <option value="<?php echo strtosafelower($group_name); ?>"<?php if (strtosafelower($group_name) == $group) echo ' selected="selected"'; ?>><?php $_($group_name); ?></option>
+<?php 	endforeach; ?>
+            <option value="other"<?php if ($group == 'other' || $group == 'Other (enter name below)') echo ' selected="selected"'; ?>>Other (please enter name)</option>
+          </select>
+          <label for="group"><?php $_($group_label); ?></label>
+          <div class="<?php if (!$group_other) echo 'is-hidden'; ?>" id="group-other">
+            <input type="text" name="group_other" id="group-other-name" value="<?php $_($group_other); ?>" placeholder="Group Name (other)"<?php if ($group_other) echo 'required="required"'; ?> />
+            <label for="group-other-name">Group name (other)</label>
+          </div>
+        </div>
+<?php endif; ?>
+      </div>
+      <div class="block<?php if ($ancestor_names) echo ' double'; ?>">
+<?php if ($ancestor_names) : ?>
+        <div class="field">
+          <select name="ancestor" id="ancestor">
+            <option value=""<?php if ($ancestor == '') echo ' selected="selected"'; ?>>None</option>
+<?php 	foreach ($ancestor_names as $ancestor_name) : ?>
+            <option value="<?php echo strtosafelower($ancestor_name); ?>"<?php if (strtosafelower($ancestor_name) == $ancestor) echo ' selected="selected"'; ?>><?php $_($ancestor_name); ?></option>
+<?php 	endforeach; ?>
+            <option value="other"<?php if ($ancestor == 'other' || $ancestor == 'Other (enter name below)') echo ' selected="selected"'; ?>>Other (please enter name)</option>
+          </select>
+          <label for="ancestor">Ancestor</label>
+        </div>
+        <div class="field<?php if ($ancestor != 'other' && $ancestor != 'Other (enter name below)') echo ' is-hidden'; ?>" id="ancestor-other">
+          <input type="text" name="ancestor_other" id="ancestor-other" value="<?php $_($ancestor_other); ?>"<?php if ($ancestor_other) echo ' required="required"'; ?> />
+          <label for="ancestor-other">Ancestor (leave blank for none)</label>
+        </div>
+<?php else : ?>
+        <div class="field">
+          <input type="hidden" name="ancestor" value="other" />
+          <input type="text" name="ancestor_other" id="ancestor-other" value="<?php echo $ancestor_other; ?>" />
+          <label for="ancestor-other">Ancestor (leave blank for none)</label>
+        </div>
+        <label for="ancestor-other">Ancestor</label>
+<?php endif; ?>
+      </div>
+
+      <div class="block double guilds">
+        <label>Guilds:</label>
+<?php if (!empty($guilds)) : ?>
+        <ul class="guild-list" id="guild-list">
+<?php 	foreach ($guilds as $guild_id) : ?>
+          <li><input type="hidden" name="guild[]" value="<?php echo $guild_id; ?>" /><?php echo $guild_names[$guild_id]; ?></li>
+<?php 	endforeach; ?>
+        </ul>
+<?php endif; ?>
+        <div class="field" id="gins">
+          <select id="guild-button">
+            <option value=""></option>
+<?php foreach ($guild_names as $guild_id => $guild_name) : ?>
+            <option value="<?php echo $guild_id; ?>"<?php if (in_array($guild_id, $guilds)) echo ' disabled="disabled"'; ?>><?php echo $guild_name; ?></option>
+<?php endforeach; ?>
+          </select>
+          <label for="guild-button">Add Guild</label>
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Character Build</legend>
+      <div class="block double">
+        <div>Body Development 1</div>
+        <div>Body Development 2
+      </div>
+    </fieldset>
+
+
+    <div class="row center">
+      <input type="submit" value="Save Your Details (OOC)" class="button" />
+    </div>
+  </form>
+</div>
+
+<script type="text/javascript">//<!--
+function checkGroup() {
+  var group = document.getElementById('group'),
+      groupOtherBlock = document.getElementById('group-other'),
+      selectedItem = group.options[group.selectedIndex].value;
+
+  if (selectedItem != 'other') {
+    groupOtherBlock.classList.add('is-hidden');
+    groupOtherBlock.getElementsByTagName('input')[0].removeAttribute('required');
+  } else {
+    groupOtherBlock.classList.remove('is-hidden');
+    groupOtherBlock.getElementsByTagName('input')[0].setAttribute('required', 'required');
+  }
+}
+
+function checkRace() {
+  var race = document.getElementById('race'),
+      raceOtherBlock = document.getElementById('race-other'),
+      selectedItem = race.options[race.selectedIndex].value;
+
+  if (selectedItem != 'other') {
+    raceOtherBlock.classList.add('is-hidden');
+    raceOtherBlock.getElementsByTagName('input')[0].removeAttribute('required');
+  } else {
+    raceOtherBlock.classList.remove('is-hidden');
+    raceOtherBlock.getElementsByTagName('input')[0].setAttribute('required', 'required');
+  }
+}
+
+function checkAncestor() {
+  var ancestor = document.getElementById('ancestor'),
+      ancestorOtherBlock = document.getElementById('ancestor-other'),
+      selectedItem = ancestor.options[ancestor.selectedIndex].value;
+
+  if (selectedItem != 'other') {
+    ancestorOtherBlock.classList.add('is-hidden');
+    ancestorOtherBlock.getElementsByTagName('input')[0].removeAttribute('required');
+  } else {
+    ancestorOtherBlock.classList.remove('is-hidden');
+    ancestorOtherBlock.getElementsByTagName('input')[0].setAttribute('required', 'required');
+  }
+}
+
+(function() {
+  var groupSelect = document.getElementById('group');
+  groupSelect.addEventListener('change', function() {
+    checkGroup();
+  });
+
+  var raceSelect = document.getElementById('race');
+  raceSelect.addEventListener('change', function() {
+    checkRace();
+  });
+
+  var ancestorSelect = document.getElementById('ancestor');
+  if (ancestorSelect.length > 0) {
+    ancestorSelect.addEventListener('change', function() {
+      checkAncestor();
+    });
+  }
+
+  var removeGuildPanel = function() {
+    var value = this.getElementsByTagName('input')[0].value,
+        guilds = document.getElementById('guild-button').options;
+
+    for (var g=0; g<guilds.length; g++) {
+      var guild = guilds[g];
+      if (guild.value == value) {
+        guild.removeAttribute('disabled');
+        break;
+      }
+    }
+
+    this.remove();
+  }
+
+  function addGuild() {
+    var selectedID = this.options[this.selectedIndex].value,
+        selectedText = this.options[this.selectedIndex].text,
+        newPanel = document.createElement('li');
+    newPanel.innerHTML = '<input type="hidden" name="guild[]" value="' + selectedID + '" />' + selectedText;
+    newPanel.addEventListener('click', removeGuildPanel);
+
+    document.getElementById('guild-list').appendChild(newPanel);
+
+    this.options[this.selectedIndex].setAttribute('disabled', 'disabled');
+    this.selectedIndex = 0;
+  }
+
+  var guildPanel = document.getElementById('guild-list'),
+      guilds = guildPanel.getElementsByTagName('li');
+  for (var g=0; g<guilds.length; g++) {
+    var guild = guilds[g];
+    guild.addEventListener('click', removeGuildPanel);
+  }
+  document.getElementById('guild-button').addEventListener('change', addGuild);
+})();
+//--></script>
+<?php echo $footer;

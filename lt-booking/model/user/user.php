@@ -137,7 +137,7 @@ class UserUser extends Model {
 	}
 
 	/**
-	 * Returns all of the personal details for the userl.  Bitand uses AES
+	 * Returns all of the personal details for the user.  Bitand uses AES
 	 * encryption on most of the personal details, using a generic encryption
 	 * key.  Long term goal should be to improve this
 	 *
@@ -184,6 +184,68 @@ class UserUser extends Model {
 			$user_query->row['dob'] = substr($dob, 0, 4) . '-' . substr($dob, 4, 2) . '-' . substr($dob, 6, 2);
 		}
 		return $user_query->row;
+	}
+
+	/**
+	 * Returns all of the character details for the user.  Each user can only
+	 * have a single character.
+	 *
+	 * @param integer $user_id
+	 * @return array
+	 * @todo Change the gender field into VARCHAR from ENUM.  There are very
+	 * few cases where ENUM is necessary.  The gender field should allow
+	 * backend customisation of the requirements, e.g. transgender
+	 * @todo Change race, gender, faction, ancestorsel to indexed fields rather
+	 * than free text.  Free text means that if the name of an ancestor or
+	 * similar changes, then it will break.
+	 */
+	public function getCharacterDetails($user_id) {
+		$character_query = $this->db->query("
+			SELECT
+			  chCharacterID AS `character_id`,
+			  chName AS `character_name`,
+			  chPreferredName AS `alias`,
+			  LOWER(chRace) AS `race`,
+			  LOWER(chGender) AS `gender`,
+			  chGroupSel AS `group`,
+			  chGroupText AS `group_other`,
+			  LOWER(chFaction) AS `faction`,
+			  LOWER(chAncestorSel) AS `ancestor`,
+			  chAncestor AS `ancestor_other`,
+			  chLocation AS `no_idea`,
+			  chNPC AS `is_npc`,
+			  chNotes AS `notes`,
+			  chOSP AS `lammies`,
+			  chMonsterOnly as `monster_only`,
+			  GROUP_CONCAT(gmID) AS `guilds`
+			FROM " . DB_PREFIX . "characters C LEFT JOIN " . DB_PREFIX . "guildmembers GM ON chPlayerID = gmPlayerID
+			WHERE chPlayerID = '" . (int)$user_id . "'");
+
+		/*
+		 * Guilds is a concatenated set of guild IDs
+		 */
+		if (isset($character_query->row['guilds'])) {
+			$character_query->row['guilds'] = explode(',', $character_query->row['guilds']);
+		}
+
+		/*
+		 * We now need to retrieve the character's skills, this is a simple
+		 * query that returns an array of skill IDs, the complexity occurs
+		 * elsewhere.
+		 */
+		$character_skill_query = $this->db->query("
+			SELECT
+			  stID, stSkillID
+			FROM " . DB_PREFIX . "skillstaken WHERE stPlayerID = '" . (int)$user_id . "'");
+		$character_skills = array();
+
+		foreach ($character_skill_query->rows as $character_skill) {
+			$character_skills[$character_skill['stSkillID']] = $character_skill['stID'];
+		}
+
+		$character_query->row['character_skills'] = $character_skills;
+
+		return $character_query->row;
 	}
 
 	/**
