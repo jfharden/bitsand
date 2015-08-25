@@ -173,9 +173,21 @@ abstract class Controller {
 				$data_field = $field;
 			}
 			if (isset($this->request->post[$field])) {
-				$this->data[$data_field] = trim($this->request->post[$field]);
+				if (!is_array($this->request->post[$field])) {
+					$this->data[$data_field] = trim($this->request->post[$field]);
+				} else {
+					foreach ($this->request->post[$field] as $key => $value) {
+						$this->data[$data_field][$key] = trim($value);
+					}
+				}
 			} elseif (isset($alternative_data[$field])) {
-				$this->data[$data_field] = trim($alternative_data[$field]);
+				if (!is_array($alternative_data[$field])) {
+					$this->data[$data_field] = trim($alternative_data[$field]);
+				} else {
+					foreach ($alternative_data[$field] as $key => $value) {
+						$this->data[$data_field][$key] = trim($value);
+					}
+				}
 			} else {
 				$this->data[$data_field] = $default;
 			}
