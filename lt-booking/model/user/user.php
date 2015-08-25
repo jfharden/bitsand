@@ -33,6 +33,17 @@ class UserUser extends Model {
 	const LOCKED = 2;
 	const LOGGED_IN = 3;
 
+	/**
+	 * Logs in a user with a specific e-mail and password.  Also allows an
+	 * admin to log in with an override option.
+	 *
+	 * This method correctly logs actions to the log table
+	 *
+	 * @param string $email
+	 * @param string $password
+	 * @param boolean $override
+	 * @return integer
+	 */
 	public function login($email, $password, $override = false) {
 		$email = strtolower(trim($email));
 
