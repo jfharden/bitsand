@@ -98,7 +98,7 @@
         <input type="text" name="car_registration" id="car_registration" placeholder="Car Registration" value="<?php $_($car_registration); ?>" required="required" /> <small>Enter "NA" if you don't drive</small>
       </div>
       <div class="block">
-        <label for="dietary">Dietry requirements:</label><?php var_dump($dietary); ?>
+        <label for="dietary">Dietry requirements:</label>
         <select name="dietary" id="dietary" onchange="checkDiet(this);">
           <option value="Omnivore"<?php if (strtolower($dietary) == 'omnivore') echo ' selected="selected"'; ?>>No special requirements</option>
           <option value="Vegetarian"<?php if (strtolower($dietary) == 'vegetarian') echo ' selected="selected"'; ?>>Vegetarian</option>
