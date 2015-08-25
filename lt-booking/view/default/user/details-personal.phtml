@@ -100,10 +100,10 @@
       <div class="block">
         <label for="dietary">Dietry requirements:</label>
         <select name="dietary" id="dietary" onchange="checkDiet(this);">
-          <option value="Omnivore"<?php if (strtolower($dietary) == 'omnivore') echo ' selected="selected"'; ?>>No special requirements</option>
-          <option value="Vegetarian"<?php if (strtolower($dietary) == 'vegetarian') echo ' selected="selected"'; ?>>Vegetarian</option>
-          <option value="Vegan"<?php if (strtolower($dietary) == 'vegan') echo ' selected="selected"'; ?>>Vegan</option>
-          <option value="Other/allergy - please detail in medical conditions"<?php if (strtolower(substr($dietary, 0, 5)) == 'other') echo ' selected="selected"'; ?>>Other / allergy - please detail in medical conditions</option>
+          <option value="Omnivore"<?php if (strtosafelower($dietary) == 'omnivore') echo ' selected="selected"'; ?>>No special requirements</option>
+          <option value="Vegetarian"<?php if (strtosafelower($dietary) == 'vegetarian') echo ' selected="selected"'; ?>>Vegetarian</option>
+          <option value="Vegan"<?php if (strtosafelower($dietary) == 'vegan') echo ' selected="selected"'; ?>>Vegan</option>
+          <option value="Other/allergy - please detail in medical conditions"<?php if (strtosafelower(substr($dietary, 0, 5)) == 'other') echo ' selected="selected"'; ?>>Other / allergy - please detail in medical conditions</option>
         </select>
       </div>
     </fieldset>
@@ -115,14 +115,14 @@
         <div class="group double">
           <div class="field">
             <select name="marshal" onchange="checkMarshal(this);">
-              <option value="No" <?php if (strtolower($marshal) == 'no') echo ' selected="selected"'; ?>>Neither</option>
-              <option value="Marshal" <?php if (strtolower($marshal) == 'marshal') echo ' selected="selected"'; ?>>Marshal</option>
-              <option value="Referee" <?php if (strtolower($marshal) == 'referee') echo ' selected="selected"'; ?>>Referee</option>
-              <option value="Senior Referee" <?php if (strtolower($marshal) == 'senior referee') echo ' selected="selected"'; ?>>Senior Referee</option>
+              <option value="No" <?php if (strtosafelower($marshal) == 'no') echo ' selected="selected"'; ?>>Neither</option>
+              <option value="Marshal" <?php if (strtosafelower($marshal) == 'marshal') echo ' selected="selected"'; ?>>Marshal</option>
+              <option value="Referee" <?php if (strtosafelower($marshal) == 'referee') echo ' selected="selected"'; ?>>Referee</option>
+              <option value="Senior Referee" <?php if (strtosafelower($marshal) == 'senior referee') echo ' selected="selected"'; ?>>Senior Referee</option>
             </select>
           </div>
           <div class="field<?php echo !empty($marshal) && strtolower($marshal) != 'no' && !empty($marshal_number) ? ' visible' : ' hidden'; ?><?php if (!empty($error_marshal_number)) echo ' error'; ?>" id="marshal-number">
-            <input type="text" name="marshal_number" id="marshal_number" placeholder="Number" value="<?php $_($marshal_number); ?>"<?php if (!empty($marshal) && strtolower($marshal) != 'no') echo ' required="required"'; ?> />
+            <input type="text" name="marshal_number" id="marshal_number" placeholder="Number" value="<?php $_($marshal_number); ?>"<?php if (!empty($marshal) && strtosafelower($marshal) != 'no') echo ' required="required"'; ?> />
             <label for="marshal_number" id="marshal-number-label">Number</label>
           </div>
         </div>
