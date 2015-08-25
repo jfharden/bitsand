@@ -7,3 +7,19 @@ BUG FIXES
 
 OTHER CHANGES
 Moved over to a MVC style 'framework' to more easily allow customisation of the front-end.  This version required PHP 5.5 or greater.
+
+Configuration variable "LIST_GROUPS_LABEL".  Entering a value of "1" will use a default label of "Group" as the select group label.
+
+All drop-down fields now store the selected item in lower-case.  This may cause unwanted results if you roll-back to v8.x after you have gone live.  All funny characters are either converted to their safe equivalent (â becomes a) or removed entirely (such as quotes).  This does mean that you cannot have D'Lure and DLure as unique entities.
+
+If a character has entered an ancestor or group name manually and this has then been added into the appropriate list as a valid option, the correct option in the drop down should be selected automatically.
+
+Character Skill form has been given a complete overhaul and uses a 50/50 mix of information from the database and hard-coded details within the form.  This ensures that pre-requisite CS's are correctly selected - i.e. you cannot have Healing 2 without Healing 1.
+
+
+DEPRACATED
+jQuery has been entirely removed for a pure JavaScript flavour.  This has reduced the overhead of all areas of the site and improved the page performance significantly.
+
+Configuration variable "NUM_GUILDS".  You can now select as many guilds as has been configured in the back-end, these are controlled using JavaScript and hidden input fields.
+
+"Other" option within ancestors and groups.  The choice of "other" is now hard-coded into the front-end of the website, this has allowed us to hide/show the other box, reducing the clutter on screen.
