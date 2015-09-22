@@ -72,7 +72,7 @@ class UserDetailsCharacter extends Controller {
 		// Pass all of the necessary values to the view
 		$details = $this->model_user_user->getCharacterDetails($this->user->getId());
 
-		$this->handlePostData(array('character_name', 'alias', 'ancestor', 'ancestor_other', 'guilds', 'group', 'group_other'), $details);
+		$this->handlePostData(array('character_name', 'alias', 'ancestor', 'ancestor_other', 'guilds', 'group', 'group_other', 'location'), $details);
 
 		// Handle the errors here
 		$this->data['error_firstname'] = isset($this->_errors['firstname']) ? $this->_errors['firstname'] : '';
@@ -156,6 +156,21 @@ class UserDetailsCharacter extends Controller {
 					$this->data['ancestor_other'] = '';
 				}
 			}
+		}
+
+		// Character location
+		// @todo Needs more options, required/optional, allow Other etc
+		$this->data['location_names'] = array();
+
+		if ($this->config->get('character_location_label')) {
+			$this->data['location_label'] = $this->config->get('character_location_label');
+			$this->load->model('character/location');
+
+			foreach ($this->model_character_location->getAll() as $location) {
+				$this->data['location_names'][$location['location_id']] = $location['location_name'];
+			}
+		} else {
+			$this->data['location_label'] = '';
 		}
 
 		// Guilds

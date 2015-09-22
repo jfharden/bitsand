@@ -91,6 +91,20 @@
 <?php endif; ?>
       </div>
 
+<?php if ($location_label && $location_names) : ?>
+      <div class="block single">
+        <div class="field">
+          <select name="location" id="location">
+            <option value=""<?php if ($location == '') echo ' selected="selected"'; ?>>Not listed</option>
+<?php 	foreach ($location_names as $location_name) : ?>
+            <option value="<?php echo strtosafelower($location_name); ?>"<?php if (strtosafelower($location_name) == $location) echo ' selected="selected"'; ?>><?php $_($location_name); ?></option>
+<?php 	endforeach; ?>
+          </select>
+          <label for="location"><?php echo $location_label; ?></label>
+        </div>
+      </div>
+<?php endif; ?>
+
       <div class="block double guilds">
         <label>Guilds:</label>
 <?php if (!empty($guilds)) : ?>
