@@ -127,7 +127,7 @@ class UserDetailsCharacter extends Controller {
 		// Group items, this is actually optional
 		$this->data['group_label'] = $this->config->get('list_groups_label');
 		$this->data['group_names'] = array();
-		if ($this->data['group_label'] == true || $this->data['group_label'] == 1) {
+		if ($this->data['group_label'] === true || $this->data['group_label'] == 1) {
 			$this->data['group_label'] = 'Group';
 		}
 		if ($this->data['group_label']) {
