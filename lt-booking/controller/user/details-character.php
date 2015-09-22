@@ -181,6 +181,14 @@ class UserDetailsCharacter extends Controller {
 			$this->data['guild_names'][$guild['guild_id']] = $guild['guild_name'];
 		}
 
+		// And now onto the complicate bit - character skills
+		var_dump($details['character_skills']);
+
+		$this->load->model('character/skills');
+
+
+		die();
+
 		$this->children = array(
 			'common/header',
 			'common/footer'
