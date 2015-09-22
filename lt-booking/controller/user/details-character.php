@@ -139,6 +139,7 @@ class UserDetailsCharacter extends Controller {
 
 		// Ancestors
 		$this->data['ancestor_names'] = array();
+
 		if ($this->config->get('ancestor_dropdown')) {
 			$this->load->model('character/ancestor');
 
@@ -151,7 +152,7 @@ class UserDetailsCharacter extends Controller {
 				$this->data['ancestor_names'][$ancestor['ancestor_id']] = $ancestor['ancestor_name'];
 
 				// It's possible that the entered name has been added to the list
-				if ($this->data['ancestor'] == 'other' && \strtosafelower($ancestor['ancestor_name']) == strtosafelower($this->data['ancestor_other'])) {
+				if ($this->data['ancestor'] == 'other' && strtosafelower($ancestor['ancestor_name']) == strtosafelower($this->data['ancestor_other'])) {
 					$this->data['ancestor'] = strtosafelower($ancestor['ancestor_name']);
 					$this->data['ancestor_other'] = '';
 				}
