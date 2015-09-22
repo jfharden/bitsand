@@ -51,8 +51,8 @@ Config::setVal('db_prefix',           'ba');
 Config::setVal('salt',                'salt');
 Config::setVal('login_tries',         3);
 Config::setVal('password_minimum',    8);
-Config::setVal('site_name',           'Bitsand'); // DB
-Config::setVal('site_title',          'BA TEST'); // DB
+Config::setVal('site_name',           'Bitsand'); // db default
+Config::setVal('site_title',          'Bitsand Basic Installation'); // db default
 Config::setVal('mail_protocol',       'mail');    // Can be mail or smtp
 Config::setVal('mail_hostname',       '');
 Config::setVal('mail_username',       '');
@@ -68,6 +68,7 @@ Config::setVal('encryption_key',      'encryption key');
 // Config::setVal('player_id_prefix',    '');
 // Config::setVal('player_id_format',    '%03s');
 
+Config::setVal('default_faction',     'Bears'); // db default
 
 // Any customisations can occur here
 if (file_exists(Config::getAppPath() . 'custom.php')) {
@@ -92,6 +93,8 @@ if (file_exists(Config::getAppPath() . 'routes.php')) {
 // Initialise Bitsand
 include($root_path . 'Bitsand' . DIRECTORY_SEPARATOR . 'init.php');
 
+// Load any configuration items from the database, but only if they contain a value
+Config::loadFromDB(Config::OVERWRITE_NOT_EMPTY);
 
 use Bitsand\Controllers\Action;
 use Bitsand\Controllers\ActionRoute;
