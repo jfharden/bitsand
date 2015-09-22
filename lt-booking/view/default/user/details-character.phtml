@@ -39,7 +39,7 @@
           <label for="gender">Gender</label>
         </div>
       </div>
-      <div class="block<?php if ($group_label) echo ' double'; ?>" id="faction-block">
+      <div class="block<?php echo $group_label ? ' double' : ' single'; ?>" id="faction-block">
         <div class="field">
           <select name="faction" id="faction">
 <?php foreach ($faction_names as $faction_name) : ?>
@@ -65,7 +65,7 @@
         </div>
 <?php endif; ?>
       </div>
-      <div class="block<?php if ($ancestor_names) echo ' double'; ?>">
+      <div class="block<?php echo $ancestor_names ? ' double' : ' single'; ?>">
 <?php if ($ancestor_names) : ?>
         <div class="field">
           <select name="ancestor" id="ancestor">

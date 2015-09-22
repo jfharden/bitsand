@@ -264,7 +264,13 @@ textarea {
 	width: 100%;
 	margin-bottom: 2px;
 }
-.advanced-form .double .field label, .advanced-form .triple .field label {
+.advanced-form label + select {
+	width: auto;
+}
+.advanced-form input[type="text"] + label, .advanced-form input[type="tel"] + label {
+	margin-top: -2px; /* Removes the 2px margin used for padding */
+}
+.advanced-form .single .field label, .advanced-form .double .field label, .advanced-form .triple .field label {
 	font-size: 0.825rem;
 	color: rgb(104, 104, 104);
 }
@@ -356,7 +362,7 @@ textarea {
 #content.user.character h1 { background-image: url('../images/icons/24/wizard.png'); }
 
 .block {
-	margin-bottom: 0.25rem;
+	margin-bottom: 0.35rem;
 }
 .block .row {
 	font-size: 1.4rem;
