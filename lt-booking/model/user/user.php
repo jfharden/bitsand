@@ -208,7 +208,8 @@ class UserUser extends Model {
 	 * backend customisation of the requirements, e.g. transgender
 	 * @todo Change race, gender, faction, ancestorsel to indexed fields rather
 	 * than free text.  Free text means that if the name of an ancestor or
-	 * similar changes, then it will break.
+	 * similar changes, then it will break.  Ancestors should flick over to
+	 * 'other' now though.
 	 */
 	public function getCharacterDetails($user_id) {
 		$character_query = $this->db->query("
@@ -223,7 +224,7 @@ class UserUser extends Model {
 			  LOWER(chFaction) AS `faction`,
 			  LOWER(chAncestorSel) AS `ancestor`,
 			  chAncestor AS `ancestor_other`,
-			  chLocation AS `no_idea`,
+			  LOWER(chLocation) AS `location`,
 			  chNPC AS `is_npc`,
 			  chNotes AS `notes`,
 			  chOSP AS `lammies`,
