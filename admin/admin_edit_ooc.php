@@ -40,7 +40,7 @@ if ($_POST ['btnSubmit'] != '' && CheckReferrer ('admin_edit_ooc.php')) {
 	$sEmail = SafeEmail ($_POST ['txtEmail']);
 	//Only check for valid e-mail address if one was included - user may not have an e-mail address
 	if ($sEmail != '')
-		if (!eregi ("^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]*)$", $sEmail))
+		if (!eregi ("^[_a-z0-9-]+([.+][_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]*)$", $sEmail))
 			$sWarn .= htmlentities ($sEmail) . " is not a valid e-mail address<br>\n";
 
 	if ($sWarn != '')
