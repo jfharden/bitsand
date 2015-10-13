@@ -13,8 +13,9 @@ Please note, the new location of the Systems file (for registration import) is: 
 Bitsand is known to be in use by:
 
 * [Lions](http://bookings.lionsfaction.co.uk/)
-* [Harts](http://albion.leynexus.net/booking/)
+* [Harts](http://www.hartsofalbion.co.uk/booking/)
 * [Jackals](http://www.jackalfaction.com/booking/)
 * [Bears](http://kaitain.vm.bytemark.co.uk/bears/)
 * [Vipers](http://www.viperfaction.co.uk/booking/)
 * [Dragons](http://events.dragonsfaction.org)
+* [Incantors](http://www.hartsofalbion.co.uk/incantors-booking/)
