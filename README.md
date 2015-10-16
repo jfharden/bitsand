@@ -13,11 +13,12 @@ Please note, the new location of the Systems file (for registration import) is: 
 Bitsand is known to be in use by:
 
 * [Lions](http://bookings.lionsfaction.co.uk/)
-* [Harts](http://albion.leynexus.net/booking/)
+* [Harts](http://www.hartsofalbion.co.uk/booking/)
 * [Jackals](http://www.jackalfaction.com/booking/)
 * [Bears](http://kaitain.vm.bytemark.co.uk/bears/)
 * [Vipers](http://www.viperfaction.co.uk/booking/)
 * [Dragons](http://events.dragonsfaction.org)
+* [Incantors](http://www.hartsofalbion.co.uk/incantors-booking/)
 
 ## Installation Instructions
 
@@ -38,4 +39,3 @@ Bitsand is known to be in use by:
     1. Register a user
     2. Log in as that user and look at the footer of the page to find that users player id (it says *Logged in with Player ID X*)
     3. Edit inc/inc\_config.php and set the player id of the root user to the one you just register (look for *define ('ROOT_USER_ID', NULL);*)
-

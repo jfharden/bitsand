@@ -34,7 +34,7 @@ if ($_POST ['btnSubmit'] != '' && CheckReferrer ('register.php')) {
 	$sProblem = '';
 	$sEmail = SafeEmail ($_POST ['txtEmail']);
 	//Check e-mail address is reasonable
-	if (!eregi ("^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]*)$", $sEmail))
+	if (!eregi ("^[_a-z0-9-]+([.+][_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]*)$", $sEmail))
 		$sProblem .= htmlentities ($sEmail) . " is not a valid e-mail address<br>\n";
 	//Generate password
 	$sNewPass = '';

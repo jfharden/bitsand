@@ -32,7 +32,7 @@ include ($CSS_PREFIX . 'inc/inc_head_html.php');
 function email_check ($sEmail, $sSetting) {
 	if ($sEmail == '')
 		echo "<span class = 'sans-warn'>$sSetting is not set</span><br>";
-	elseif (!eregi ("^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]*)$", $sEmail))
+	elseif (!eregi ("^[_a-z0-9-]+([.+][_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]*)$", $sEmail))
 		echo "<span class = 'sans-warn'>$sSetting: " . htmlentities ($sEmail) . " is not a valid e-mail address</span><br>\n";
 	else
 		echo "$sSetting: $sEmail<br>";
