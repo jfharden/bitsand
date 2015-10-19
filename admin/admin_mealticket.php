@@ -71,8 +71,10 @@ $sql = "SELECT plPlayerID, " .
 	"bkAmountExpected, " .
 	"bkPayOnGate, ".
 	"bkID ".
-	"FROM {$db_prefix}players, {$db_prefix}characters, {$db_prefix}bookings " .
-	"WHERE plPlayerID = chPlayerID AND chPlayerID = bkPlayerID and bkEventID = $eventid";
+	"FROM {$db_prefix}players " .
+	"LEFT JOIN {$db_prefix}characters ON plPlayerID = chPlayerID " .
+	"INNER JOIN {$db_prefix}bookings ON plPlayerID = bkPlayerID " .
+	"WHERE bkEventID = $eventid ";
 
 $result = ba_db_query ($link, $sql);
 ?>
