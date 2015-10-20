@@ -29,8 +29,10 @@ define ('ROOT_USER_ID', NULL);
 // Prefix for player ID. Player ID will be this prefix followed by a number
 define ('PID_PREFIX', '');
 
-// Type of database. Valid values are 'mysql' (for the PHP MySQL extension) or 'mysqli' (for the PHP Improved MySQL extension)
-define ('DB_TYPE','mysql');
+// Type of database. Valid values are:
+//   'mysql' (for the PHP MySQL extension, which is now deprecated as of php 5.5)
+//   'mysqli' (for the PHP Improved MySQL extension)
+define ('DB_TYPE','mysqli');
 // MySQL hostname
 define ('DB_HOST','localhost');
 // Name of MySQL database
