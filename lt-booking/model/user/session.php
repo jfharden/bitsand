@@ -2,7 +2,7 @@
 /*+----------------------------------------------------------------------------
  || Bitsand - an online booking system for Live Role Play events
  ||
- || File public/model/user/user.php
+ || File public/model/user/session.php
  ||     Author: Pete Allison
  ||  Copyright: (C) 2006 - 2015 The Bitsand Project
  ||             (http://github.com/PeteAUK/bitsand)
