@@ -33,6 +33,9 @@ class UserUser extends Model {
 	const LOCKED = 2;
 	const LOGGED_IN = 3;
 
+	/** @var integer The length of the token to use for e-mail change */
+	private $_change_token_length = 40;
+
 	/**
 	 * Logs in a user with a specific e-mail and password.  Also allows an
 	 * admin to log in with an override option.
@@ -104,15 +107,19 @@ class UserUser extends Model {
 	}
 
 	/**
-	 * Retrieves some basic details from the passed e-mail
-	 * @param string $email
+	 * Retrieves some basic details from the passed item
+	 * @param mixed $email
 	 * @return array
 	 */
-	public function getBasicDetails($email, $include_reset_token = false) {
-		$email = strtolower(trim($email));
+	public function getBasicDetails($user_ref, $include_reset_token = false) {
+		if (is_numeric($user_ref)) {
+			$where = "plPlayerID = '" . (int)$user_ref . "'";
+		} else {
+			$where = "LOWER(plEmail) = '" . $this->db->escape($user_ref) . "'";
+		}
 
 		if (!$include_reset_token) {
-			$sql = "SELECT plPlayerID AS `user_id`, plFirstName AS `firstname`, plSurname AS `lastname` FROM " . DB_PREFIX . "players WHERE LOWER(plEmail) = '" . $this->db->escape($email) . "' ORDER BY plLastLogin DESC";
+			$sql = "SELECT plPlayerID AS `user_id`, plFirstName AS `firstname`, plSurname AS `lastname` FROM " . DB_PREFIX . "players WHERE " . $where . " ORDER BY plLastLogin DESC";
 		} else {
 			/*
 			 * The reset token is used to allow the user the option to reset their
@@ -122,7 +129,7 @@ class UserUser extends Model {
 			 * unique to a user and automatically expires once the password has
 			 * been changed or the user remembered it.
 			 */
-			$sql = "SELECT plPlayerID AS `user_id`, plFirstName AS `firstname`, plSurname AS `lastname`, MD5(CONCAT(plPlayerID, plPassword, plLastLogin)) AS `reset_token` FROM " . DB_PREFIX . "players WHERE LOWER(plEmail) = '" . $this->db->escape($email) . "' ORDER BY plLastLogin DESC";
+			$sql = "SELECT plPlayerID AS `user_id`, plFirstName AS `firstname`, plSurname AS `lastname`, MD5(CONCAT(plPlayerID, plPassword, plLastLogin)) AS `reset_token` FROM " . DB_PREFIX . "players WHERE " . $where . " ORDER BY plLastLogin DESC";
 		}
 
 		$user_query = $this->db->query($sql);
@@ -195,6 +202,26 @@ class UserUser extends Model {
 			$user_query->row['dob'] = substr($dob, 0, 4) . '-' . substr($dob, 4, 2) . '-' . substr($dob, 6, 2);
 		}
 		return $user_query->row;
+	}
+
+	/**
+	 * Returns the users current e-mail address
+	 *
+	 * @param integer $user_id
+	 * @return string
+	 */
+	public function getEmail($user_id) {
+		$email_query = $this->db->query("
+			SELECT
+			  plEmail
+			FROM " . DB_PREFIX . "players
+			WHERE plPlayerID = '" . (int)$user_id . "'");
+
+		if (isset($email_query->row['plEmail'])) {
+			return $email_query->row['plEmail'];
+		} else {
+			return '';
+		}
 	}
 
 	/**
@@ -321,6 +348,65 @@ class UserUser extends Model {
 		}
 
 		return $rows_changed;
+	}
+
+	/**
+	 * The first part to allow users to change their e-mail.  Method returns
+	 * the unique token to use
+	 *
+	 * @param integer $user_id
+	 * @param string $new_email
+	 * @param integer $expires PHP timestamp when the token expires
+	 * @return string
+	 */
+	public function changeEmail($user_id, $new_email, $expires = null) {
+		// We need a code
+		$token = bin2hex(mcrypt_create_iv($this->_change_token_length / 2, MCRYPT_DEV_RANDOM));
+
+		// We then need to work out when this token expires
+		if (is_null($expires)) {
+			$expires = strtotime('+72 hours');
+		}
+
+		$this->db->query("UPDATE " . DB_PREFIX . "players SET plNewMail = '" . $this->db->escape($new_email) . "', plNewMailCode = '" . $this->db->escape($token . $expires) . "' WHERE plPlayerID = '" . (int)$user_id . "'");
+		if ($this->db->countAffected() > 0) {
+			return $token;
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * Second and final part to allow a user to change their e-mail.  This
+	 * simply matches the token and ensures that it's not expired.
+	 *
+	 * @param string $token
+	 * @return array|false If true then returns user information, including the
+	 * old e-mail address
+	 */
+	public function authoriseEmail($token) {
+		$email_query = $this->db->query("SELECT plPlayerID, plEmail, plNewMail, plNewMailCode, plFirstName, plSurname FROM " . DB_PREFIX . "players WHERE LEFT(plNewMailCode, " . (int)$this->_change_token_length . ") = '" . $this->db->escape($token) . "'");
+
+		if ($email_query->num_rows > 0) {
+			$player_id = $email_query->row['plPlayerID'];
+			$new_email = $email_query->row['plNewMail'];
+			$expires = substr($email_query->row['plNewMailCode'], $this->_change_token_length);
+			if ($expires < time()) {
+				return false;
+			}
+
+			$this->db->query("UPDATE " . DB_PREFIX . "players SET plEmail = '" . $this->db->escape($new_email) . "', plNewMailCode = '', plNewMail = '' WHERE plPlayerID = '" . (int)$player_id . "'");
+
+			return array(
+				'user_id'   => $player_id,
+				'firstname' => $email_query->row['plFirstName'],
+				'lastname'  => $email_query->row['plSurname'],
+				'email'     => $new_email,
+				'old_email' => $email_query->row['plEmail']
+			);
+		}
+
+		return false;
 	}
 
 	/**

@@ -1,0 +1,31 @@
+<?php echo $header; ?>
+
+<div id="change-email">
+  <p>Please enter a new e-mail address for your account.  Once entered an e-mail will be sent to your new address containing a link to confirm that the new address is valid.  Additionally we will send an e-mail to your old address to confirm the request to change.</p>
+
+  <form action="<?php echo $reset; ?>" method="post" class="fixed-form">
+    <div class="row">
+      <label>Current E-mail:</label>
+      <?php echo $current_email; ?>
+    </div>
+    <div class="row">
+      <label for="email">E-mail:</label>
+      <input type="email" name="email" id="email" placeholder="E-mail" value="<?php $_($email); ?>" required="required" />
+<?php if (isset($error_email)) : ?>
+      <span class="error"><?php $_($error_email); ?></span>
+<?php endif; ?>
+    </div>
+    <div class="row">
+      <label for="confirm">Confirm:</label>
+      <input type="email" name="confirm" id="confirm" placeholder="Confirm E-mail" value="<?php $_($confirm); ?>" required="required" />
+<?php if (isset($error_confirm)) : ?>
+      <span class="error"><?php $_($error_confirm); ?></span>
+<?php endif; ?>
+    </div>
+    <div class="row center">
+      <input type="submit" value="Change E-mail" class="button" />
+    </div>
+  </form>
+</div>
+
+<?php echo $footer;
