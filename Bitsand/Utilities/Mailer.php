@@ -483,7 +483,7 @@ class Mailer {
 		$content = preg_replace($comment_regex, null, $content);
 
 		// Handle any if queries, these check for the existance of a variable and if it exists
-		while (preg_match('/{if:(.*?)}(.*?){\/if:.*}/simxU', $content, $ifs)) {
+		while (preg_match('/{if:(.*)}(.*){\/if:.*}/simxU', $content, $ifs)) {
 			$replace = '';
 
 			$value = isset($this->data[$ifs[1]]) ? $this->data[$ifs[1]] : null;
