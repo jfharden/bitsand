@@ -75,8 +75,7 @@ if ($_POST ['btnSubmit'] != '' && CheckReferrer ('register.php')) {
 			'', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '')";
 		//Run query
 		ba_db_query($link, $sql);
-		var_dump($sql);
-		die;
+
 		//E-mail user
 		$sBody = "You are now registered at " . SYSTEM_NAME . ". " .
 			"You can use the following details to log in:\n\n" .
