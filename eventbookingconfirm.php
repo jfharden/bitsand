@@ -65,7 +65,7 @@ function updatePaypalButton()
 
 	if (ba_db_num_rows($result) == 0)
 	{
-		$sql = "INSERT INTO {$db_prefix}bookings (bkPlayerID, bkEventID, bkBookAs, bkDateICConfirmed, bkDateOOCConfirmed) VALUES ($PLAYER_ID, $eventid, '$bookas', '$today', '$today')";
+		$sql = "INSERT INTO {$db_prefix}bookings (bkPlayerID, bkEventID, bkBookAs, bkDateICConfirmed, bkDateOOCConfirmed, bkDatePaymentConfirmed) VALUES ($PLAYER_ID, $eventid, '$bookas', '$today', '$today', '0000-00-00')";
 		ba_db_query ($link, $sql);
 
 		$sql = "SELECT * from {$db_prefix}bookings where bkPlayerID = $PLAYER_ID and bkEventID = $eventid";
