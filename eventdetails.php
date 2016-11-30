@@ -29,6 +29,9 @@ include ('inc/inc_commonqueries.php');
 
 $db_prefix = DB_PREFIX;
 $eventinfo = getEventDetails($_GET['EventID'], 0);
+if (!$eventinfo || !isset($eventinfo['evEventID'])) {
+	die('Sorry this event doesn\'t appear to exist?');
+}
 $metadescription = "Online booking for ".htmlentities (stripslashes ($eventinfo['evEventName']));
 include ('inc/inc_head_html.php');
 
