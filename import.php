@@ -44,38 +44,70 @@ if (ba_db_num_rows ($result) > 0) {
 	die ($msg);
 }
 
-$sURL = $_POST ['selSystem'];
+$sURL = $_POST['selSystem'];
 
 //Create POST headers
-if (isset ($_POST ['ic']))
+if (isset($_POST ['ic']))
 	$ic = 1;
 else
 	$ic = 0;
-$data = array ('email' => $_POST ['email'], 'password' => $_POST ['password'], 'ic' => $ic);
-$data = http_build_query ($data);
+$data = array('email' => $_POST['email'], 'password' => $_POST['password'], 'ic' => $ic);
+$data = http_build_query($data);
 
-//Get context
-$opts = array (
-	'http' => array (
-		'method' => 'POST',
-		'header'=> "Content-type: application/x-www-form-urlencoded\r\n"
-			. "Content-Length: " . strlen ($data) . "\r\n",
-		'content' => $data
-	)
-);
-$context = stream_context_create($opts);
+// Get players details - use Curl as a preference
+if (function_exists('curl_init')) {
+	$curl = curl_init();
+	curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+	curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+	curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+	curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
+	// Use the following for debugging
+	curl_setopt($curl, CURLOPT_VERBOSE, true);
+	curl_setopt($curl, CURLOPT_STDERR, fopen('php://stderr', 'w'));
 
-//Get data
-$csv = file ($sURL, FILE_SKIP_EMPTY_LINES, $context);
-if (substr ($csv [0], 0, 6) == "ERROR:") {
+	curl_setopt($curl, CURLOPT_POST, true);
+	curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+
+	$url = trim($sURL) . '?' . $data;
+	curl_setopt($curl, CURLOPT_URL, $url);
+
+	$response = curl_exec($curl);
+	if ($response === false) {
+		$response = 'ERROR: ' . sprintf('curl error (#%d): %s<br/>\n', curl_errno($curl), htmlspecialchars(curl_error($curl)));
+	}
+} else {
+	$opts = array(
+		'http' => array(
+			'method' => 'POST',
+			'header'=> 'Content-type: application/x-www-form-urlencoded',
+			'content' => $data
+		)
+	);
+	$context = stream_context_create($opts);
+	$fp = @fopen(trim($sURL), 'rb', false, $context);
+
+	if ($fp) {
+		$response = @stream_get_contents($fp);
+	}
+}
+
+if (!$response || substr($response, 0, 6) == "ERROR:") {
 	$msg = "<html><body>The remote system returned the following error:<br>\n";
-	$msg .= "<span style = 'color: red; font-weight: bold;'>" . substr ($csv [0], 7) . "</span>\n";
+	$msg .= "<span style= 'color: red; font-weight: bold;'>";
+	if ($response) {
+		$msg .= substr($response, 7);
+	} else {
+		$msg .= 'Unable to connect to remote server';
+	}
+	$msg .= "</span>\n";
 	$msg .= "</body></html>\n";
-	die ($msg);
+	die($msg);
+} else {
+	$response = array_filter(explode("\n", $response));
 }
 
 // OOC details
-$sPlayerCSV = explode (",", trim ($csv [0]));
+$sPlayerCSV = explode (",", trim ($response[0]));
 
 $sFirstName = ba_db_real_escape_string ($link, $sPlayerCSV [0]);
 $sSurname = ba_db_real_escape_string ($link, $sPlayerCSV [1]);
@@ -117,7 +149,8 @@ $sql = "INSERT INTO {$db_prefix}players (" .
 	"pleEmergencyNumber, " .
 	"plEmergencyRelationship, " .
 	"plCarRegistration, " .
-	"plDietary) " .
+	"plDietary," .
+	"plAccess) " .
 	"VALUES (" .
 	"'$sHashPass', " .
 	"'$sFirstName', " .
@@ -136,7 +169,8 @@ $sql = "INSERT INTO {$db_prefix}players (" .
 	"AES_ENCRYPT('$sEmergencyNumber', '$key'), " .
 	"'$sEmergencyRelationship', " .
 	"'$sCarRegistration', " .
-	"'$sDietary')";
+	($sDietary ? "'$sDietary'" : 'NULL') . "," .
+	"'')";
 
 // Insert OOC info
 ba_db_query ($link, $sql);
@@ -152,7 +186,7 @@ $iPlayerID = (int) $row ['plPlayerID'];
 // Check if IC details were exported
 if ($ic == 1) {
 	// Character details
-	$sCharacterCSV = explode (",", trim ($csv [1]));
+	$sCharacterCSV = explode (",", trim ($response[1]));
 
 	$sName = ba_db_real_escape_string ($link, $sCharacterCSV [0]);
 	$sPreferredname = ba_db_real_escape_string ($link, $sCharacterCSV [1]);
@@ -173,23 +207,25 @@ if ($ic == 1) {
 		"chFaction, " .
 		"chNPC, " .
 		"chNotes, " .
-		"chOSP) " .
+		"chOSP, " .
+		"chGroupSel) " .
 		"VALUES (" .
 		"$iPlayerID, " .
 		"'$sName', " .
 		"'$sPreferredname', " .
 		"'$sRace', " .
-		"'$sGender', " .
+		($sGender ? "'$sGender'" : 'Male') . ", " .
 		"'$sFaction', " .
-		"'$sNpc', " .
+		($sNpc ? "'$sNpc'" : '0') . ", " .
 		"'$sNotes', " .
-		"'$sSpecial')";
+		"'$sSpecial', " .
+		"'')";
 
 	// Insert character details
 	ba_db_query ($link, $sql);
 
 	// Guilds
-	$sGuildCSV = explode (",", trim ($csv [2]));
+	$sGuildCSV = explode (",", trim ($response[2]));
 	foreach ($sGuildCSV as $guild) {
 		$sql = "INSERT INTO {$db_prefix}guildmembers (gmPlayerID, gmName) " .
 			"VALUES ($iPlayerID, '$guild')";
@@ -197,7 +233,7 @@ if ($ic == 1) {
 	}
 
 	// Skills
-	$sSkillsCSV = explode (",", trim ($csv [3]));
+	$sSkillsCSV = explode (",", trim ($response[3]));
 	foreach ($sSkillsCSV as $skill) {
 		$sql = "INSERT INTO {$db_prefix}skillstaken (stPlayerID, stSkillID) " .
 			"VALUES ($iPlayerID, $skill)";
@@ -205,7 +241,7 @@ if ($ic == 1) {
 	}
 
 	// OSPs
-	$sOspCSV = explode (",", trim ($csv [4]));
+	$sOspCSV = explode (",", trim ($response[4]));
 	foreach ($sOspCSV as $osp) {
 		$sql = "INSERT INTO {$db_prefix}ospstaken (otPlayerID, otOspID) " .
 			"VALUES ($iPlayerID, $osp)";
