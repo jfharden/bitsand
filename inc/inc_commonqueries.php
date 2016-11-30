@@ -22,10 +22,10 @@
  +---------------------------------------------------------------------------*/
 
 
-function getEventDetails($eventid, $requirebookingsopen, $failureURL)
+function getEventDetails($eventid, $requirebookingsopen, $failureURL = null)
 {
 	global $today, $db_prefix, $link;
-	if ($failureURL == '') { $failureURL = 'start.php'; }
+	if (!$failureURL) { $failureURL = 'start.php'; }
 	$eventid = htmlentities(stripslashes($eventid));
 	$eventid = (int)$eventid;
 	$sql = "Select * FROM {$db_prefix}events where ";
