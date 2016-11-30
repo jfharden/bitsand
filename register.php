@@ -34,7 +34,7 @@ if ($_POST ['btnSubmit'] != '' && CheckReferrer ('register.php')) {
 	$sProblem = '';
 	$sEmail = SafeEmail ($_POST ['txtEmail']);
 	//Check e-mail address is reasonable
-	if (!eregi ("^[_a-z0-9-]+([.+][_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]*)$", $sEmail))
+	if (!preg_match("~^[_a-z0-9-]+([.+][_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]*)$~", $sEmail))
 		$sProblem .= htmlentities ($sEmail) . " is not a valid e-mail address<br>\n";
 	//Generate password
 	$sNewPass = '';
@@ -63,10 +63,20 @@ if ($_POST ['btnSubmit'] != '' && CheckReferrer ('register.php')) {
 	//If there are no problems, register user
 	if ($sProblem == '') {
 		//Set up INSERT SQL query
-		$sql = "INSERT INTO {$db_prefix}players (plEmail, plPassword) VALUES ('" .
-			ba_db_real_escape_string ($link, $sEmail) . "', '$sHashPass')";
+		$sql = "
+			INSERT INTO {$db_prefix}players
+			(
+			plEmail,
+			plPassword,
+			pleAddress1, pleAddress2, pleAddress3, pleAddress4, plePostcode, pleTelephone, pleMedicalInfo, pleEmergencyNumber, pleMobile, plAccess, plFirstName, plSurname, plDOB, plEmergencyName, plEmergencyRelationship, plCarRegistration
+			) VALUES (
+			'" . ba_db_real_escape_string ($link, $sEmail) . "',
+			'$sHashPass',
+			'', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '')";
 		//Run query
-		ba_db_query ($link, $sql);
+		ba_db_query($link, $sql);
+		var_dump($sql);
+		die;
 		//E-mail user
 		$sBody = "You are now registered at " . SYSTEM_NAME . ". " .
 			"You can use the following details to log in:\n\n" .
