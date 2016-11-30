@@ -201,7 +201,15 @@ foreach($_POST as $itemname => $value)
 	$sql = "UPDATE {$db_prefix}bookings SET ";
 	foreach ($bookinginfo as $key => $value)
 	{
-		if (!is_numeric($value)) {$value = "'".$value."'"; }
+		if ($key == 'bkID') continue;
+
+		if ($key == 'bkAmountPaid' || $key == 'bkAmountExpected') {
+			$value = (float)$value;
+		} elseif ($key == 'bkDatePaymentConfirmed' && !$value) {
+			$value = "'0000-00-00'";
+		} elseif (!is_numeric($value)) {
+			$value = "'" . $value . "'";
+		}
 		$sql.= "$key = $value,";
 	}
 	$sql = substr($sql,0,-1);
