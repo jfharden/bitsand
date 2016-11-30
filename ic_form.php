@@ -37,8 +37,8 @@ if ($_POST ['btnSubmit'] != '' && CheckReferrer ('ic_form.php')) {
 		$result = ba_db_query ($link, $sql);
 		//If character does not exist insert a row so that UPDATE query will work
 		if (ba_db_num_rows ($result) == 0) {
-			$sql = "INSERT INTO {$db_prefix}characters (chPlayerID) VALUES ($PLAYER_ID)";
-			if (! ba_db_query ($link, $sql)) {
+			$sql = "INSERT INTO {$db_prefix}characters (chPlayerID, chName, chRace, chGroupSel, chGroupText, chFaction, chAncestor, chLocation, chNotes, chOSP) VALUES ($PLAYER_ID, '', '', '', '', '', '', '', '', '')";
+			if (!ba_db_query($link, $sql)) {
 				$sWarn = "There was a problem updating your IC details";
 				LogError ("Error inserting player ID into characters table prior to running UPDATE query.\nPlayer ID: $PLAYER_ID");
 			}
