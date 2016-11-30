@@ -208,7 +208,10 @@ if ($ic == 1) {
 		"chNPC, " .
 		"chNotes, " .
 		"chOSP, " .
-		"chGroupSel) " .
+		"chGroupSel, " .
+		"chGroupText, " .
+		"chAncestor, " .
+		"chLocation) " .
 		"VALUES (" .
 		"$iPlayerID, " .
 		"'$sName', " .
@@ -219,6 +222,9 @@ if ($ic == 1) {
 		($sNpc ? "'$sNpc'" : '0') . ", " .
 		"'$sNotes', " .
 		"'$sSpecial', " .
+		"'', " .
+		"'', " .
+		"'', " .
 		"'')";
 
 	// Insert character details
@@ -252,7 +258,7 @@ if ($ic == 1) {
 
 //Close link to database
 ba_db_close ($link);
-
+die;
 //Redirect to index page
 $sURL = fnSystemURL () . "index.php";
 $sURL .= "?green=" . urlencode ("Details imported. Please log in and check your details to ensure that they are correct");
