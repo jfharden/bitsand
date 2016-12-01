@@ -112,13 +112,31 @@ class Document {
 
 	/**
 	 * Adds javascript to the document
-	 * @param string $script
+	 * @param [type]  $script [description]
+	 * @param boolean $header [description]
+	 * @param string Any number of extra parameters - including "defer"
 	 */
 	public function addScript($script, $header = true) {
+		$additional = array();
+		if (func_num_args() > 2) {
+			$arguments = func_get_args();
+			$additional = array_splice($arguments, 2);
+		}
+
+		if (!preg_match('~(http|\/\/)~', $script)) {
+			$script = $this->route->getBaseUrl(false) . $script;
+		}
+
 		if ($header) {
-			$this->scripts[md5($script)] = $this->route->getBaseUrl(false) . $script;
+			$this->scripts[md5($script)] = array(
+				'href'  => $script,
+				'defer' => in_array('defer', $additional)
+			);
 		} else {
-			$this->footer_scripts[md5($script)] = $this->route->getBaseUrl(false) . $script;
+			$this->footer_scripts[md5($script)] = array(
+				'href'  => $script,
+				'defer' => in_array('defer', $additional)
+			);
 		}
 	}
 
