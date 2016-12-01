@@ -95,8 +95,11 @@ class Document {
 	 * @param string $media [Optional]
 	 */
 	public function addStyle($href, $rel = 'stylesheet', $media = 'screen') {
+		if (!preg_match('~(http|\/\/)~', $href)) {
+			$href = $this->route->getBaseUrl(false) . $href;
+		}
 		$this->styles[md5($href)] = array(
-			'href'  => $this->route->getBaseUrl(false) . $href,
+			'href'  => $href,
 			'rel'   => $rel,
 			'media' => $media
 		);
