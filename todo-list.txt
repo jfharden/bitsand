@@ -1,0 +1,7 @@
+Robots.txt and prevent indexing of Admin
+Disable player/monster spaces for a period of time or restrict to be within a certain percentage of each other
+Google Analytics Functionality
+Easy branding (change colours, add logo)
+PDO driver and prepared queries
+Alternative mail providers - SES and direct SMTP in addition to mail
+_config.php installation routine - retrieve information from the inc_config file
