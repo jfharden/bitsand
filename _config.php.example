@@ -1,0 +1,75 @@
+<?php
+/*-----------------------------------------------------------------------------
+ | Bitsand - an online booking system for Live Role Play events
+ |
+ | File index.php
+ |     Author: Pete Allison
+ |  Copyright: (C) 2006 - 2016 The Bitsand Project
+ |             (http://github.com/PeteAUK/bitsand)
+ |
+ | Bitsand is free software; you can redistribute it and/or modify it under the
+ | terms of the GNU General Public License as published by the Free Software
+ | Foundation, either version 3 of the License, or (at your option) any later
+ | version.
+ |
+ | Bitsand is distributed in the hope that it will be useful, but WITHOUT ANY
+ | WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ | FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ | details.
+ |
+ | You should have received a copy of the GNU General Public License along with
+ | Bitsand.  If not, see <http://www.gnu.org/licenses/>.
+ +---------------------------------------------------------------------------*/
+use Bitsand\Config\Config;
+
+/*-----------------------------------------------------------------------------
+ * This file is used to configure the base settings for Bitsand, so that it
+ * can access things like the database and enable SSL mode and such like.
+ *
+ * Many settings can be overwritten using the Site Admin part of the website
+ */
+
+/**
+ * The following define the various database connections, they cannot be set in
+ * within the Site Admin
+ */
+Config::setVal('db_driver',           '{db_driver}');    // Database connection type - currently only 'MySQLi'
+Config::setVal('db_host',             '{db_host}');      // Host where the database resides - normally 'localhost'
+Config::setVal('db_database',         '{db_database}');  // Database name, this will vary
+Config::setVal('db_user',             '{db_user}');      // Username who has access to the above database
+Config::setVal('db_password',         '{db_password}');  // Password of the above user
+Config::setVal('db_prefix',           '{db_prefix}');    // Prefix to use before all database tables, normally used when running multiple Bitsand installations
+
+/**
+ * These settings relate to how Bitsand serves the site to the world, as with
+ * the database settings these can't be modified within the Site Admin
+ */
+Config::setVal('ssl',                 {is_ssl});         // You MUST set this to true if you're running your site using SSL
+Config::setVal('pci_harden',          {harden_pci});     // If true then undertakes a number of PCI compliancy items
+Config::setVal('compress',            {compress});       // Enables all content to be compressed before sending to the viewer
+
+/**
+ * Bitsand sends quite a lot of e-mails, so it's not unreasonable for you to
+ * want to tweak how they're sent.  This can be changed within the Site Admin
+ */
+Config::setVal('mail_protocol',       '{mail_protocol}');// Can be 'mail' or 'smtp' (SES will be added at some point)
+// The following all relate to a mail_protocol setting of 'smtp'
+Config::setVal('mail_hostname',       '');               // Host where your smtp server resides
+Config::setVal('mail_username',       '');               // Username with permission to send mail
+Config::setVal('mail_password',       '');               // Password for the above user
+Config::setVal('mail_port',           25);               // Port being used for smtp - normally 25
+Config::setVal('mail_timeout',        5);                // Timeout in seconds
+
+/**
+ * To enable encryption we need a few bits.  These can be changed within the
+ * Site Admin, but doing so will break everything - do so at your own peril!
+ */
+Config::setVal('salt',                '{salt}');          // Salt used for one-way password encryption
+Config::setVal('encryption_key',      '{encryption key}');// Encryption key (CRYPT_KEY) is used for encrypting values within the database
+
+/**
+ * You shouldn't need to play with these, but they allow you to turn errors on
+ * and off.  These can be changed within Site Admin
+ */
+Config::setVal('display_errors',       false);            // If false then errors are suppressed from being displayed
+Config::setVal('error_handler',        'Tracy');         // Leave blank for the default PHP one or set to 'Tracy' for a decent profiling/error handling routine

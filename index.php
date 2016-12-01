@@ -31,44 +31,26 @@ include($root_path . 'Bitsand' . DIRECTORY_SEPARATOR . 'autoload.php');
 use Bitsand\Config\Config;
 Config::setBasePath($root_path);
 Config::setAppDirectory('lt-booking');
-Config::setVal('namespace', 'LTBooking');
-Config::setVal('theme', 'custom');
-Config::setVal('pci_harden', true);
-Config::setVal('compress', true);
-Config::setVal('ssl', false);
-Config::setVal('git_repository', 'https://github.com/PeteAUK/bitsand/');
-Config::setVal('display_errors', true);
-Config::setVal('error_handler', 'Tracy');
-
-Config::setVal('postcode_lookup', 'postcodes.io');
-
-Config::setVal('db_driver',           'MySQLi');
-Config::setVal('db_host',             'localhost');
-Config::setVal('db_user',             'root');
-Config::setVal('db_password',         'password');
-Config::setVal('db_database',         'ba');
-Config::setVal('db_prefix',           'ba');
-Config::setVal('salt',                'salt');
+Config::setVal('git_repository',      'https://github.com/PeteAUK/bitsand/');
+Config::setVal('namespace',           'LTBooking');
+Config::setVal('theme',               'custom');
 Config::setVal('login_tries',         3);
 Config::setVal('password_minimum',    8);
-Config::setVal('site_name',           'Bitsand'); // db default
-Config::setVal('site_title',          'Bitsand Basic Installation'); // db default
-Config::setVal('mail_protocol',       'mail');    // Can be mail or smtp
-Config::setVal('mail_hostname',       '');
-Config::setVal('mail_username',       '');
-Config::setVal('mail_password',       '');
-Config::setVal('mail_port',           25);
-Config::setVal('mail_timeout',        5);
-Config::setVal('event_contact_email', 'webmonkeypete@googlemail.com'); // DB
-Config::setVal('event_contact',       'wmp');                          // DB
-Config::setVal('tech_contact_email',  'pete@pa-sy.com');               // DB
-Config::setVal('tech_contact',        'Pete');                         // DB
-// Encryption key (CRYPT_KEY) is used for encrypting values within the database
-Config::setVal('encryption_key',      'encryption key');
+Config::setVal('site_name',           'Bitsand');
+Config::setVal('site_title',          'Bitsand Basic Installation');
+Config::setVal('event_contact_email', 'webmonkeypete@googlemail.com');
+Config::setVal('event_contact',       'wmp');
+Config::setVal('tech_contact_email',  'pete@pa-sy.com');
+Config::setVal('tech_contact',        'Pete');
+Config::setVal('postcode_lookup',     'postcodes.io');
+Config::setVal('default_faction',     'Bears');
 // Config::setVal('player_id_prefix',    '');
 // Config::setVal('player_id_format',    '%03s');
 
-Config::setVal('default_faction',     'Bears'); // db default
+// We put the base config items into it's own file, this way we won't overwrite
+if (file_exists(Config::getBasePath() . '_config.php')) {
+	include(Config::getBasePath() . '_config.php');
+}
 
 // Any customisations can occur here
 if (file_exists(Config::getAppPath() . 'custom.php')) {
@@ -91,7 +73,7 @@ if (file_exists(Config::getAppPath() . 'routes.php')) {
 }
 
 // Initialise Bitsand
-include($root_path . 'Bitsand' . DIRECTORY_SEPARATOR . 'init.php');
+include(Config::getBasePath() . 'Bitsand' . DIRECTORY_SEPARATOR . 'init.php');
 
 // Load any configuration items from the database, but only if they contain a value
 Config::loadFromDB(Config::OVERWRITE_NOT_EMPTY);
