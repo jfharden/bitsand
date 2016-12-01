@@ -210,9 +210,12 @@ function lookupPostcode() {
 function showPostcode(response) {
   response = JSON.parse(response);
   if (response.addresses === undefined) {
-    document.getElementById('address-3').value = response.city;
-    document.getElementById('address-4').value = response.county;
+    document.getElementById('address-3').value = response.city ? response.city : '';
+    document.getElementById('address-4').value = response.county ? response.county : '';
     document.getElementById('postcode').value = response.postcode;
+    if (document.getElementById('address-2').value == document.getElementById('address-3').value) {
+      document.getElementById('address-2').value = '';
+    }
   }
 }
 
