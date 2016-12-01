@@ -111,6 +111,19 @@
     <fieldset>
       <legend>Lorien Trust</legend>
       <div class="block">
+        <label for="player_id">Player ID:</label>
+        <div class="group">
+          <div class="field<?php if (!empty($error_player_id)) echo ' error'; ?>">
+            <div class="field <?php echo $new_player ? 'hidden' : 'visible'; ?>" id="player-id-field">
+              <input type="text" name="player_id" id="player_id" placeholder="P:" value="<?php $_($player_id); ?>"<?php if (!$new_player) echo ' required="required"'; ?> />
+            </div>
+            <div class="field">
+              <input type="checkbox" onchange="newPlayer(this);" name="new_player" id="new_player" value="1"<?php if ($new_player) echo ' checked="checked"'; ?> /> <label for="new_player">New Player?</label><br/>
+            </div>
+            <div><small>If you are not a new player then please enter your Players ID (you can find this on your character card). If you do not enter this then we cannot guarantee you'll get any booking OSPs when attending an event!</small></div>
+          </div>
+        </div>
+      <div class="block">
         <label>Referee / marshal?</label>
         <div class="group double">
           <div class="field">
@@ -171,6 +184,16 @@ function checkMarshal(marshal) {
     document.getElementById('marshal-number').setAttribute('class', 'field hidden');
     document.getElementById('marshal_number').removeAttribute('required');
     document.getElementById('marshal_number').value = '';
+  }
+}
+
+function newPlayer(newPlayer) {
+  if (!newPlayer.checked) {
+    document.getElementById('player_id').setAttribute('required', 'required');
+    document.getElementById('player-id-field').setAttribute('class', 'field visible');
+  } else {
+    document.getElementById('player-id-field').setAttribute('class', 'field hidden');
+    document.getElementById('player_id').removeAttribute('required');
   }
 }
 <?php if ($postcode_lookup) : ?>

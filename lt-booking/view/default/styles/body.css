@@ -291,6 +291,13 @@ textarea {
 .advanced-form input[name="postcode"] + .button {
 	vertical-align: top;
 }
+.advanced-form .field .field {
+	display: inline-block;
+	vertical-align: top
+}
+.advanced-form input + label {
+	display: inline-block;
+}
 
 #login-form {
 	width: 50%;
@@ -428,11 +435,30 @@ textarea {
 	-o-transition: max-height 0.25s ease-out;
 	transition: max-height 0.25s ease-out;
 }
+#ooc-form #player-id-field {
+	overflow: hidden;
+	-webkit-transition: max-width 0.25s ease-out;
+	-moz-transition: max-width 0.25s ease-out;
+	-ms-transition: max-width 0.25s ease-out;
+	-o-transition: max-width 0.25s ease-out;
+	transition: max-width 0.25s ease-out;
+}
+#ooc-form #player_id {
+	width: 10vw;
+	min-width: 105px;
+	margin-right: 20px;
+}
 #ooc-form .visible, #ooc-form #marshal-number .visible {
 	max-height: 300px;
 }
 #ooc-form .hidden, #ooc-form #marshal-number .hidden {
 	max-height: 0px;
+}
+#ooc-form #player-id-field.visible {
+	max-width: 50%;
+}
+#ooc-form #player-id-field.hidden {
+	max-width: 0px;
 }
 textarea[name="notes"] {
 	width: 100%;
