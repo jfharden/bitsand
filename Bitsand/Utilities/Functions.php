@@ -53,7 +53,11 @@ namespace Bitsand\Utilities\Functions {
 	 */
 	function safeinclude($file, $data) {
 		global $_;
-		extract($data);
+		// Oddly this has a better performance than extract
+		foreach ($data as $key => $value) {
+			$$key = $value;
+		}
+
 		include($file);
 	}
 
