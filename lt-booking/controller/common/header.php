@@ -36,6 +36,7 @@ class CommonHeader extends Controller {
 		$this->data['keywords'] = $this->document->getKeywords();
 		$this->data['styles'] = $this->document->getStyles();
 		$this->data['scripts'] = $this->document->getScripts();
+		$this->data['base_path'] = $this->router->getBaseUrl(false);
 
 		// Calculate out a route to use as a class
 		$class = str_replace('common', '', substr($this->parent, strrpos($this->parent, '\\') + 1));

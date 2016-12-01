@@ -12,6 +12,21 @@
 <?php foreach ($styles as $style) : ?>
   <link rel="<?php echo $style['rel']; ?>" type="text/css" href="<?php $_($style['href']); ?>"<?php if ($style['media']) : ?> media="<?php echo $style['media']; ?>"<?php endif; ?> />
 <?php endforeach; ?>
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/require.js/2.2.0/require.min.js"></script>
+  <script type="text/javascript">
+  requirejs.config({
+    baseUrl: '<?php echo $base_path; ?>scripts/',
+<?php if (defined('DEVELOPMENT')) echo "     urlArgs: 'bust=' + (new Date()).getTime(),"; ?>
+    paths: {
+      domReady: ['//cdnjs.cloudflare.com/ajax/libs/require-domReady/2.0.1/domReady.min'],
+      lzstring: ['//cdnjs.cloudflare.com/ajax/libs/lz-string/1.4.4/lz-string.min'],
+      jspdf: ['//cdnjs.cloudflare.com/ajax/libs/jspdf/1.2.61/jspdf.min'],
+      html2canvas: ['//cdn.rawgit.com/niklasvh/html2canvas/0.5.0-alpha2/dist/html2canvas.min'],
+      fuse: ['//cdnjs.cloudflare.com/ajax/libs/fuse.js/2.3.0/fuse.min'],
+      autoComplete: ['//cdnjs.cloudflare.com/ajax/libs/JavaScript-autoComplete/1.0.4/auto-complete.min']
+    }
+  });
+  </script>
 <?php foreach ($scripts as $script) : ?>
   <script type="text/javascript" src="<?php $_($script); ?>"></script>
 <?php endforeach; ?>
