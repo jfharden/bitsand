@@ -92,8 +92,8 @@ class User {
 	 * @return string
 	 */
 	public function getName() {
-		if (!is_null($this->name)) {
-			$name = (isset($this->session->data['firstname']) ? $this->session->data['name'] : '') . ' ' . (isset($this->session->data['lastname']) ? $this->session->data['name'] : '');
+		if (is_null($this->name)) {
+			$name = (isset($this->session->data['firstname']) ? $this->session->data['firstname'] : '') . ' ' . (isset($this->session->data['lastname']) ? $this->session->data['lastname'] : '');
 
 			$this->name = trim($name);
 		}
