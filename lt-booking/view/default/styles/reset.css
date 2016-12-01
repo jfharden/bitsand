@@ -404,6 +404,7 @@ input[type="radio"] {
 	/* 1 */
 	padding: 0;
 	/* 2 */
+	vertical-align: middle;
 }
 /**
  * Fix the cursor style for Chrome's increment/decrement buttons. For certain
