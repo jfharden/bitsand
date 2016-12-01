@@ -1,0 +1,15 @@
+
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <footer class="mdl-mini-footer"><div class="mdl-mini-footer__left-section"></div></footer>
+<?php foreach ($scripts as $script) : ?>
+  <script type="text/javascript" src="<?php $_($script['href']); ?>"<?php if ($script['defer']) echo ' defer'; ?>></script>
+<?php endforeach; ?>
+  <script type="text/javascript">
+    require(['Admin'], function() {});
+  </script>
+</body>
+</html>

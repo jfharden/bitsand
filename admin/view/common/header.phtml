@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title><?php $_($title); ?></title>
+<?php foreach ($styles as $style) : ?>
+  <link rel="<?php echo $style['rel']; ?>" type="text/css" href="<?php $_($style['href']); ?>"<?php if ($style['media']) : ?> media="<?php echo $style['media']; ?>"<?php endif; ?> />
+<?php endforeach; ?>
+  <script defer src="//cdnjs.cloudflare.com/ajax/libs/material-design-lite/1.2.1/material.min.js"></script>
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/require.js/2.2.0/require.min.js"></script>
+  <script type="text/javascript">
+  requirejs.config({
+    baseUrl: '<?php echo $base_path; ?>scripts/',
+<?php if (defined('DEVELOPMENT')) echo "     urlArgs: 'bust=' + (new Date()).getTime(),"; ?>
+    paths: {
+      domReady: ['//cdnjs.cloudflare.com/ajax/libs/require-domReady/2.0.1/domReady.min'],
+      jspdf: ['//cdnjs.cloudflare.com/ajax/libs/jspdf/1.2.61/jspdf.min']
+    }
+  });
+  </script>
+<?php foreach ($scripts as $script) : ?>
+  <script type="text/javascript" src="<?php $_($script['href']); ?>"<?php if ($script['defer']) echo ' defer'; ?>></script>
+<?php endforeach; ?>
+
+<?php if ($favicon) : ?>
+  <link rel="shortcut icon" href="<?php $_($favicon); ?>" />
+<?php endif; ?>
+</head>
+<body>
+  <div class="bits-layout mdl-layout__container">
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
+      <header class="mdl-layout__header mdl-color--grey-100 mdl-color-text--grey-600 is-casting-shadow">
+        <div role="button" tabindex="0" class="mdl-layout__drawer-button"><i class="material-icons">bars</i></div>
+        <div class="mdl-layout__header-row">
+          <span class="mdl-layout-title"><?php $_($title); ?></span>
+          <div class="mdl-layout-spacer"></div>
+          <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" id="about"><i class="material-icons">more_vert</i></button>
+          <ul class="mdl-menu mdl-js-menu mdl-js-ripple-effect mdl-menu--bottom-right mdl-js-ripple-effect--ignore-events" for="about">
+            <li class="mdl-menu__item mdl-js-ripple-effect" tabindex="-1">About</li>
+            <li class="mdl-menu__item mdl-js-ripple-effect" tabindex="-1">Bitsand v9</li>
+            <li class="mdl-menu__item mdl-js-ripple-effect" tabindex="-1">Bugs and Issues</li>
+          </ul>
+        </div>
+      </header>
+      <div class="bits-drawer mdl-layout__drawer mdl-color--blue-grey-900 mdl-color-text--blue-grey-50">
+        <header class="bits-drawer-header">
+          <img src="images/avatar.jpg" class="bits-avatar" />
+          <div class="bits-avatar-dropdown">
+            <span><?php $_($name); ?></span>
+            <div class="mdl-layout-spacer"></div>
+            <button id="bits-avatar" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"><i class="material-icons" role="presentation">arrow_drop_down</i></button>
+            <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect mdl-js-ripple-effect--ignore-events" for="bits-avatar">
+              <li class="mdl-menu__item mdl-js-ripple-effect" tabindex="-1" onclick="window.location(<?php $_($logout); ?>);">Log Out</li>
+          </div>
+        </header>
+        <nav class="mdl-navigation mdl-color--blue-grey-800">
+          <a class="mdl-navigation__link"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">home</i>Home</a>
+          <a class="mdl-navigation__link"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">event</i>Event Admin</a>
+          <a class="mdl-navigation__link"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">face</i>Player Admin</a>
+          <a class="mdl-navigation__link"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">settings</i>Settings</a>
+          <div class="mdl-layout-spacer"></div>
+          <a class="mdl-navigation__link"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">settings_applications</i>Site Admin</a>
+        </nav>
+      </div>
+
+      <main class="mdl-layout__container mdl-color-grey-100">
+        <div class="bits-content mdl-grid">
+
+<?php /*
+
+<?php if ($error) : ?>
+  <div class="box error" onclick="this.style.opacity = 0;"><?php $_($error); ?></div>
+
+<?php endif; ?>
+<?php if ($warning) : ?>
+  <div class="box warning" onclick="this.style.opacity = 0;"><?php $_($warning); ?></div>
+
+<?php endif; ?>
+<?php if ($success) : ?>
+  <div class="box success" onclick="this.style.opacity = 0;"><?php $_($success); ?></div>
+
+<?php endif; ?>
+*/ ?>
