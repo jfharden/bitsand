@@ -44,6 +44,8 @@ Config::setVal('tech_contact_email',  'pete@pa-sy.com');
 Config::setVal('tech_contact',        'Pete');
 Config::setVal('postcode_lookup',     'postcodes.io');
 Config::setVal('default_faction',     'Bears');
+Config::setVal('short_date',          'd-m-Y');
+Config::setVal('long_date',           'jS, F Y');
 // Config::setVal('player_id_prefix',    '');
 // Config::setVal('player_id_format',    '%03s');
 
