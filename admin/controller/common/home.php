@@ -22,7 +22,7 @@
  ++--------------------------------------------------------------------------*/
 
 namespace Admin\Controller;
-
+use Bitsand\Config\Config;
 use Bitsand\Controllers\Controller;
 
 class CommonHome extends Controller {
@@ -33,6 +33,24 @@ class CommonHome extends Controller {
 			'common/header',
 			'common/footer'
 		);
+
+		// We have three event states: Current; Expired; Queued
+		$this->load->model('events/event');
+		$this->data['events_current'] = array();
+		$this->data['events_expired'] = array();
+		$this->data['events_queued'] = array();
+		foreach ($this->model_events_event->getByType(\Admin\Model\EventsEvent::ALL) as $event) {
+			$url_data = array('event_id' => (int)$event['evEventID']);
+			$this->data['events_' . $event['evEventState']][] = array(
+				'id'          => $event['evEventID'],
+				'title'       => $event['evEventName'],
+				'date'        => date(Config::getVal('short_date'), strtotime($event['evEventDate'])),
+				'view'        => $this->router->link('event/view', $url_data, \Bitsand\SSL),
+				'payments'    => $this->router->link('event/manage/payments', $url_data, \Bitsand\SSL),
+				'queue'       => $this->router->link('event/manage/queue', $url_data, \Bitsand\SSL),
+				'add_booking' => $this->router->link('event/manage/add_booking', $url_data, \Bitsand\SSL)
+			);
+		}
 
 		$this->setView('common/home');
 

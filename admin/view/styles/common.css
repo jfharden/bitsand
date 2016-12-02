@@ -63,3 +63,56 @@ html, body {
 	background-color: #00bcd4;
 	color: #37474f;
 }
+
+.bits-content {
+	max-width: 1080px;
+	margin: 0px auto;
+	padding: 8px;
+}
+
+.bits-title {
+	margin-top: 0px;
+	margin-bottom: 8px;
+}
+
+.bits-events__event {
+	height: 246px;
+	background: #3e4eb8;
+	overflow: visible;
+	z-index: 10;
+}
+.bits-events__event > .mdl-card__actions {
+	border-color: rgba(255, 255, 255, 0.2);
+	display: flex;
+	box-sizing: border-box;
+	align-items: center;
+	-webkit-justify-content: space-between;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+}
+.bits-events__event > .mdl-card__actions > * {
+	    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+}
+.bits-events__event > .mdl-card__title {
+	align-items: flex-start;
+}
+.bits-events__event > .mdl-card__title > h4 {
+	margin-top: 0px;
+}
+.bits-events__event > .mdl-card__title,
+.bits-events__event > .mdl-card__actions,
+.bits-events__event > .mdl-card__actions > .mdl-button {
+	color: #fff;
+}
+.bits-events__event > .mdl-button.floating {
+	position: absolute;
+	top: 0px;
+	right: 28px;
+	-webkit-transform: translate(0px, -28px);
+	transform: translate(0px, -28px);
+}

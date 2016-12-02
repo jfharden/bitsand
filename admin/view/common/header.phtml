@@ -50,11 +50,11 @@
             <div class="mdl-layout-spacer"></div>
             <button id="bits-avatar" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"><i class="material-icons" role="presentation">arrow_drop_down</i></button>
             <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect mdl-js-ripple-effect--ignore-events" for="bits-avatar">
-              <li class="mdl-menu__item mdl-js-ripple-effect" tabindex="-1" onclick="window.location(<?php $_($logout); ?>);">Log Out</li>
+              <li class="mdl-menu__item mdl-js-ripple-effect" tabindex="-1" href="<?php $_($logout); ?>">Log Out</li>
           </div>
         </header>
         <nav class="mdl-navigation mdl-color--blue-grey-800">
-          <a class="mdl-navigation__link"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">home</i>Home</a>
+          <a class="mdl-navigation__link" href="<?php $_($base_path); ?>"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">home</i>Home</a>
           <a class="mdl-navigation__link"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">event</i>Event Admin</a>
           <a class="mdl-navigation__link"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">face</i>Player Admin</a>
           <a class="mdl-navigation__link"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">settings</i>Settings</a>
@@ -63,8 +63,8 @@
         </nav>
       </div>
 
-      <main class="mdl-layout__container mdl-color-grey-100">
-        <div class="bits-content mdl-grid">
+      <main class="mdl-layout__content mdl-color-grey-100">
+        <div class="bits-content">
 
 <?php /*
 

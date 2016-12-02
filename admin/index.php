@@ -38,6 +38,8 @@ Config::setVal('site_title',          'Bitsand Admin');
 Config::setVal('tech_contact_email',  'webmonkeypete@googlemail.com');
 Config::setVal('tech_contact',        'wmp');
 Config::setVal('postcode_lookup',     'postcodes.io');
+Config::setVal('short_date',          'd-m-Y');
+Config::setVal('long_date',           'jS, F Y');
 
 
 // We put the base config items into it's own file, this way we won't overwrite

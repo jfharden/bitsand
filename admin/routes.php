@@ -23,8 +23,13 @@
  || Bitsand.  If not, see <http://www.gnu.org/licenses/>.
  ++--------------------------------------------------------------------------*/
 
-
 $router->addRoutes(array(
+	array('GET', 'create_event.html', 'event/edit/new'),
+	array('GET', 'edit_event.html?event=[i:event_id]', 'event/edit/modify'),
+	array('GET', 'view_event.html?event=[i:event_id]', 'event/view'),
+	array('GET', 'manage_queue.html?event=[i:event_id]', 'event/manage/queue'),
+	array('GET', 'manage_payments.html?event=[i:event_id]', 'event/manage/payments'),
+	array('GET', 'add_booking.html?event=[i:event_id]', 'event/manage/add_booking')
 	/*array('GET', 'download.html', 'common/download'),
 	array('GET', 'login.html', 'user/login'),
 	array('POST', 'login.html', 'user/login/login'),
