@@ -73,9 +73,12 @@ if ($_POST ['btnSubmit'] != '' && CheckReferrer ('ooc_form.php')) {
 	$refnumber = (int) $_POST ["txtRefNumber{$value}"];
 	$marshal = stripslashes($_POST ["cboMarshal{$value}"]);
 
+	$playerNumber = isset($_POST['txtPlayerNumber']) ? $_POST['txtPlayerNumber'] : '';
+
 	//Set up UPDATE query
 	$sql = "UPDATE {$db_prefix}players SET plFirstName = '" . ba_db_real_escape_string ($link, $_POST ['txtFirstName']) . "', " .
 		"plSurname = '" . ba_db_real_escape_string ($link, $_POST ['txtSurname']) . "', " .
+		"plPlayerNumber = '" . ba_db_real_escape_string($link, $playerNumber) . "', " .
 		"pleAddress1 = AES_ENCRYPT('" . ba_db_real_escape_string ($link, $_POST ['txtAddress1']) . "', '$key'), " .
 		"pleAddress2 = AES_ENCRYPT('". ba_db_real_escape_string ($link, $_POST ['txtAddress2']) . "', '$key'), " .
 		"pleAddress3 = AES_ENCRYPT('". ba_db_real_escape_string ($link, $_POST ['txtAddress3']) . "', '$key'), " .
@@ -134,7 +137,7 @@ if ($_POST ['btnSubmit'] != '' && CheckReferrer ('ooc_form.php')) {
 //Get existing details if there are any
 $sql = "SELECT plFirstName, " .
 	"plSurname, " .
-	"plPlayerNumber, "
+	"plPlayerNumber, " .
 	"AES_DECRYPT(pleAddress1, '$key') AS dAddress1, " .
 	"AES_DECRYPT(pleAddress2, '$key') AS dAddress2, " .
 	"AES_DECRYPT(pleAddress3, '$key') AS dAddress3, " .
