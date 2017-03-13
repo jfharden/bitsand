@@ -42,6 +42,7 @@ $db_prefix = DB_PREFIX;
 $sql = "SELECT plPlayerID, " .
 	"plFirstName, " .
 	"plSurname, " .
+	"plPlayerNumber, " .
 	"AES_DECRYPT(pleAddress1, '$key') AS dAddress1, " .
 	"AES_DECRYPT(pleAddress2, '$key') AS dAddress2, " .
 	"AES_DECRYPT(pleAddress3, '$key') AS dAddress3, " .
@@ -76,7 +77,7 @@ $sql = "SELECT plPlayerID, " .
 $result = ba_db_query ($link, $sql);
 
 //Header row
-echo '"Player ID","Player First Name","Player Surname",';
+echo '"ID","Player Number","Player First Name","Player Surname",';
 echo '"Address 1","Address 2","Address 3","Address 4","Postcode","Telephone","Mobile","E-mail","DoB","Next of Kin","NOK contact",';
 echo '"NOK Relationship","Medical","Medical details","Diet","Booking As","Monster Only","Bunk Requested","Bunk Allocated","Meal Ticket",';
 if (ALLOW_EVENT_PACK_BY_POST)
@@ -96,6 +97,7 @@ echo '"Date Paid","Amount Paid","Amount Expected","Power Cards Per Day","OSPs (1
 
 while ($row = ba_db_fetch_assoc ($result)) {
 	echo '"' . PID_PREFIX . sprintf ('%03s', $row ['plPlayerID']) . '",';
+	echo '"' . str_replace('"', '""', stripslashes($row['plPlayerNumber'])) . '",';
 	echo '"' . str_replace('"', '""', stripslashes ($row ['plFirstName'])) . '",';
 	echo '"' . str_replace('"', '""', stripslashes ($row ['plSurname'])) . '",';
 	echo '"' . str_replace('"', '""', stripslashes ($row ['dAddress1'])) . '",';

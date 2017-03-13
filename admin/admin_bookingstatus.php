@@ -44,6 +44,7 @@ $eventid = $eventinfo['evEventID'];
 $sql = "SELECT plPlayerID, bkID, " .
 	"plFirstName, " .
 	"plSurname, " .
+	"plPlayerNumber, " .
 	"bkBookAs, " .
 	"bkDateOOCConfirmed, " .
 	"bkDateICConfirmed, " .
@@ -74,7 +75,8 @@ To delete a booking, enter 'CONFIRM' in the box, and press the button.
 <form method='POST' action='admin_bookingstatus.php?EventID=<?php echo $eventinfo['evEventID'];?>'>
 <table border = '1' class="sortable">
 <tr>
-<th>Player ID</th>
+<th>ID</th>
+<th>Player Number</th>
 <th>OOC First Name</th>
 <th>OOC Surname</th>
 <th>IC Name</th>
@@ -90,6 +92,7 @@ while ($row = ba_db_fetch_assoc ($result)) {
 	echo "<tr class = 'highlight'>\n<td>";
 	echo "<a href = 'admin_viewdetails.php?pid=" . $row ['plPlayerID'] . "'>";
 	echo PID_PREFIX . sprintf ('%03s', $row ['plPlayerID']) . "</a></td>\n";
+	echo '<td>' , htmlentities(stripslashes($row['plPlayerNumber'])) , '</td>' , "\n";
 	echo "<td>" . htmlentities (stripslashes ($row ['plFirstName'])) . "</td>\n";
 	echo "<td>" . htmlentities (stripslashes ($row ['plSurname'])) . "</td>\n";
 	echo "</td><td>\n";
