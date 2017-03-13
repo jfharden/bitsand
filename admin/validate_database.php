@@ -34,7 +34,7 @@ function validateDatabase() {
 	$column = ba_db_fetch_assoc($query);
 
 	if (empty($column)) {
-		ba_db_query($link, "ALTER TABLE `{$db_prefix}players` ADD COLUMN `plPlayerNumber` VARCHAR(24) NOT NULL AFTER `plSurname`");
+		ba_db_query($link, "ALTER TABLE `{$db_prefix}players` ADD COLUMN `plPlayerNumber` VARCHAR(24) NULL AFTER `plSurname`");
 		$updated = true;
 	}
 
