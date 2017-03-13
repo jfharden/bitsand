@@ -25,6 +25,11 @@ include ('../inc/inc_head_db.php');
 include ('../inc/inc_admin.php');
 include ('../inc/inc_head_html.php');
 
+include ('validate_database.php');
+if (validateDatabase()) {
+	$_GET['warn'] = 'Database has been updated';
+}
+
 if ($_GET ['warn'] != '')
 	$sWarn .= htmlentities ($_GET ['warn']);
 ?>
@@ -35,6 +40,24 @@ if ($_GET ['warn'] != '')
 if ($sWarn != '')
 	echo "<p class = 'warn'>$sWarn</p>\n";
 ?>
+
+<?php
+
+include('../inc/version.php');
+include('../inc/git.php');
+
+$current_version = BitsandVersion::get();
+$git = new GithubRepository('PeteAUK/bitsand');
+$git_version = $git->getLatestTag();
+if (!$git->connected()) : ?>
+Unable to connect with Git Repository, please ensure the server has CURL available.<br/>
+<?php elseif (!BitsandVersion::under($git_version)) : ?>
+You are running on the latest version of Bitsand (v<?php echo $current_version; ?>)<br/>
+<?php elseif ($git->gitControlled()) : ?>
+There is a newer version of Bitsand available: v<?php echo $git_version; ?>, please update using <span style="font-family:monospace;">git pull origin master --tag <?php echo $git->getLatestTag(false); ?></span><br/>
+<?php else : ?>
+<a href="admin_update_core.php">There is a newer version of Bitsand available, click to download and install.</a><br/>
+<?php endif; ?>
 
 <h3>Event Admin</h3>
 <a href = "admin_editeventdetails.php">Add a new event</a>
@@ -129,24 +152,6 @@ Players: <a href = "admin_players_export.php?action=save">Save to csv</a> : <a h
 </p>
 
 <p>
-<?php
-
-include('../inc/version.php');
-include('../inc/git.php');
-
-$current_version = BitsandVersion::get();
-$git = new GithubRepository('PeteAUK/bitsand');
-$git_version = $git->getLatestTag();
-
-if (!$git->connected()) : ?>
-Unable to connect with Git Repository, please ensure the server has CURL available.<br/>
-<?php elseif (!BitsandVersion::under($git_version)) : ?>
-You are running on the latest version of Bitsand (v<?php echo $current_version; ?>)<br/>
-<?php elseif ($git->gitControlled()) : ?>
-There is a newer version of Bitsand available: v<?php echo $git_version; ?>, please update using <span style="font-family:monospace;">git pull origin master --tag <?php echo $git->getLatestTag(false); ?></span><br/>
-<?php else : ?>
-<a href="admin_update_core.php">There is a newer version of Bitsand available, click to download and install.</a><br/>
-<?php endif; ?>
 <a href = 'admin_changeconfig.php'>Change system configuration settings</a><br>
 <a href = 'admin_config_db_test.php'>Check system configuration settings</a>
 </p>

@@ -63,7 +63,6 @@ echo "</p>\n<p>\n";
 string_check (TITLE, 'TITLE', '');
 string_check (SYSTEM_NAME, 'SYSTEM_NAME', 'Bitsand');
 string_check (DEFAULT_FACTION, 'DEFAULT_FACTION', 'Lions');
-echo "<p>\n";
 
 if (MIN_PASS_LEN < 8)
 	echo "<span class = 'sans-warn'>Minimum password length is short (" . MIN_PASS_LEN . ")</span><br>";
