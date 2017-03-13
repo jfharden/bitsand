@@ -28,7 +28,7 @@
  * Holds the current version of Bitsand
  * @const string
  */
-define('BITSAND_VERSION', '8.3');
+define('BITSAND_VERSION', '8.4');
 
 class BitsandVersion {
 	/**
