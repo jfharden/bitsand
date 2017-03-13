@@ -191,17 +191,16 @@ if ($_GET ['warn'] != '' || $sMessage != '')
 	echo "<p class = 'warn'>" . htmlentities ($_GET ['warn']) . $sMessage . "</p>\n";
 ?>
 
-<form action = 'index.php' method = 'post'>
-<table class = 'blockmid'>
+<form action="index.php" method="post">
+<table class="blockmid">
 <tr>
 <td>E-mail address:</td>
-<td><input name = 'txtEmail' class = 'text'></td>
+<td><input name="txtEmail" type="email" class="text"<?php if (isset($sEmail) && !empty($sEmail)) echo ' value="' , $sEmail , '"'; ?>></td>
 </tr><tr>
 <td>Password:</td>
-<td><input name = 'txtPassword' type = 'password' class = 'text'></td>
+<td><input name="txtPassword" type="password" class="text"></td>
 </tr><tr>
-<td colspan = '2' class = 'mid'><input type = 'submit' name = 'btnSubmit' value = 'Login'>&nbsp;
-<input type = 'reset' value = "Reset form"></td>
+<td colspan="2" class="mid"><input type="submit" name="btnSubmit" value="Login">&nbsp;<input type="reset" value="Reset form"></td>
 </tr>
 </table>
 </form>
