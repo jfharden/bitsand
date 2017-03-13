@@ -134,6 +134,7 @@ if ($_POST ['btnSubmit'] != '' && CheckReferrer ('ooc_form.php')) {
 //Get existing details if there are any
 $sql = "SELECT plFirstName, " .
 	"plSurname, " .
+	"plPlayerNumber, "
 	"AES_DECRYPT(pleAddress1, '$key') AS dAddress1, " .
 	"AES_DECRYPT(pleAddress2, '$key') AS dAddress2, " .
 	"AES_DECRYPT(pleAddress3, '$key') AS dAddress3, " .
@@ -185,8 +186,12 @@ if ($sWarn != '')
 </tr><tr>
 <td>Surname:</td>
 <td><input type = "text" class = "required" name = "txtSurname" value = "<?php echo htmlentities (stripslashes ($playerrow ['plSurname']))?>"></td>
-</tr><tr><td colspan = "2">&nbsp;</td></tr><tr>
-<td>Address:</td>
+</tr><tr><td colspan = "2">&nbsp;</td></tr>
+<tr>
+  <td>Player ID:</td>
+  <td><input type="text" class="text" name="txtPlayerNumber" value="<?php echo htmlentities(stripslashes($playerrow['plPlayerNumber'])); ?>"; ?></td>
+</tr>
+<tr><td>Address:</td>
 <td><input type = "text" class = "required" name = "txtAddress1" value = "<?php echo htmlentities (stripslashes ($playerrow ['dAddress1']))?>"><br>
 <input type = "text" class = "text" name = "txtAddress2" value = "<?php echo htmlentities (stripslashes ($playerrow ['dAddress2']))?>"><br>
 <input type = "text" class = "text" name = "txtAddress3" value = "<?php echo htmlentities (stripslashes ($playerrow ['dAddress3']))?>"><br>
