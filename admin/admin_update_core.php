@@ -59,7 +59,7 @@ else : ?>
 <?php
 endif; ?>
 
-<p><a href="admin.php">Continue</a></p>
+<p><a href="admin_config_db_test.php">Click here to check configuration</a></p>
 
 <?php
 
