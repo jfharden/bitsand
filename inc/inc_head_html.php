@@ -38,6 +38,7 @@ function HelpLink ($helppage) {
 		"return false;'><img src = '" . SYSTEM_URL . "img/help.png' style = 'border:none' " .
 		"alt = 'Get help on this feature' title = 'Get help on this feature'></a>";
 }
+
 ?>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -165,8 +166,8 @@ if ($PLAYER_ID != 0)
 	else
 		echo "<li><a href = '{$CSS_PREFIX}ic_view.php'>IC information</a></li>\n";
 
-	//Show link to admin page if user is an admin or root user
-	$sql = "SELECT plAccess FROM " . DB_PREFIX . "players WHERE plPlayerID = $PLAYER_ID";
+	// Show link to admin page if user is an admin or root user (also handle player number)
+	$sql = "SELECT plAccess, plPlayerNumber FROM " . DB_PREFIX . "players WHERE plPlayerID = $PLAYER_ID";
 	$result = ba_db_query ($link, $sql);
 	$inc_head_html_row = ba_db_fetch_assoc ($result);
 	if ($inc_head_html_row ['plAccess'] == 'admin' || ROOT_USER_ID == $PLAYER_ID) {
@@ -187,3 +188,7 @@ if (($inc_head_html_row ['plAccess'] == 'admin' || ROOT_USER_ID == $PLAYER_ID) &
 
 if (ini_get ('error_reporting') != 0)
 	echo "<p style = 'border: solid thin orange; background: orange; text-align: center;'><b>DEBUG MODE ENABLED</b></p>\n";
+
+if (isset($inc_head_html_row) && empty($inc_head_html_row['plPlayerNumber'])) {
+	echo '<p class="green" style="text-align: center;"><a href="ooc_form.php" style="color: inherit">Please set your Player Number</a></p>' . "\n";
+}
