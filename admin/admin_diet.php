@@ -58,7 +58,7 @@ $result = ba_db_query ($link, $sql);
 </div>
 
 
-<p style = "text-align: center; font-weight: bold; color: red;">MEDICAL DETAILS: HIGHLY CONFIDENTIAL</p>
+<p style = "text-align: center; font-weight: bold; color: red;">ALLERGY DETAILS: HIGHLY CONFIDENTIAL</p>
 <table width = "100%">
 <thead>
 <tr><th width = '20%'>Name</th><th>Allergy Details</th></tr>
@@ -78,7 +78,7 @@ while ($row = ba_db_fetch_assoc ($result)) {
 	if ($iRowCount++ > 12) {
 		//Start a new table and force a page break
 		echo "</table>\n";
-		echo "<p style = 'page-break-before:always; text-align: center; font-weight: bold; color: red;'>MEDICAL DETAILS: HIGHLY CONFIDENTIAL</p>\n<table width = '100%'>\n";
+		echo "<p style = 'page-break-before:always; text-align: center; font-weight: bold; color: red;'>ALLERGY DETAILS: HIGHLY CONFIDENTIAL</p>\n<table width = '100%'>\n";
 		echo "<thead><tr><th width = '20%'>Name</th><th>Allergy Details</th></tr></thead>\n";
 		$iRowCount = 0;
 	}
