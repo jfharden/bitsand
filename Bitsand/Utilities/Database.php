@@ -68,6 +68,27 @@ class Database {
 	}
 
 	/**
+	 * Returns a valid SQL datetime from the passed PHP timestamp.  If you
+	 * don't require the time, use ::date instead
+	 *
+	 * @param  int $php_timestamp
+	 * @return string
+	 */	public function datetime($php_timestamp) {
+		return date('Y-m-d H:i:s', $php_timestamp);
+	}
+
+	/**
+	 * Returns a valid SQL date from the passed PHP timestamp.  If you also
+	 * require the time, use ::datetime instead
+	 *
+	 * @param  int $php_timestamp
+	 * @return string
+	 */
+	public function date($php_timestamp) {
+		return date('Y-m-d', $php_timestamp);
+	}
+
+	/**
 	 * Returns the number of rows affected by the last query
 	 *
 	 * @return integer
