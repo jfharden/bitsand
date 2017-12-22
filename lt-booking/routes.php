@@ -41,13 +41,19 @@ $router->addRoutes(array(
 	array('GET', 'account.html', 'user/account'),
 	array('GET', 'terms.html', 'common/terms'),
 	array('GET', 'booking_feed.rss', 'feed/booking-rss'),
-	array('GET', 'events/', 'event/list'),
-	array('GET|POST', 'events/[a:event]', 'event/event'),
-	array('GET', 'icalendar/', 'feed/icalendar'),
+	array('GET', 'events/list.html', 'event/list'),
+	array('GET', 'events/icalendar.html', 'event/list/icalendar'),
+	array('GET', 'events/[a:event].html', 'event/view'),
+	array('GET', 'events/[a:event].html?booking=[a:booking]', 'event/view/booking'),
+	array('GET', 'events/[a:event].html?icalendar', 'event/view/icalendar'),
+	array('GET', 'events/[a:event].rss', 'feed/booking-rss/rss'),
+	array('GET', 'events/booking/[a:event].html', 'event/book'),
+	array('POST', 'events/booking/[a:event].html', 'event/book/confirm'),
 
 	array('GET|POST', 'address.html?postcode=[*:postcode]', 'user/details-personal/postcode-lookup'),
 
 	array('GET|POST', 'details/ooc.html', 'user/details-personal'),
 
 	array('GET|POST', 'details/ic.html', 'user/details-character'),
+	array('POST', 'osp-list.json', 'feed/osps'),
 ));
