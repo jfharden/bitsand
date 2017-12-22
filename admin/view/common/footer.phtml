@@ -1,10 +1,13 @@
 
-        </div>
-      </main>
-    </div>
+      </div>
+    </main>
+    <footer class="bits-layout__footer">
+      <div class="bits-layout__content content">
+        <p>This online booking system runs on Bitsand, a web-based booking system for LRP events. Bitsand is copyright &copy;<a href="<?php $_($link_download); ?>">The Bitsand Project<?php if ($version) $_(' ' . $version); ?></a>.</p>
+      </div>
+    </footer>
   </div>
 
-  <footer class="mdl-mini-footer"><div class="mdl-mini-footer__left-section"></div></footer>
 <?php foreach ($scripts as $script) : ?>
   <script type="text/javascript" src="<?php $_($script['href']); ?>"<?php if ($script['defer']) echo ' defer'; ?>></script>
 <?php endforeach; ?>
