@@ -1,0 +1,34 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:Bitsand <?php echo $github_link , PHP_EOL; ?>
+X-WR-CALDESC:<?php echo $site_name , PHP_EOL; ?>
+<?php foreach ($events as $event) : ?>
+BEGIN:VEVENT
+UID:<?php echo $event['booking_opens_link'] , PHP_EOL; ?>
+DTSTAMP:<?php echo $event['booking_opens']; ?>T000000Z
+DTSTART;VALUE=DATE:<?php echo $event['booking_opens'] , PHP_EOL; ?>
+DTEND;VALUE=DATE:<?php echo $event['booking_opens'] , PHP_EOL; ?>
+SUMMARY:<?php echo $event['name']; ?> - bookings open
+ORGANIZER;CN=<?php echo $contact_name; ?>:MAILTO:<?php echo $contact_email , PHP_EOL; ?>
+DESCRIPTION:<?php echo $event['link'] , PHP_EOL; ?>
+END:VEVENT
+BEGIN:VEVENT
+UID:<?php echo $event['booking_closes_link'] , PHP_EOL; ?>
+DTSTAMP:<?php echo $event['booking_closes']; ?>T000000Z
+DTSTART;VALUE=DATE:<?php echo $event['booking_closes'] , PHP_EOL; ?>
+DTEND;VALUE=DATE:<?php echo $event['booking_closes'] , PHP_EOL; ?>
+SUMMARY:<?php echo $event['name']; ?> - bookings close
+ORGANIZER;CN=<?php echo $contact_name; ?>:MAILTO:<?php echo $contact_email , PHP_EOL; ?>
+DESCRIPTION:<?php echo $event['link'] , PHP_EOL; ?>
+END:VEVENT
+BEGIN:VEVENT
+UID:<?php echo $event['link'] , PHP_EOL; ?>
+DTSTAMP:<?php echo $event['date']; ?>T000000Z
+DTSTART;VALUE=DATE:<?php echo $event['date'] , PHP_EOL; ?>
+DTEND;VALUE=DATE:<?php echo $event['date'] , PHP_EOL; ?>
+SUMMARY:<?php echo $event['name'] , PHP_EOL; ?>
+ORGANIZER;CN=<?php echo $contact_name; ?>:MAILTO:<?php echo $contact_email , PHP_EOL; ?>
+DESCRIPTION:<?php echo $event['link'] , PHP_EOL; ?>
+END:VEVENT
+<?php endforeach; ?>
+END:VCALENDAR
