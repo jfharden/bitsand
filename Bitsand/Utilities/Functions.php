@@ -39,8 +39,35 @@ namespace Bitsand\Utilities\Functions {
 	 * of the various .phtml view pages.
 	 */
 	global $_;
-	$_ = (function($string) {
-		echo htmlentities($string, ENT_QUOTES, 'UTF-8', true);
+	$_ = (function($string, $preseve_tags = false) {
+		if (!is_string($string) && !is_numeric($string)) {
+			if (is_null($string)) {
+				echo '';
+				return;
+			}
+			$x = debug_backtrace();
+			echo '$_ passed a non-string <code>' . $x[0]['file'] . ' on Line: <strong>' . $x[0]['line'] . '</strong>';
+			return false;
+		}
+		if (!$preseve_tags) {
+			echo htmlentities($string, ENT_QUOTES, 'UTF-8', true);
+		} else {
+			// Preserve HTML tags
+			$encoding = mb_detect_encoding(html_entity_decode($string));
+			if ($encoding == 'ASCII') {
+				$encoding = 'UTF-8';
+			}
+			$list = get_html_translation_table(HTML_ENTITIES, ENT_NOQUOTES, $encoding);
+
+			unset($list['"']);
+			unset($list['<']);
+			unset($list['>']);
+			unset($list['&']);
+			// The following handles Bitsand's mixed DB language issues
+			$list['™'] = '&#8217;'; //'’';
+			$string = strtr($string, $list);
+			echo str_replace(array('&acirc;&euro;', '&Acirc;&pound;'), array('', '&pound;'), $string);
+		}
 	});
 
 	/**
