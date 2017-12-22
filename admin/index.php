@@ -32,6 +32,7 @@ use Bitsand\Config\Config;
 Config::setBasePath($root_path);
 Config::setAppDirectory('admin');
 Config::setVal('git_repository',      'https://github.com/PeteAUK/bitsand/');
+Config::setVal('is_admin',            true);
 Config::setVal('namespace',           'Admin');
 Config::setVal('site_name',           'Bitsand');
 Config::setVal('site_title',          'Bitsand Admin');
