@@ -1,0 +1,38 @@
+players
+
+`plPlayerNumber` VARCHAR(24) NULL AFTER `plSurname`
+
+`characters`
+ALTER TABLE `ba`.`dr_characters`
+ADD COLUMN `chRaceSel` TEXT NULL AFTER `chRace`;
+
+
+events
+
+`evSlug` VARCHAR(75) NULL AFTER `evEventName`
+
+New Tables
+`settings`
+CREATE TABLE `ba`.`dr_settings` (
+  `stID` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `cnName` VARCHAR(32) NOT NULL DEFAULT 'Default',
+  `stKey` VARCHAR(64) NOT NULL,
+  `stValue` TEXT NOT NULL,
+  `stJson` TINYINT UNSIGNED NOT NULL DEFAULT '0',
+  PRIMARY KEY (`stID`),
+  INDEX `config_name` (`cnName` ASC));
+
+INSERT INTO `dr_settings` (`stKey`, `stValue`) VALUES ('date_format', 'd/m/Y');
+
+`character_skills`
+CREATE TABLE `ba`.`dr_character_skills` (
+  `csPlayerId` INT UNSIGNED NOT NULL,
+  `csSkill` VARCHAR(150) NOT NULL,
+  PRIMARY KEY (`csPlayerId`, `csSkill`));
+
+`character_guilds`
+CREATE TABLE `ba`.`dr_character_guilds` (
+  `cgPlayerID` INT UNSIGNED NOT NULL,
+  `cgGuildID` INT UNSIGNED NOT NULL,
+  PRIMARY KEY (`cgPlayerID`, `cgGuildID`));
+
