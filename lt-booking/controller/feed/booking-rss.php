@@ -26,7 +26,58 @@ namespace LTBooking\Controller;
 use Bitsand\Controllers\Controller;
 
 class FeedBookingRss extends Controller {
-	public function index() {
-		echo 'd1';
+	public function rss($event_reference) {
+		error_reporting(E_ALL);
+
+		// Turn off Tracy debugging
+		\Bitsand\Utilities\Tracy::disable();
+
+		$this->load->model('event/event');
+
+		$event = $this->model_event_event->getEvent($event_reference);
+		if (!$event) {
+			return $this->redirect($this->router->link('error/not_found', null, \Bitsand\SSL));
+		}
+
+		if ($this->config->get('booking_list_if_logged_in') && $this->user->isLogged()) {
+			return $this->redirect($this->router->link('error/denied', null, \Bitsand\SSL));
+		}
+
+		$this->data['event_name'] = $event['event_name'];
+		$this->data['rss_link'] = $this->router->link('feed/booking-rss/rss', array('event'=>$event_reference), \Bitsand\SSL);
+		$this->data['system_url'] = $this->router->link('', null, \Bitsand\SSL);
+		$this->data['booking_count'] = array();
+
+		$this->data['show_character_group'] = $this->config->get('list_groups_label');
+
+		foreach ($this->model_event_event->getBookings($event['event_id']) as $booking) {
+			if ($booking['character_group']) {
+				$group = $booking['character_group'];
+			} elseif ($booking['character_group_other'] && $booking['character_group_other'] != 'Enter name here if not in above list') {
+				$group = 'Other (' . $booking['character_group_other'] . ')';
+			} else {
+				$group = '';
+			}
+			$this->data['bookings'][] = array(
+				'firstname'          => $booking['firstname'],
+				'lastname'           => $booking['lastname'],
+				'player_number'      => $booking['player_number'],
+				'character_name'     => $booking['character_name'],
+				'character_nickname' => $booking['character_nickname'],
+				'character_group'    => $group,
+				'faction'            => $booking['faction'],
+				'guid'               => $this->router->link('event/view/booking', array('event'=>$event['event_id'], 'booking'=>$booking['booking_id']), \Bitsand\SSL)
+			);
+
+			if (!isset($this->data['booking_count'][$booking['type']])) {
+				$this->data['booking_count'][$booking['type']] = 0;
+			}
+			$this->data['booking_count'][$booking['type']]++;
+		}
+
+		$this->setView('event/rss');
+
+		$this->view->setOutput($this->render());
 	}
+
 }

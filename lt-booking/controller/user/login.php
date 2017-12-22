@@ -54,6 +54,9 @@ class UserLogin extends Controller {
 
 		if (isset($this->request->post['email'])) {
 			$this->data['email'] = $this->request->post['email'];
+		} elseif (isset($this->session->data['passed_email'])) {
+			$this->data['email'] = $this->session->data['passed_email'];
+			unset($this->session->data['email']);
 		} else {
 			$this->data['email'] = '';
 		}
@@ -106,6 +109,8 @@ class UserLogin extends Controller {
 			if (isset($this->errors['error_password'])) {
 				$this->session->data['error_password'] = $this->errors['error_password'];
 			}
+
+			$this->session->data['passed_email'] = $this->request->post['email'];
 		}
 
 		$this->redirect($this->router->link('user/login'), null, \Bitsand\SSL);

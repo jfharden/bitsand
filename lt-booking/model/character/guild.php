@@ -44,4 +44,58 @@ class CharacterGuild extends Model {
 		return $query->rows;
 	}
 
+	/**
+	 * Retrieves the passed users guilds
+	 * @param  integer $user_id [description]
+	 * @return array
+	 */
+	public function getUserGuilds($user_id, $exclude_old = false) {
+		$query = $this->db->query("
+			SELECT gmID AS `guild_id`
+			FROM " . DB_PREFIX . "guildmembers
+			WHERE gmPlayerID = '" . (int)$user_id . "'" . ($exclude_old ? ' AND TRUE = FALSE' : '') . "
+
+			UNION
+
+			SELECT cgGuildId AS `guild_id`
+			FROM " . DB_PREFIX . "character_guilds
+			WHERE cgPlayerID = '" . (int)$user_id . "'");
+
+		return array_column($query->rows, 'guild_id');
+	}
+
+	/**
+	 * Performs a comparative update of a users OSPs and returns the number of changes made
+	 * @param  int $user_id
+	 * @param  array $data
+	 * @return int
+	 */
+	public function updateUser($user_id, $data) {
+		$changed = 0;
+
+		$current_guilds = $this->getUserGuilds($user_id, true);
+
+		foreach ($data as $guild_id) {
+			if (!in_array($guild_id, $current_guilds)) {
+				$this->db->query("INSERT IGNORE INTO " . DB_PREFIX . "character_guilds (cgPlayerID, cgGuildId) VALUES ('" . (int)$user_id . "', '" . (int)$guild_id . "')");
+				$changed += $this->db->countAffected();
+			} else {
+				$idx = array_search($guild_id, $current_guilds);
+				unset($current_guilds[$idx]);
+			}
+		}
+
+		if (!empty($current_guilds)) {
+			foreach ($current_guilds as $guild_id) {
+				$this->db->query("DELETE FROM " . DB_PREFIX . "character_guilds WHERE cgPlayerID = '" . (int)$user_id . "' AND cgGuildId = '" . (int)$guild_id . "'");
+				$changed += $this->db->countAffected();
+			}
+		}
+
+		// Tidy up the old table
+		$this->db->query("DELETE FROM " . DB_PREFIX . "guildmembers WHERE gmPlayerID = '" . (int)$user_id . "'"); // Get rid of old guilds
+
+		return $changed;
+	}
+
 }

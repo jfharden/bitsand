@@ -36,6 +36,12 @@ class UserUser extends Model {
 	/** @var integer The length of the token to use for e-mail change */
 	private $_change_token_length = 40;
 
+	/** @var array Holds the mailing details for this user */
+	private $_mailing_details;
+
+	/** @var array Holds user emails */
+	private $_emails = array();
+
 	/**
 	 * Logs in a user with a specific e-mail and password.  Also allows an
 	 * admin to log in with an override option.
@@ -95,10 +101,10 @@ class UserUser extends Model {
 			$this->model_user_session->register($user_id);
 
 			$this->user->logIn(array(
-				'user_id' => $user_id,
-				'is_admin' => $user['plAccess'] == 'admin',
-				'firstname' => $user['plFirstName'],
-				'lastname' => $user['plSurname'],
+				'user_id'      => $user_id,
+				'access_level' => $user['plAccess'],
+				'firstname'    => $user['plFirstName'],
+				'lastname'     => $user['plSurname'],
 				'session_hash' => $this->model_user_session->getHash()
 			));
 
@@ -141,17 +147,25 @@ class UserUser extends Model {
 	 * Retrieves the automated e-mail preferences for the requested user.
 	 *
 	 * @param integer $user_id
+	 * @param [optional] string $item The specific item to retrieve
 	 * @return array
 	 */
-	public function getMailingDetails($user_id) {
-		$user_query = $this->db->query("SELECT plEmailICChange AS `ic`, plEmailOOCChange AS `ooc`, plEmailPaymentReceived AS `payment`, plEmailRemovedFromQueue AS `queue` FROM " . DB_PREFIX . "players WHERE plPlayerID = '" . (int)$user_id . "'");
-		$details = array(
-			'ooc'     => $user_query->row['ooc'] == 1,
-			'ic'      => $user_query->row['ic'] == 1,
-			'payment' => $user_query->row['payment'] == 1,
-			'queue'   => $user_query->row['queue'] == 1
-		);
-		return $details;
+	public function getMailingDetails($user_id, $item = null) {
+		if (!$this->_mailing_details) {
+			$user_query = $this->db->query("SELECT plEmailICChange AS `ic`, plEmailOOCChange AS `ooc`, plEmailPaymentReceived AS `payment`, plEmailRemovedFromQueue AS `queue` FROM " . DB_PREFIX . "players WHERE plPlayerID = '" . (int)$user_id . "'");
+			$this->_mailing_details = array(
+				'ooc'     => $user_query->row['ooc'] == 1,
+				'ic'      => $user_query->row['ic'] == 1,
+				'payment' => $user_query->row['payment'] == 1,
+				'queue'   => $user_query->row['queue'] == 1
+			);
+		}
+
+		if ($item) {
+			return $this->_mailing_details[$item];
+		} else {
+			return $this->_mailing_details;
+		}
 	}
 
 	/**
@@ -181,6 +195,7 @@ class UserUser extends Model {
 			  AES_DECRYPT(pleEmergencyNumber, '{$encryption_key}') AS `emergency_number`,
 			  plFirstName AS `firstname`,
 			  plSurname AS `lastname`,
+			  plPlayerNumber as `player_number`,
 			  plDOB AS `dob`,
 			  plEmergencyName AS `emergency_contact`,
 			  plEmergencyRelationship AS `emergency_relation`,
@@ -211,17 +226,21 @@ class UserUser extends Model {
 	 * @return string
 	 */
 	public function getEmail($user_id) {
-		$email_query = $this->db->query("
-			SELECT
-			  plEmail
-			FROM " . DB_PREFIX . "players
-			WHERE plPlayerID = '" . (int)$user_id . "'");
+		if (!isset($this->_emails[$user_id])) {
+			$email_query = $this->db->query("
+				SELECT
+				  plEmail
+				FROM " . DB_PREFIX . "players
+				WHERE plPlayerID = '" . (int)$user_id . "'");
 
-		if (isset($email_query->row['plEmail'])) {
-			return $email_query->row['plEmail'];
-		} else {
-			return '';
+			if (isset($email_query->row['plEmail'])) {
+				$this->_emails[$user_id] = $email_query->row['plEmail'];
+			} else {
+				$this->_emails[$user_id] = '';
+			}
 		}
+
+		return $this->_emails[$user_id];
 	}
 
 	/**
@@ -255,36 +274,41 @@ class UserUser extends Model {
 			  chNPC AS `is_npc`,
 			  chNotes AS `notes`,
 			  chOSP AS `lammies`,
-			  chMonsterOnly as `monster_only`,
-			  GROUP_CONCAT(gmID) AS `guilds`
-			FROM " . DB_PREFIX . "characters C LEFT JOIN " . DB_PREFIX . "guildmembers GM ON chPlayerID = gmPlayerID
+			  chMonsterOnly as `monster_only`
+			FROM " . DB_PREFIX . "characters
 			WHERE chPlayerID = '" . (int)$user_id . "'");
 
 		/*
 		 * Guilds is a concatenated set of guild IDs
 		 */
-		if (isset($character_query->row['guilds'])) {
-			$character_query->row['guilds'] = explode(',', $character_query->row['guilds']);
-		}
+		$this->load->model('character/guild');
+		$character_query->row['guilds'] = $this->model_character_guild->getUserGuilds($user_id);
 
 		/*
-		 * We now need to retrieve the character's skills, this is a simple
-		 * query that returns an array of skill IDs, the complexity occurs
-		 * elsewhere.
+		 * We now need to load the character skills into the Skills Model, this
+		 * handles all of the complexity
 		 */
-		$character_skill_query = $this->db->query("
-			SELECT
-			  stID, stSkillID
-			FROM " . DB_PREFIX . "skillstaken WHERE stPlayerID = '" . (int)$user_id . "'");
-		$character_skills = array();
+		$this->load->model('character/skills');
+		$this->model_character_skills->loadUser($user_id);
 
-		foreach ($character_skill_query->rows as $character_skill) {
-			$character_skills[$character_skill['stSkillID']] = $character_skill['stID'];
-		}
-
-		$character_query->row['character_skills'] = $character_skills;
+		/*
+		 * Retrieve all of the character osps
+		 */
+		$this->load->model('character/osps');
+		$character_query->row['osps'] = $this->model_character_osps->getUserOSPs($user_id);
 
 		return $character_query->row;
+	}
+
+	/**
+	 * Queries if a user has a character registered
+	 * @param integer $user_id
+	 * @return boolean
+	 */
+	public function hasCharacter($user_id) {
+		$character_query = $this->db->query("SELECT chName FROM " . DB_PREFIX . "characters WHERE chPlayerID = '" . (int)$user_id . "'");
+
+		return $character_query->num_rows > 0 && !empty(trim($character_query->row['chName']));
 	}
 
 	/**
@@ -295,7 +319,11 @@ class UserUser extends Model {
 	public function getUserByToken($token) {
 		$user_query = $this->db->query("SELECT plPlayerID as `user_id` FROM " . DB_PREFIX . "players WHERE MD5(CONCAT(plPlayerID, plPassword, plLastLogin)) = '" . $this->db->escape($token) . "'");
 
-		return $user_query->row;
+		if ($user_query->num_rows) {
+			return (int)$user_query->row['user_id'];
+		} else {
+			return false;
+		}
 	}
 
 	/**
@@ -446,6 +474,7 @@ class UserUser extends Model {
 			  pleEmergencyNumber = AES_ENCRYPT('" . $this->db->escape($data['emergency_number']) . "', '{$encryption_key}'),
 			  plFirstName = '" . $this->db->escape($data['firstname']) . "',
 			  plSurname = '" . $this->db->escape($data['lastname']) . "',
+			  plPlayerNumber = '" . $this->db->escape($data['player_number']) . "',
 			  plDOB = '" . $this->db->escape(sprintf($dob_format, $data['dob']['y'], $data['dob']['m'], $data['dob']['d'])) . "',
 			  plEmergencyName = '" . $this->db->escape($data['emergency_contact']) . "',
 			  plEmergencyRelationship = '" . $this->db->escape($data['emergency_relation']) . "',
@@ -460,8 +489,7 @@ class UserUser extends Model {
 
 		// Now see if the user needs an e-mail
 		if ($this->db->countAffected() > 0) {
-			$user_query = $this->db->query("SELECT plEmail, plEmailOOCChange FROM " . DB_PREFIX . "players WHERE plPlayerID = '" . (int)$user_id . "'");
-			if ((int)$user_query->row['plEmailOOCChange'] == 1) {
+			if ($this->getMailingDetails($user_id, 'ooc')) {
 				return $user_query->row['plEmail'];
 			}
 		} else {
@@ -482,6 +510,47 @@ class UserUser extends Model {
 		$user_query = $this->db->query("SELECT plEmail FROM " . DB_PREFIX . "players WHERE LOWER(plEmail) = '" . $this->db->escape($email) . "' ORDER BY plLastLogin DESC");
 
 		return $user_query->num_rows > 0;
+	}
+
+	public function changeCharacterDetails($user_id, $data) {
+		$sql = "UPDATE " . DB_PREFIX . "characters SET
+		  chName = '" . $this->db->escape($data['character_name']) . "',
+		  chPreferredName = " . ($data['alias'] ? "'" . $this->db->escape($data['alias']) . "'" : 'NULL') . ",
+		  chRace = '" . $this->db->escape($data['race']) . "',
+		  chRaceSel = " . ($data['race'] == 'other' ? "'" . $this->db->escape($data['race']) . "'" : 'NULL') . ",
+		  chGender = '" . $this->db->escape(ucwords($data['gender'])) . "',
+		  chGroupSel = '" . $this->db->escape($data['group']) . "',
+		  chGroupText = " . ($data['group'] != 'other' ? "'" . $this->db->escape($data['group_other']) . "'" : 'NULL') . ",
+		  chFaction = '" . $this->db->escape($data['faction']) . "',
+		  chAncestor = '" . $this->db->escape($data['ancestor']) . "',
+		  chAncestorSel = " . ($data['ancestor'] != 'other' ? "'" . $this->db->escape($data['ancestor_other']) . "'" : 'NULL') . ",
+		  chLocation = " . (isset($data['location']) ? "'" . $this->db->escape($data['location']) . "'" : 'NULL') . ",
+		  chNotes = " . ($data['notes'] ? "'" . $this->db->escape($data['notes']) . "'" : 'NULL') . ",
+		  chOSP = " . ($data['lammies'] ? "'" . $this->db->escape($data['lammies']) . "'" : 'NULL') . "
+		WHERE chPlayerID = '" . (int)$user_id . "'";
+		$this->db->query($sql);
+		$count_affected = $this->db->countAffected();
+
+		// Character skills
+		$this->load->model('character/skills');
+		$count_affected += $this->model_character_skills->updateUser($user_id, isset($data['cs']) ? $data['cs'] : array());
+
+		// Guild
+		$this->load->model('character/guild');
+		$count_affected += $this->model_character_guild->updateUser($user_id, isset($data['guild']) ? $data['guild'] : array());
+
+		// OSPs
+		$this->load->model('character/osps');
+		$count_affected += $this->model_character_osps->updateUser($user_id, isset($data['osp']) ? $data['osp'] : array());
+
+		// Now see if the user needs an e-mail
+		if ($count_affected > 0) {
+			if ($this->getMailingDetails($user_id, 'ic')) {
+				return $this->getEmail($user_id);
+			}
+		} else {
+			// Nothing has been updated so never send an e-mail
+		}
 	}
 
 	/**

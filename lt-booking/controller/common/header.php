@@ -74,6 +74,11 @@ class CommonHeader extends Controller {
 			$this->addNavigationItem('user/details-character', 'Character Details (IC)');
 		}
 
+		//var_dump($this->user->isAdmin());die;
+		if ($this->user->isAdmin()) {
+			$this->addNavigationItem('/admin/', 'Admin');
+		}
+
 		// Messages
 		if (isset($this->session->data['error'])) {
 			$this->data['error'] = $this->session->data['error'];
@@ -110,7 +115,7 @@ class CommonHeader extends Controller {
 	 */
 	private function addNavigationItem($route, $text) {
 		$this->data['navigation'][] = array(
-			'href'     => $this->router->link($route),
+			'href'     => substr($route, 0, 1) !== '/' ? $this->router->link($route) : $this->router->getBaseUrl() . substr($route, 1),
 			'text'     => $text,
 			'selected' => str_replace(' ', '/', $this->data['route']) == $route
 		);

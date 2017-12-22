@@ -37,8 +37,6 @@ class UserDetailsPersonal extends Controller {
 	 * between a normal reset or forgotten password
 	 */
 	public function index() {
-		$this->document->addScript('scripts/xhr.js', false);
-
 		if (!$this->user->isLogged()) {
 			$this->session->data['redirect'] = $this->router->link('user/details-personal', null, \Bitsand\SSL);
 			$this->redirect($this->router->link('user/login', null, \Bitsand\SSL));
@@ -50,14 +48,14 @@ class UserDetailsPersonal extends Controller {
 		if ($this->request->method() == 'POST' && $this->validate()) {
 			$send_email = $this->model_user_user->changePersonalDetails($this->user->getId(), $this->request->post);
 
-			$this->session->data['success'] = 'Your personal details have been updated';
-
 			/*
 			 * Send an e-mail to the user if we've updated anything and they've
 			 * said they want to be notified.  Hook this in as a post page
 			 * callback as we don't want to hold up the output
 			 */
 			if ($send_email) {
+				$this->session->data['success'] = 'Your personal details have been updated';
+
 				// Need to send an e-mail saying they've been updated
 				$this->view->addPostCallback(new ActionRoute('user/details-personal/send-email', array('email'=>$send_email)));
 			}
@@ -78,7 +76,7 @@ class UserDetailsPersonal extends Controller {
 		// Pass all of the necessary values to the view
 		$details = $this->model_user_user->getPersonalDetails($this->user->getId());
 
-		$this->handlePostData(array('firstname', 'lastname', 'address_1', 'address_2', 'address_3', 'address_4', 'postcode', 'telephone', 'mobile', 'medical', 'emergency_contact', 'emergency_relation', 'emergency_number', 'car_registration', 'dietary', 'player_id', 'new_player', 'marshal', 'marshal_number', 'notes'), $details);
+		$this->handlePostData(array('firstname', 'lastname', 'address_1', 'address_2', 'address_3', 'address_4', 'postcode', 'telephone', 'mobile', 'medical', 'emergency_contact', 'emergency_relation', 'emergency_number', 'car_registration', 'dietary', 'player_number', 'new_player', 'marshal', 'marshal_number', 'notes'), $details);
 
 		// Handle the errors here
 		$this->data['error_firstname'] = isset($this->_errors['firstname']) ? $this->_errors['firstname'] : '';
@@ -89,7 +87,7 @@ class UserDetailsPersonal extends Controller {
 		$this->data['error_emergency_contact'] = isset($this->_errors['emergency_contact']) ? $this->_errors['emergency_contact'] : '';
 		$this->data['error_emergency_relation'] = isset($this->_errors['emergency_relation']) ? $this->_errors['emergency_relation'] : '';
 		$this->data['error_emergency_number'] = isset($this->_errors['emergency_number']) ? $this->_errors['emergency_number'] : '';
-		$this->data['error_player_id'] = isset($this->_errors['player_id']) ? $this->_errors['player_id'] : '';
+		$this->data['error_player_number'] = isset($this->_errors['player_number']) ? $this->_errors['player_number'] : '';
 		$this->data['error_marshal_number'] = isset($this->_errors['marshal_number']) ? $this->_errors['marshal_number'] : '';
 		if (!empty($this->_errors)) {
 			$this->data['error'] = 'Please complete all fields';
@@ -278,10 +276,10 @@ class UserDetailsPersonal extends Controller {
 			$this->_errors['marshal_number'] = 'Please enter a ' . strtolower($this->request->post['marshal']) . ' number';
 		}
 
-		$player_id = isset($this->request->post['player_id']) ? preg_replace('/[^0-9]/', '', $this->request->post['player_id']) : false;
+		$player_number = isset($this->request->post['player_number']) ? preg_replace('/[^0-9]/', '', $this->request->post['player_number']) : false;
 		$new_player = isset($this->request->post['new_player']) ? (int)$this->request->post['new_player'] : 0;
-		if (!$player_id && !$new_player) {
-			$this->_errors['player_id'] = 'Please enter a player ID';
+		if (!$player_number && !$new_player) {
+			$this->_errors['player_number'] = 'Please enter a player number';
 		}
 
 		return empty($this->_errors);

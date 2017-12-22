@@ -50,8 +50,6 @@ class UserDetailsCharacter extends Controller {
 		if ($this->request->method() == 'POST' && $this->validate()) {
 			$send_email = $this->model_user_user->changeCharacterDetails($this->user->getId(), $this->request->post);
 
-			$this->session->data['success'] = 'Your character details have been updated';
-
 			/*
 			 * Send an e-mail to the user if we've updated anything and they've
 			 * said they want to be notified.  Hook this in as a post page
@@ -59,6 +57,8 @@ class UserDetailsCharacter extends Controller {
 			 */
 			if ($send_email) {
 				// Need to send an e-mail saying they've been updated
+				$this->session->data['success'] = 'Your character details have been updated';
+
 				$this->view->addPostCallback(new ActionRoute('user/details-character/send-email', array('email'=>$send_email)));
 			}
 
@@ -180,14 +180,43 @@ class UserDetailsCharacter extends Controller {
 		foreach ($this->model_character_guild->getAll() as $guild) {
 			$this->data['guild_names'][$guild['guild_id']] = $guild['guild_name'];
 		}
+		$this->data['my_guilds'] = $details['guilds'];
 
 		// And now onto the complicate bit - character skills
-		var_dump($details['character_skills']);
-
 		$this->load->model('character/skills');
 
+		// We need to grab all of the skills (in groups)
+		$character_skills = array();
+		foreach ($this->model_character_skills->getAvailableSkills(false) as $group) {
+			$character_skills[$group->alias] = array(
+				'name'     => $group->name,
+				'children' => $group->getChildren()
+			);
+		}
+		$this->data['character_skills'] = $character_skills;
+		$this->data['my_character_skills'] = $this->model_character_skills->getActiveSkills();
 
-		die();
+		$this->data['max_character_points'] = $this->config->get('max_character_points') | 16;
+
+		// Notes, items etc
+		$this->data['notes'] = $details['notes'];
+		$this->data['lammies'] = $details['lammies'];
+
+		// OSPs
+		$this->data['osp_url'] = $this->router->link('feed/osps');
+		$this->data['my_osps'] = array();
+		$osp_idx = array();
+		foreach ($details['osps'] as $osp) {
+			$osp['idx'] = '';
+			if ($osp['has_other']) {
+				if (!isset($osp_idx[$osp['osp_id']])) {
+					$osp_idx[$osp['osp_id']] = 0;
+				}
+				$osp_idx[$osp['osp_id']]++;
+				$osp['idx'] = '::' . $osp_idx[$osp['osp_id']];
+			}
+			$this->data['my_osps'][] = $osp;
+		}
 
 		$this->children = array(
 			'common/header',
@@ -229,7 +258,7 @@ class UserDetailsCharacter extends Controller {
 	}
 
 	private function validate() {
-		$firstname_len = isset($this->request->post['firstname']) ? strlen(utf8_decode(trim($this->request->post['firstname']))) : 0;
+		/*$firstname_len = isset($this->request->post['firstname']) ? strlen(utf8_decode(trim($this->request->post['firstname']))) : 0;
 		if ($firstname_len < 2) {
 			$this->_errors['firstname'] = 'First name must be at least 2 characters in length';
 		}
@@ -287,7 +316,7 @@ class UserDetailsCharacter extends Controller {
 
 		if ($is_marshal && $marshal_number_len == 0) {
 			$this->_errors['marshal_number'] = 'Please enter a ' . strtolower($this->request->post['marshal']) . ' number';
-		}
+		}*/
 
 		return empty($this->_errors);
 	}
