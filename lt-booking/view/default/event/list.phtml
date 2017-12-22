@@ -1,0 +1,44 @@
+<?php echo $header; ?>
+
+<div class="float-right"><a class="button" href="<?php echo $icalendar_link; ?>">iCalendar</a></div>
+
+<h2>Events open for booking</h2>
+
+<table class="list">
+  <tr>
+    <td>Event</td>
+    <td>Date</td>
+    <td>Booking Closes</td>
+    <td></td>
+  </tr>
+<?php foreach ($bookings_open as $event) : ?>
+  <tr>
+    <td><a href="<?php echo $event['link']; ?>"><?php echo $event['name']; ?></a></td>
+    <td><?php echo $event['date']; ?></td>
+    <td><?php echo $event['booking_closes']; ?></td>
+<?php if (!$event['booked']) : ?>
+    <td><a class="button highlight" href="<?php echo $event['booking_link']; ?>">Book Now!</a></td>
+<?php else : ?>
+    <td><a class="button" href="<?php echo $event['view_booking_link']; ?>">View Booking</a></td>
+<?php endif; ?>
+  </tr>
+<?php endforeach; ?>
+</table>
+<br/>
+
+<h2>Events closed for booking</h2>
+
+<table class="list">
+  <tr>
+    <td>Event</td>
+    <td>Date</td>
+  </tr>
+<?php foreach ($bookings_closed as $event) : ?>
+  <tr>
+    <td><a href="<?php echo $event['link']; ?>"><?php echo $event['name']; ?></a></td>
+    <td><?php echo $event['date']; ?></td>
+  </tr>
+<?php endforeach; ?>
+</table>
+
+<?php echo $footer;
