@@ -51,4 +51,10 @@ class Tracy {
 			\Tracy\Debugger::$strictMode = true;
 		}
 	}
+
+	public static function disable() {
+		if (Config::getVal('error_handler') == 'Tracy') {
+			\Tracy\Debugger::enable(\Tracy\Debugger::PRODUCTION, Registry::get('log')->getLogPath());
+		}
+	}
 }
