@@ -22,29 +22,35 @@
  || Bitsand.  If not, see <http://www.gnu.org/licenses/>.
  ++--------------------------------------------------------------------------*/
 
-function xhr(url, callback, postData) {
-	if (typeof postData == undefined) postData = {};
-	var req = new XMLHttpRequest,
-		method = postData === {} ? 'GET' : 'POST';
+define('XHR', [], function() {
+	return function(url, callback, postData, modifyReq) {
+		if (typeof postData == 'undefined') postData = null;
+		var req = new XMLHttpRequest,
+			method = postData === {} || postData === null ? 'GET' : 'POST';
 
-	req.open(method, url, true);
-	if (method === 'POST') {
-		/**
-		 * @todo encodeURIComponent each value being posted
-		 */
-		req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
-	} else {
-		req.setRequestHeader('Content-Type', 'application/x-javascript');
-	}
-	req.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+		req.open(method, url, true);
+		if (method === 'POST') {
+			/**
+			 * @todo encodeURIComponent each value being posted
+			 */
+			req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=' + (typeof postData.encoding != 'undefined' ? postData.encoding : 'UTF-8'));
+			req.setRequestHeader('Data-Type', 'application/json; charset=' + (typeof postData.encoding != 'undefined' ? postData.encoding : 'UTF-8'));
+			if (typeof postData.encoding != 'undefined') delete postData.encoding
+		} else {
+			req.setRequestHeader('Content-Type', 'application/x-javascript');
+		}
+		req.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
 
-	req.onreadystatechange = function() {
-		if (req.readyState != 4) return;
-		if (req.status != 200 && req.status != 304) return;
+		req.onreadystatechange = function() {
+			if (req.readyState != 4) return;
+			if (req.status != 200 && req.status != 304) return;
 
-		callback(req.responseText);
+			if (typeof callback == 'function') {
+				callback(req.responseText);
+			}
+		};
+
+		if (req.readyState == 4) return;
+		req.send(typeof postData == 'object' ? serialize(postData) : postData);
 	};
-
-	if (req.readyState == 4) return;
-	req.send(postData);
-}
+});
