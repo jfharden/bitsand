@@ -1,0 +1,66 @@
+<?php echo $header; ?>
+
+<div class="float-right"><a href="<?php echo $icalendar_link; ?>" class="button">iCalendar</a> <a class="button" href="#bookings">Jump to Bookings</a></div>
+<h3>Description</h3>
+<div class="feature-block description">
+<?php $_($description, true); ?>
+</div>
+
+<h3>Details</h3>
+<div class="feature-block details">
+<?php $_($details, true); ?>
+</div>
+
+<?php if ($show_booking_list) : ?>
+<h3><a name="bookings">Bookings</a></h3>
+<p>The following players have booked and paid for this event: <span class="float-right"><a href="<?php echo $rss_link; ?>" class="button">RSS Feed</a></span></p>
+
+<table class="list bookings rows">
+  <thead>
+    <tr>
+      <td>First Name</td>
+      <td>Last Name</td>
+      <td>Character Name</td>
+<?php 	if ($show_character_group) : ?>
+      <td>Group</td>
+<?php 	endif; ?>
+      <td>Faction</td>
+      <td></td>
+    </tr>
+  </thead>
+  <tbody>
+<?php 	foreach ($bookings as $booking) : ?>
+    <tr>
+      <td><?php $_($booking['firstname']); ?></td>
+      <td><?php $_($booking['lastname']); ?></td>
+      <td><?php $_($booking['monster_only'] ? '' : ($booking['character_nickname'] ? $booking['character_nickname'] : $booking['character_name'])); ?></td>
+<?php 		if ($show_character_group) : ?>
+      <td><?php $_($booking['monster_only'] ? '' : $booking['character_group']); ?></td>
+<?php 		endif; ?>
+      <td><?php $_($booking['faction']); ?></td>
+      <td><?php $_($booking['type']); ?></td>
+    </tr>
+<?php 	endforeach; ?>
+  </tbody>
+</table>
+
+<table class="booking-count">
+  <tr>
+    <td><?php $_($booking_count['staff']); ?> staff,</td>
+    <td><?php $_($booking_count['player']); ?> players<?php if ($has_monsters) echo ','; ?></td>
+<?php 	if ($has_monsters) : ?>
+    <td><?php $_($booking_count['monster']); ?> monsters</td>
+<?php 	endif; ?>
+    <td>(<?php $_($booking_count['total']); ?> total)</td>
+  </tr>
+</table>
+<?php else : ?>
+  <p>The list of bookings for this event is only available if you're <a href="<?php echo $login_link; ?>">logged in</a>.</p>
+<?php endif; ?>
+
+<script type="text/javascript">//<!--
+require(['TableSort', 'Core'], function(TableSort) {
+  new TableSort($('table.bookings'), 2);
+})
+//--></script>
+<?php echo $footer;
