@@ -1,16 +1,20 @@
-define('Admin', ['Class', 'Core', 'polyfill'], function(Class) {
+define('Admin', ['Class', 'Notify', 'Core', 'polyfill'], function(Class, Notify) {
 	var Admin = Class.extend({
 		init: function() {
-			var $$hrefs = $$('.mdl-menu__item[href]');
-			if ($$hrefs.length) {
-				for (var i=0; i<$$hrefs.length; i++) {
-					$$hrefs[i].addEventListener('click', function() {
-						location.href = this.getAttribute('href');
-					});
-				}
+			//
+		},
+		messages: function(messages) {
+			if (messages.error) {
+				Notify.error(messages.error);
+			}
+			if (messages.success) {
+				Notify.success(messages.success);
+			}
+			if (messages.warning) {
+				Notify.warning(messages.warning);
 			}
 		}
 	});
 
-	new Admin();
+	return new Admin();
 });
