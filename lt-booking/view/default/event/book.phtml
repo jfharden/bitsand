@@ -1,0 +1,43 @@
+<?php echo $header; ?>
+
+<?php if (!$has_spaces) : ?>
+<p>We're really sorry, but there are currently no spaces available for this event.</p>
+<?php else : ?>
+<div id="booking-form">
+  <form class="advanced-form" enctype="multipart/form" method="post" action="<?php $_($booking_link); ?>" autocomplete="off">
+<?php foreach ($booking_options as $options) : ?>
+    <fieldset class="row visible type-<?php $_($options['type']); ?>">
+      <legend for="type-<?php $_($options['type']); ?>"><label><input type="radio" name="type" id="type-<?php $_($options['type']); ?>" value="<?php $_($options['type']); ?>" aria-label="<?php $_($options['name']); ?>" /><span><?php $_($options['name']); ?></span></label></legend>
+
+      <div class="block">
+<?php foreach ($options['options'] as $option) : ?>
+        <div class="booking-option">
+          <label for="item-<?php $_($option['item_id']); ?>"><span><?php $_($option['name']); ?></span><span><?php $_($option['cost_formatted']); ?></span></label>
+
+<?php if (!$option['is_multiple']) : ?>
+          <input type="checkbox"<?php if(!$option['mandatory']) : ?> name="option[<?php $_($options['type']); ?>][<?php $_($option['item_id']); ?>]" value="1"<?php else : ?> checked="checked" disabled="disabled"<?php endif; ?> id="item-<?php $_($option['item_id']); ?>" aria-label="<?php $_($option['name']); ?> - <?php $_($option['cost_formatted']); ?>" data-cost="<?php $_($option['cost']); ?>" /><span>&nbsp;</span>
+<?php if ($option['mandatory']) : ?>
+          <input type="hidden" name="option[<?php $_($options['type']); ?>][<?php $_($option['item_id']); ?>]" value="1" />
+<?php endif; ?>
+<?php else : ?>
+          <select name="option[<?php $_($options['type']); ?>][<?php $_($option['item_id']); ?>]" id="item-<?php $_($option['item_id']); ?>" aria-label="<?php $_($option['name']); ?> - <?php $_($option['cost_formatted']); ?>">
+<?php for($i=0; $i<31; $i++) : ?>
+            <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
+<?php endfor; ?>
+          </select>
+<?php endif; ?>
+        </div>
+<?php endforeach; ?>
+      </div>
+    </fieldset>
+<?php endforeach; ?>
+  </form>
+</div>
+<?php endif; ?>
+
+<script type="text/javascript">//<!--
+require(['Booking'], function(Booking) {
+  new Booking;
+})
+//-></script>
+<?php echo $footer;
