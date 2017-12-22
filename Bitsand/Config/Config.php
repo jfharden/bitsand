@@ -57,48 +57,66 @@ class Config {
 
 		$config_query = $db->query("SELECT * FROM " . DB_PREFIX . "config WHERE cnName = 'Default'");
 
-		if ($config_query->num_rows == 0) {
-			return;
+		if ($config_query->num_rows != 0) {
+			$config_row = $config_query->row;
+
+			$translate = array(
+				'cnANNOUNCEMENT_MESSAGE'      => 'announcement_message',
+				'cnDISCLAIMER_TEXT'           => 'disclaimer',
+				'cnEVENT_CONTACT_NAME'        => 'event_contact',
+				'cnEVENT_CONTACT_MAIL'        => 'event_contact_email',
+				'cnTECH_CONTACT_NAME'         => 'tect_contact',
+				'cnTECH_CONTACT_MAIL'         => 'tech_contact_email',
+				'cnTITLE'                     => 'site_title',
+				'cnSYSTEM_NAME'               => 'site_name',
+				'cnBOOKING_FORM_FILE_NAME'    => 'booking_form_file_name',
+				'cnBOOKING_LIST_IF_LOGGED_IN' => 'booking_list_if_logged_in',
+				'cnLOCATIONS_LABEL'           => 'character_location_label',
+				'cnLIST_GROUPS_LABEL'         => 'list_groups_label',
+				'cnANCESTOR_DROPDOWN'         => 'ancestor_dropdown',
+				'cnDEFAULT_FACTION'           => 'default_faction',
+				'cnNON_DEFAULT_FACTION_NOTES' => 'non_default_faction_notes',
+				'cnIC_NOTES_TEXT'             => 'ic_notes_text',
+				'cnLOGIN_TIMEOUT'             => 'login_timeout',
+				'cnMIN_PASS_LEN'              => 'minimum_password_length',
+				'cnSEND_PASSWORD'             => 'email_password',
+				'cnUSE_PAY_PAL'               => 'use_paypal',
+				'cnPAYPAL_EMAIL'              => 'paypal_email',
+				'cnNPC_LABEL'                 => 'npc_label',
+				'cnPAYPAL_AUTO_MARK_PAID'     => 'paypal_mark_as_paid',
+				'cnAUTO_ASSIGN_BUNKS'         => 'auto_assign_bunks',
+				'cnUSE_SHORT_OS_NAMES'        => 'use_short_os_names',
+				'cnUSE_QUEUE'                 => 'use_queue',
+				'cnALLOW_EVENT_PACK_BY_POST'  => 'event_pack_by_post',
+				'cnSTAFF_LABEL'               => 'staff_label',
+				'cnQUEUE_OVER_LIMIT'          => 'queue_over_limit'
+			);
+
+			foreach ($translate as $field => $key) {
+				$value = $config_row[$field];
+				if (!isset(static::$_config[$key]) || $overwrite == static::OVERWRITE_ALL || ($overwrite == static::OVERWRITE_NOT_EMPTY && $value != '' && !is_null($value))) {
+					static::$_config[$key] = is_numeric($value) ? (float)$value : $value;
+				}
+			}
 		}
 
-		$config_row = $config_query->row;
+		// New `settings table` - this provides more expandability over the
+		// column based version from the original Bitsand
+		$settings_query = $db->query("
+			SELECT
+			  stKey AS `key`,
+			  stValue AS `value`,
+			  stJson AS `json`
+			FROM " . DB_PREFIX . "settings
+			WHERE cnName = 'Default'");
 
-		$translate = array(
-			'cnANNOUNCEMENT_MESSAGE'      => 'announcement_message',
-			'cnDISCLAIMER_TEXT'           => 'disclaimer',
-			'cnEVENT_CONTACT_NAME'        => 'event_contact',
-			'cnEVENT_CONTACT_MAIL'        => 'event_contact_email',
-			'cnTECH_CONTACT_NAME'         => 'tect_contact',
-			'cnTECH_CONTACT_MAIL'         => 'tech_contact_email',
-			'cnTITLE'                     => 'site_title',
-			'cnSYSTEM_NAME'               => 'site_name',
-			'cnBOOKING_FORM_FILE_NAME'    => 'booking_form_file_name',
-			'cnBOOKING_LIST_IF_LOGGED_IN' => 'booking_list_if_logged_in',
-			'cnLOCATIONS_LABEL'           => 'character_location_label',
-			'cnLIST_GROUPS_LABEL'         => 'list_groups_label',
-			'cnANCESTOR_DROPDOWN'         => 'ancestor_dropdown',
-			'cnDEFAULT_FACTION'           => 'default_faction',
-			'cnNON_DEFAULT_FACTION_NOTES' => 'non_default_faction_notes',
-			'cnIC_NOTES_TEXT'             => 'ic_notes_text',
-			'cnLOGIN_TIMEOUT'             => 'login_timeout',
-			'cnMIN_PASS_LEN'              => 'minimum_password_length',
-			'cnSEND_PASSWORD'             => 'email_password',
-			'cnUSE_PAY_PAL'               => 'use_paypal',
-			'cnPAYPAL_EMAIL'              => 'paypal_email',
-			'cnNPC_LABEL'                 => 'npc_label',
-			'cnPAYPAL_AUTO_MARK_PAID'     => 'paypal_mark_as_paid',
-			'cnAUTO_ASSIGN_BUNKS'         => 'auto_assign_bunks',
-			'cnUSE_SHORT_OS_NAMES'        => 'use_short_os_names',
-			'cnUSE_QUEUE'                 => 'use_queue',
-			'cnALLOW_EVENT_PACK_BY_POST'  => 'event_pack_by_post',
-			'cnSTAFF_LABEL'               => 'staff_label',
-			'cnQUEUE_OVER_LIMIT'          => 'queye_over_limit'
-		);
-
-		foreach ($translate as $field => $key) {
-			$value = $config_row[$field];
-			if (!isset(static::$_config[$key]) || $overwrite == static::OVERWRITE_ALL || ($overwrite == static::OVERWRITE_NOT_EMPTY && $value != '' && !is_null($value))) {
-				static::$_config[$key] = is_numeric($value) ? (int)$value : $config_row[$field];
+		foreach ($settings_query->rows as $setting) {
+			if (!isset(static::$_config[$setting['key']]) || $overwrite == static::OVERWRITE_ALL || ($overwrite == static::OVERWRITE_NOT_EMPTY && $value != '' && !is_null($value))) {
+				if (!$setting['json']) {
+					static::$_config[$setting['key']] = is_numeric($setting['value']) ? (float)$setting['value'] : $setting['value'];
+				} else {
+					static::$_config[$setting['key']] = json_decode($setting['value'], true);
+				}
 			}
 		}
 	}
@@ -136,6 +154,15 @@ class Config {
 	 */
 	public static function get($key) {
 		return Config::getVal($key, false);
+	}
+
+	/**
+	 * Checks to see if a config value has been explicitly defined
+	 * @param string  $key
+	 * @return boolean
+	 */
+	public static function hasVal($key) {
+		return isset(Config::$_config[$key]);
 	}
 
 	/**
