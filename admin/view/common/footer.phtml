@@ -9,10 +9,14 @@
   </div>
 
 <?php foreach ($scripts as $script) : ?>
-  <script type="text/javascript" src="<?php $_($script['href']); ?>"<?php if ($script['defer']) echo ' defer'; ?>></script>
+  <script src="<?php $_($script['href']); ?>"<?php if ($script['defer']) echo ' defer'; ?>></script>
 <?php endforeach; ?>
-  <script type="text/javascript">
-    require(['Admin'], function() {});
+  <script>
+    require(['Admin'], function(Admin) {
+<?php if ($messages) : ?>
+      Admin.messages(<?php echo $messages; ?>);
+<?php endif; ?>
+    });
   </script>
 </body>
 </html>

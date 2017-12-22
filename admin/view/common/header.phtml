@@ -44,25 +44,21 @@
           <span>Welcome <?php $_($name); ?></span>
           <a href="<?php $_($logout); ?>" class="button">Log Out</a>
         </div>
-          <a class="mdl-navigation__link"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">event</i>Event Admin</a>
       </div>
+    </header>
 
-      <main class="mdl-layout__content mdl-color-grey-100">
-        <div class="bits-content">
+    <nav class="bits-layout__menu bits-layout__menu--main">
+      <div class="content">
+        <ul>
+          <li><a href="<?php $_($base_path); ?>"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">home</i></a></li>
+          <li><a><i class="material-icons" role="presentation">event</i>Event Admin</a></li>
+          <li><a><i class="material-icons" role="presentation">face</i>Player Admin</a></li>
+          <li><a><i class="material-icons" role="presentation">settings</i>Settings</a></li>
+          <li class="bits-layout__menu--spacer"></li>
+          <li><a><i class="material-icons" role="presentation">settings_applications</i>Site Admin</a></li>
+        </ul>
+      </div>
+    </nav>
 
-<?php /*
-
-<?php if ($error) : ?>
-  <div class="box error" onclick="this.style.opacity = 0;"><?php $_($error); ?></div>
-
-<?php endif; ?>
-<?php if ($warning) : ?>
-  <div class="box warning" onclick="this.style.opacity = 0;"><?php $_($warning); ?></div>
-
-<?php endif; ?>
-<?php if ($success) : ?>
-  <div class="box success" onclick="this.style.opacity = 0;"><?php $_($success); ?></div>
-
-<?php endif; ?>
-*/ ?>    <main class="bits-layout__content content">
+    <main class="bits-layout__content content">
       <div>
