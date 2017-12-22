@@ -1,0 +1,22 @@
+.feature-block {
+	/*border: 1px solid;*/
+	padding: 14px;
+	font-size: 0.78rem;
+	background-color: rgb(230, 230, 230);
+	box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15) inset, 0 0 6px rgba(0, 0, 0, 0.2) inset;
+	border-radius: 2px;
+	font-family: Georgia, Times New Roman, Serif;
+}
+.feature-block h2 {
+	font-size: 1.2em;
+}
+.feature-block ul {
+	margin-top: 12px;
+	margin-left: 16px;
+}
+.feature-block ul li {
+	padding-left: 8px;
+}
+.feature-block p {
+	margin: 0px 0px 0.5em;
+}

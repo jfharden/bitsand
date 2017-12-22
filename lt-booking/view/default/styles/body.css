@@ -36,6 +36,66 @@ select {
 	padding: 3px 4px;
 }
 
+/* https://www.sitepoint.com/replacing-radio-buttons-without-replacing-radio-buttons/ */
+[type="radio"], [type="checkbox"] {
+	border: 0px;
+	clip: rect(0 0 0 0);
+	height: 1px; margin: -1px;
+	overflow: hidden;
+	padding: 0px;
+	position: absolute;
+	width: 1px
+}
+[type="radio"] + span, [type="checkbox"] + span {
+	display: block;
+	position: relative;
+	line-height: 1.45em;
+}
+[type="radio"] + span::before, [type="checkbox"] + span::before {
+	content: '';
+	display: inline-block;
+	width: 1em;
+	height: 1em;
+	line-height: 1em;
+	vertical-align: -0.125em;
+	border: 0.125em solid rgb(255,255,255);
+	box-shadow: 0 0 0 2px rgb(0,0,0);
+	margin-left: 0.45em;
+	margin-right: 0.65em;
+	transition: 0.5s ease all;
+}
+[type="radio"] + span::before {
+	border-radius: 1em;
+}
+[type="checkbox"] + span::before {
+	border-radius: 1px;
+}
+
+[type="radio"]:checked + span::before, [type="checkbox"]:checked + span::before {
+	background: rgb(43, 154, 43);
+	/*box-shadow: 0 0 0 3px rgb(0,0,0);*/
+}
+[type="radio"]:checked:disabled + span::before, [type="checkbox"]:checked:disabled + span::before {
+	background: rgb(154, 154, 154);
+	box-shadow: 0 0 0 2px rgb(154, 154, 154);
+}
+[type="checkbox"]:checked + span::after {
+	content: '\2713';
+	display: inline-block;
+	position: absolute;
+	text-align: center;
+	width: 1em;
+	height: 1em;
+	left: 0.45em;
+	color: rgb(255, 255, 255);
+}
+/*[type="radio"]:focus + span:after {
+	content: '\0020\2190';
+	font-size: 1.5em;
+	line-height: 1;
+	vertical-align: -0.125em;
+}*/
+
 input.button, a.button, button.button {
 	display: inline-block;
 	line-height: normal;
@@ -53,7 +113,6 @@ input.button, a.button, button.button {
 	border: 0px none;
 	text-decoration: none;
 	border-radius: 2px;
-
 }
 
 ul.guild-list {
@@ -78,13 +137,6 @@ ul.guild-list li {
 	margin: 0px 4px;
 	line-height: 1.3rem
 }
-ul.guild-list li:after {
-	content: '\00d7';
-	font-size: 1.2rem;
-	padding-left: 3px;
-	vertical-align: middle;
-	display: inline-block;
-}
 
 #gins {
 	width: auto;
@@ -95,7 +147,7 @@ input.button, a.button, button.button,
 	color: rgb(68, 68, 68);
 	color: rgba(0, 0, 0, 0.8);
 	background-color: rgb(230, 230, 230);
-		box-shadow: 0 0 0 1px rgba(0,0,0,.15) inset,0 0 6px rgba(0,0,0,.2) inset;
+	box-shadow: 0 0 0 1px rgba(0,0,0,.15) inset,0 0 6px rgba(0,0,0,.2) inset;
 	-webkit-transition: background 0.15s ease;
 	-moz-transition: background 0.15s ease;
 	-ms-transition: background 0.15s ease;
@@ -344,6 +396,11 @@ textarea {
 	background-color: rgba(245,176,65, 0.75);
 }
 
+.button.highlight {
+	background-color: rgb(245,176,65);
+	background-color: rgba(245,176,65, 0.75);
+}
+
 .footnote {
 	padding-top: 2rem;
 	font-size: 0.825rem;
@@ -435,7 +492,7 @@ textarea {
 	-o-transition: max-height 0.25s ease-out;
 	transition: max-height 0.25s ease-out;
 }
-#ooc-form #player-id-field {
+#ooc-form #player-number-field {
 	overflow: hidden;
 	-webkit-transition: max-width 0.25s ease-out;
 	-moz-transition: max-width 0.25s ease-out;
@@ -443,7 +500,7 @@ textarea {
 	-o-transition: max-width 0.25s ease-out;
 	transition: max-width 0.25s ease-out;
 }
-#ooc-form #player_id {
+#ooc-form #player-number {
 	width: 10vw;
 	min-width: 105px;
 	margin-right: 20px;
@@ -454,13 +511,13 @@ textarea {
 #ooc-form .hidden, #ooc-form #marshal-number .hidden {
 	max-height: 0px;
 }
-#ooc-form #player-id-field.visible {
+#ooc-form #player-number-field.visible {
 	max-width: 50%;
 }
-#ooc-form #player-id-field.hidden {
+#ooc-form #player-number-field.hidden {
 	max-width: 0px;
 }
-textarea[name="notes"] {
+textarea[name="notes"], textarea[name="lammies"] {
 	width: 100%;
 	max-width: 100%;
 }
@@ -485,3 +542,205 @@ textarea[name="notes"] {
 	width: auto;
 	min-width: 10%
 }
+
+table.list {
+	width: 100%;
+}
+table.list td {
+	padding-bottom: 0.35rem;
+}
+table.list td:last-child {
+	text-align: right;
+}
+
+table.list.bookings {
+	font-size: 0.78rem;
+}
+table.rows td {
+	padding-left: 0.25rem;
+	padding-right: 0.25rem;
+}
+table.rows tbody tr:nth-child(odd) {
+	background-color: rgb(230, 230, 230);
+}
+
+table.booking-count {
+	margin-top: 1rem;
+}
+table.booking-count td {
+	padding-right: 1rem;
+}
+table thead td.asc:after {
+	content: '\25b2';
+}
+table thead td.desc:after {
+	content: '\25bc';
+}
+
+.float-right {
+	float: right;
+}
+
+#booking-form fieldset .block {
+	transition: all 0.5s ease;
+	overflow: hidden;
+	max-height: 1000px;
+	margin-bottom: 0px;
+}
+#booking-form fieldset .block > div {
+	transition: all 0.5s ease-in;
+	opacity: 1;
+}
+#booking-form fieldset.hidden .block {
+	max-height: 1px;
+}
+#booking-form fieldset.hidden .block > div {
+	opacity: 0;
+}
+#booking-form .booking-option label {
+	width: 90%;
+}
+#booking-form .booking-option label, #booking-form .booking-option label span,
+#booking-form .booking-option input[type="checkbox"] + span {
+	display: inline-block;
+}
+#booking-form .booking-option label span:nth-child(1) {
+	min-width: 80%;
+}
+#booking-form .booking-option label span:nth-child(2) {
+	min-width: 20%;
+	text-align: right;
+	padding-right: 3%;
+}
+#ic-form .guilds ul, #ic-form .guilds li {
+	display: inline-block;
+	list-style: none outside none;
+}
+#ic-form .guilds li {
+	margin-right: 20px;
+	cursor: pointer;
+	background: rgb(33, 92, 152);
+	color: rgb(255, 255, 255);
+	background: rgb(33, 92, 152);
+	color: rgb(255, 255, 255);
+	padding: 1px 6px 1px 10px;
+	border-radius: 30px;
+	font-size: 13px;
+}
+#ic-form .guilds li:after {
+	position: relative;
+	display: inline-block;
+	content: '';
+	color: white;
+	width: 16px; height: 16px;
+	top: 3px;
+	text-align: center;
+	margin-left: 9px;
+	background: url('../images/icon-close.png') no-repeat 50% 50%;
+}
+#ic-form .character-skills ul {
+	list-style: none outside none;
+	margin-left: 1em;
+}
+#ic-form .character-skills .cost {
+	float: right;
+	width: 25px;
+	text-align: center;
+}
+#ic-form .character-skills span {
+	font-size: 0.92rem;
+	color: rgba(0,0,0, 0.87);
+}
+#ic-form .character-skills label {
+	-webkit-transition: background 0.15s ease;
+	-moz-transition: background 0.15s ease;
+	-ms-transition: background 0.15s ease;
+	-o-transition: background 0.15s ease;
+	transition: background 0.15s ease;
+}
+#ic-form .character-skills label:hover {
+	background-color: rgb(204, 204, 204);
+}
+#ic-form .character-skills label:hover span {
+	color: rgb(43, 114, 187);
+}
+
+.points {
+	display: inline-block;
+	width: 30px;
+	height: 30px;
+	line-height: 30px;
+	text-align: center;
+	background: rgb(43, 154, 45);
+	border: 0.125em solid rgb(255, 255, 255);
+	box-shadow: 0 0 0 2px rgb(0,0,0);
+	border-radius: 50%;
+	margin-left: 0.45em;
+	margin-right: 0.65em;
+	transition: 0.5s ease all;
+	color: rgb(255, 255, 255);
+	font-size:14px;
+	font-weight: bold;
+}
+.points.error {
+	background-color: rgb(205,97,85);
+}
+.points.warning {
+	background-color: rgb(245,176,65)
+}
+#ic-form .osp-list div[data-key] {
+	height: 26px;
+	line-height: 26px;
+	font-size: 0.92rem;
+}
+#ic-form .osp-list div[data-key] .name:hover {
+	background-color: rgb(204, 204, 204);
+	color: rgb(43, 114, 187);
+}
+#ic-form .osp-list div[data-key] .name {
+	display: inline-block;
+	width: 100%;
+	cursor: pointer;
+	-webkit-transition: background 0.15s ease;
+	-moz-transition: background 0.15s ease;
+	-ms-transition: background 0.15s ease;
+	-o-transition: background 0.15s ease;
+	transition: background 0.15s ease;
+}
+#ic-form .osp-list div[data-key].has-other .name {
+	width: 50%;
+}
+#ic-form .osp-list div[data-key] .name:before {
+	content: '';
+	width: 16px; height: 16px;
+	background: url('../images/icon-close.png') no-repeat 50% 50%;
+	display: inline-block;
+	vertical-align: middle;
+	margin-right: 8px;
+}
+#ic-form .osp-list div[data-key].has-other input[type="text"] {
+	width: 49%;
+	width: calc(50% - 6px);
+	font-size: 13px;
+}
+
+
+.feature-block {
+	margin: 10px 0px;
+}
+
+
+/*
+ https://github.com/Pixabay/JavaScript-autoComplete/blob/master/auto-complete.css
+ */
+.autocomplete-suggestions {
+    text-align: left; cursor: pointer; border: 1px solid #ccc; border-top: 0; background: #fff; box-shadow: -1px 1px 3px rgba(0,0,0,.1);
+
+    /* core styles should not be changed */
+    position: absolute; display: none; z-index: 9999; max-height: 254px; overflow: hidden; overflow-y: auto; -webkit-box-sizing: border-box;
+	   -moz-box-sizing: border-box;
+	        box-sizing: border-box;;
+}
+.autocomplete-suggestion { position: relative; padding: 0 .6em; line-height: 23px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 1.02em; color: #333; }
+.autocomplete-suggestion b { font-weight: normal; color: #1f8dd6; }
+.autocomplete-suggestion.selected { background: #f0f0f0; }
