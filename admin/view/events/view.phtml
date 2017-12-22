@@ -1,0 +1,31 @@
+<?php echo $header; ?>
+
+<h1 class="bits-typography--title"><?php $_($title); ?></h1>
+
+<p>All items below relate only to bookings for the <strong><?php $_($event_name); ?></strong> event.</p>
+
+<a href="<?php echo $link_edit; ?>" class="bits-layout__button">Edit Event</a>
+<a href="<?php echo $link_payments; ?>" class="bits-layout__button">Outstanding Payments<?php if ($payment_queue) : ?><span class="spot"><?php $_($payment_queue); ?></span><?php endif; ?></a>
+<a href="<?php echo $link_queue; ?>" class="bits-layout__button">Booking Queue</a>
+
+<h2>Bookings</h2>
+<a href="<?php echo $link_booking_status; ?>">Booking Status</a> (allows delete)<br/>
+<a href="<?php echo $link_add_booking; ?>">Add Booking</a><br/>
+<a href="<?php echo $link_bunks; ?>">Assign Bunks</a><br/>
+<a href="<?php echo $link_meals; ?>">Manage meal tickes</a><br/>
+<a href="<?php echo $link_marshals; ?>">Manage marshal status</a>
+
+<h2>Reports and Analytical</h2>
+<a href="<?php echo $link_cards; ?>">Cards, Lore Sheets, Meal Tickets, Bunks</a><br/>
+<a href="<?php echo $link_bookings; ?>">Bookings</a> - <a href="<?php echo $link_bookings; ?>">Export bookings to CSV</a><br/>
+<a href="<?php echo $link_purchases; ?>">Export purchases to CSV</a><br/>
+<a href="<?php echo $link_signin; ?>">Signature &amp; Car Registration Sheed</a><br/>
+<a href="<?php echo $link_medical; ?>">Medical Details</a><br/>
+<a href="<?php echo $link_diet; ?>">Dietary Requirements</a>
+
+
+<h2>Event Management</h2>
+<a>Delete event</a><br/>
+<a>Final Confirmation</a>
+
+<?php echo $footer; ?>
