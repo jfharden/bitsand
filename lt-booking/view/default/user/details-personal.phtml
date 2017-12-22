@@ -14,7 +14,7 @@
       </div>
     </fieldset>
 
-    <fieldset name="address">
+    <fieldset name="address" id="address-block">
       <legend>Contact details:</legend>
       <div class="block<?php if (!empty($error_address_1)) echo ' error'; ?>">
         <label for="address-1">Address:</label>
@@ -27,9 +27,9 @@
       </div>
       <div class="block">
         <label for="postcode">Postcode:</label>
-        <input type="text" name="postcode" placeholder="Postcode" id="postcode" value="<?php $_($postcode); ?>"<?php if ($postcode_lookup) echo ' onchange="checkPostcode();" onkeyup="checkPostcode();"'; ?> autocomplete="postal-code" />
+        <input type="text" name="postcode" placeholder="Postcode" id="postcode" value="<?php $_($postcode); ?>" autocomplete="postal-code" />
 <?php if ($postcode_lookup) : ?>
-        <button class="button" id="postcode-lookup" onclick="lookupPostcode();return false;"<?php if (empty($postcode)) echo ' disabled="disabled"'; ?>>Lookup</button>
+        <button type="button" class="button" id="postcode-lookup" <?php if (empty($postcode)) echo ' disabled="disabled"'; ?>>Lookup</button>
 <?php endif; ?>
       </div>
       <div class="block<?php if (!empty($error_telephone)) echo ' error'; ?>">
@@ -67,10 +67,10 @@
 <?php endfor; ?>
         </select>
       </div>
-      <div class="block medical">
+      <div class="block medical" id="medical-block">
         <label for="medical">Medical conditions:</label>
         <div class="group">
-          <a class="button" onclick="toggleMedical()">Enter medical conditions</a>
+          <a class="button">Enter medical conditions</a>
           <div id="medical-info" class="<?php echo !empty($medical) ? 'visible' : 'hidden'; ?>">
             <textarea name="medical" cols="50" rows="5" placeholder="Medical contitions"><?php $_($medical); ?></textarea>
           </div>
@@ -99,7 +99,7 @@
       </div>
       <div class="block">
         <label for="dietary">Dietry requirements:</label>
-        <select name="dietary" id="dietary" onchange="checkDiet(this);">
+        <select name="dietary" id="dietary">
           <option value="Omnivore"<?php if (strtosafelower($dietary) == 'omnivore') echo ' selected="selected"'; ?>>No special requirements</option>
           <option value="Vegetarian"<?php if (strtosafelower($dietary) == 'vegetarian') echo ' selected="selected"'; ?>>Vegetarian</option>
           <option value="Vegan"<?php if (strtosafelower($dietary) == 'vegan') echo ' selected="selected"'; ?>>Vegan</option>
@@ -110,24 +110,25 @@
 
     <fieldset>
       <legend>Lorien Trust</legend>
-      <div class="block">
-        <label for="player_id">Player ID:</label>
+      <div class="block" id="player-block">
+        <label for="player-id">Player Number:</label>
         <div class="group">
-          <div class="field<?php if (!empty($error_player_id)) echo ' error'; ?>">
-            <div class="field <?php echo $new_player ? 'hidden' : 'visible'; ?>" id="player-id-field">
-              <input type="text" name="player_id" id="player_id" placeholder="P:" value="<?php $_($player_id); ?>"<?php if (!$new_player) echo ' required="required"'; ?> />
+          <div class="field<?php if (!empty($error_player_number)) echo ' error'; ?>">
+            <div class="field <?php echo $new_player ? 'hidden' : 'visible'; ?>" id="player-number-field">
+              <input type="text" name="player_number" id="player-number" placeholder="P:" value="<?php $_($player_number); ?>"<?php if (!$new_player) echo ' required="required"'; ?> />
             </div>
             <div class="field">
-              <input type="checkbox" onchange="newPlayer(this);" name="new_player" id="new_player" value="1"<?php if ($new_player) echo ' checked="checked"'; ?> /> <label for="new_player">New Player?</label><br/>
+              <label for="new-player"><input type="checkbox" name="new_player" id="new-player" value="1"<?php if ($new_player) echo ' checked="checked"'; ?> /> <span>New Player?</span></label><br/>
             </div>
-            <div><small>If you are not a new player then please enter your Players ID (you can find this on your character card). If you do not enter this then we cannot guarantee you'll get any booking OSPs when attending an event!</small></div>
+            <div><small>If you are not a new player then please enter your Players Number (you can find this on your character card). If you do not enter this then we cannot guarantee you'll get any booking OSPs when attending an event!</small></div>
           </div>
         </div>
-      <div class="block">
+      </div>
+      <div class="block" id="marshal-block">
         <label>Referee / marshal?</label>
         <div class="group double">
           <div class="field">
-            <select name="marshal" onchange="checkMarshal(this);">
+            <select name="marshal">
               <option value="No" <?php if (strtosafelower($marshal) == 'no') echo ' selected="selected"'; ?>>Neither</option>
               <option value="Marshal" <?php if (strtosafelower($marshal) == 'marshal') echo ' selected="selected"'; ?>>Marshal</option>
               <option value="Referee" <?php if (strtosafelower($marshal) == 'referee') echo ' selected="selected"'; ?>>Referee</option>
@@ -135,8 +136,8 @@
             </select>
           </div>
           <div class="field<?php echo !empty($marshal) && strtolower($marshal) != 'no' && !empty($marshal_number) ? ' visible' : ' hidden'; ?><?php if (!empty($error_marshal_number)) echo ' error'; ?>" id="marshal-number">
-            <input type="text" name="marshal_number" id="marshal_number" placeholder="Number" value="<?php $_($marshal_number); ?>"<?php if (!empty($marshal) && strtosafelower($marshal) != 'no') echo ' required="required"'; ?> />
-            <label for="marshal_number" id="marshal-number-label">Number</label>
+            <input type="text" name="marshal_number" id="marshal-number" placeholder="Number" value="<?php $_($marshal_number); ?>"<?php if (!empty($marshal) && strtosafelower($marshal) != 'no') echo ' required="required"'; ?> />
+            <label for="marshal-number" id="marshal-number-label">Number</label>
           </div>
         </div>
       </div>
@@ -157,75 +158,19 @@
 </div>
 
 <script type="text/javascript">//<!--
-function toggleMedical() {
-  var medicalBlock = document.getElementById('medical-info'),
-    medicalVisible = medicalBlock.getAttribute('class') == 'visible';
-  if (medicalVisible) {
-    medicalBlock.setAttribute('class', 'hidden');
-  } else {
-    medicalBlock.setAttribute('class', 'visible');
-  }
-}
-
-function checkDiet(diet) {
-  if (diet.selectedIndex == 4) {
-    document.getElementById('medical-info').setAttribute('class', 'visible');
-  }
-}
-
-function checkMarshal(marshal) {
-  if (marshal.selectedIndex > 0) {
-    var marshalType = marshal.options[marshal.selectedIndex].value;
-    document.getElementById('marshal-number-label').innerHTML = marshalType + ' Number';
-    document.getElementById('marshal_number').setAttribute('placeholder', marshalType + ' Number');
-    document.getElementById('marshal_number').setAttribute('required', 'required');
-    document.getElementById('marshal-number').setAttribute('class', 'field visible');
-  } else {
-    document.getElementById('marshal-number').setAttribute('class', 'field hidden');
-    document.getElementById('marshal_number').removeAttribute('required');
-    document.getElementById('marshal_number').value = '';
-  }
-}
-
-function newPlayer(newPlayer) {
-  if (!newPlayer.checked) {
-    document.getElementById('player_id').setAttribute('required', 'required');
-    document.getElementById('player-id-field').setAttribute('class', 'field visible');
-  } else {
-    document.getElementById('player-id-field').setAttribute('class', 'field hidden');
-    document.getElementById('player_id').removeAttribute('required');
-  }
-}
-<?php if ($postcode_lookup) : ?>
-
-document.write('<div id="postcode" class="popup hidden"><strong>Found Addresses</strong><ul></ul></div>');
-
-function lookupPostcode() {
-  var postcode = document.getElementById('postcode').value;
-  if (postcode.trim() != '') {
-    xhr('<?php $_($postcode_lookup); ?>' + postcode, showPostcode);
-  }
-}
-
-function showPostcode(response) {
-  response = JSON.parse(response);
-  if (response.addresses === undefined) {
-    document.getElementById('address-3').value = response.city ? response.city : '';
-    document.getElementById('address-4').value = response.county ? response.county : '';
-    document.getElementById('postcode').value = response.postcode;
-    if (document.getElementById('address-2').value == document.getElementById('address-3').value) {
-      document.getElementById('address-2').value = '';
-    }
-  }
-}
-
-function checkPostcode() {
-  if (document.getElementById('postcode').value.trim() == '') {
-    document.getElementById('postcode-lookup').setAttribute('disabled', 'disabled');
-  } else {
-    document.getElementById('postcode-lookup').removeAttribute('disabled');
-  }
-}
-<?php endif; ?>
+require(['details-ooc'], function(form) {
+  new form({
+    postcodeUrl: '<?php $_($postcode_lookup); ?>',
+    postcodeButton: $('#postcode-lookup'),
+    postcodeInput: $('#postcode'),
+    medicalButton: $('#medical-block a.button'),
+    medicalInfo: $('#medical-info'),
+    dietSelector: $('#dietary'),
+    marshalBlock: $('#marshal-block'),
+    marshalNumber: $('#marshal-number'),
+    playerBlock: $('#player-block'),
+    addressBlock: $('#address-block')
+  });
+});
 //--></script>
 <?php echo $footer;
