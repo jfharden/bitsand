@@ -51,7 +51,7 @@ Registry::set('log', 'Bitsand\Logging\Log');
 
 /*
  * We have two options for debugging, either the standard method or the more
- * advanced debugger "Tracy".  For production it's adviced to use the standard
+ * advanced debugger "Tracy".  For production it's advised to use the standard
  * method which has a lower overhead cost.
  */
 if (Config::getVal('error_handler') == 'Tracy') {
