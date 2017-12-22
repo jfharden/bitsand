@@ -1,0 +1,199 @@
+<?php echo $header; ?>
+<h1 class="bits-typography--title"><?php $_($title); ?></h1>
+
+<div>
+  <form action="" method="post" enctype="multipart/form" class="bits-layout__form">
+    <fieldset class="double">
+      <legend>Event Details</legend>
+      <div class="block">
+        <label for="event_name">Event Name:</label>
+        <div class="group">
+          <input type="text" name="event_name" id="event_name" placeholder="Event Name" value="<?php $_($event_name); ?>" required="required" />
+        </div>
+      </div>
+
+      <div class="block">
+        <label for="slug">Event URL:</label>
+        <div class="group">
+          <?php $_($event_base); ?><input name="slug" class="inline" id="slug" size="<?php echo max(1, count($slug)); ?>" placeholder="<?php $_($event_id); ?>" value="<?php $_($slug); ?>" /><?php $_($event_suffix); ?>
+        </div>
+      </div>
+
+      <div class="block">
+        <label for="description">Description:</label>
+        <div class="group">
+          <textarea name="description" id="description" placeholder="Event Description" cols="50" rows="7"><?php $_($description); ?></textarea>
+          <p><small>Enter a description on what this event is about and it's main focus.  Most events keep this information In-Character.</small></p>
+        </div>
+      </div>
+
+      <div class="block">
+        <label for="details">Details:</label>
+        <div class="group">
+          <textarea name="details" id="details" placeholder="Event Details" cols="50" rows="7"><?php $_($details); ?></textarea>
+          <p><small>Enter the details of the event, this should include location, event costings, catering arrangements and any special requirements.</small></p>
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Booking Details</legend>
+
+      <div class="block">
+        <label>Dates:</label>
+
+        <div class="group triple">
+          <div class="field">
+            <input type="text" name="event_date" id="event_date" placeholder="Event date" value="<?php $_($event_date); ?>" required="requried" />
+            <label for="event_date">Event Date</label>
+          </div>
+
+          <div class="field">
+            <input type="text" name="booking_open" id="booking_open" placeholder="Booking opens" value="<?php $_($booking_open); ?>" required="required" />
+            <label for="booking_open">Booking Opens</label>
+          </div>
+
+          <div class="field">
+            <input type="text" name="booking_close" id="booking_close" placeholder="Booking closes" value="<?php $_($booking_close); ?>" required="required" />
+            <label for="booking_close">Booking Closes</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="block">
+        <label>Options:</label>
+
+        <div class="group">
+          <div class="field">
+            <input type="checkbox" name="has_monster" id="has_monster" value="1"<?php if ($has_monster) echo ' checked="checked"'; ?> />
+            <label for="has_monster">Allow monster bookings</label>
+          </div>
+
+          <div class="field">
+            <input type="checkbox" name="has_queue" id="has_queue" value="1"<?php if ($has_queue) echo ' checked="checked"'; ?> />
+            <label for="has_queue">Use booking queue</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="block">
+        <label>Spaces:</label>
+
+        <div class="group quad">
+          <div class="field">
+            <input type="text" name="spaces_player" id="spaces_player" value="<?php $_($spaces['player']); ?>" />
+            <label for="spaces_player">Player</label>
+          </div>
+
+          <div class="field">
+            <input type="text" name="spaces_monster" id="spaces_monster" value="<?php $_($spaces['monster']); ?>" />
+            <label for="spaces_monster">Monster</label>
+          </div>
+
+          <div class="field">
+            <input type="text" name="spaces_staff" id="spaces_staff" value="<?php $_($spaces['staff']); ?>" />
+            <label for="spaces_staff">Staff</label>
+          </div>
+
+          <div class="field">
+            <input type="text" name="spaces_total" id="spaces_total" value="<?php $_($spaces['total']); ?>" />
+            <label for="spaces_total">Total</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="block">
+        <label>Bunks:</label>
+
+        <div class="group quad">
+          <div class="field">
+            <input type="text" name="bunks_player" id="bunks_player" value="<?php $_($bunks['player']); ?>" />
+            <label for="bunks_player">Player</label>
+          </div>
+
+          <div class="field">
+            <input type="text" name="bunks_monster" id="bunks_monster" value="<?php $_($bunks['monster']); ?>" />
+            <label for="bunks_monster">Monster</label>
+          </div>
+
+          <div class="field">
+            <input type="text" name="bunks_staff" id="bunks_staff" value="<?php $_($bunks['staff']); ?>" />
+            <label for="bunks_staff">Staff</label>
+          </div>
+
+          <div class="field">
+            <input type="text" name="bunks_total" id="bunks_total" value="<?php $_($bunks['total']); ?>" />
+            <label for="bunks_total">Total</label>
+          </div>
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Purchasable Items</legend>
+
+      <p><small>To provide a discount, add an item with a negative price - e.g. <i>Pot Washing</i>  -10</small></p>
+
+      <table class="items_list">
+        <thead>
+          <tr>
+            <th>Item Name</th>
+            <th>Available to</th>
+            <th class="checkbox">Ticket</th>
+            <th class="checkbox">Meal</th>
+            <th class="checkbox">Bunk</th>
+            <th>From</th>
+            <th>To</th>
+            <th>Cost</th>
+            <th class="checkbox">Multiple</th>
+            <th class="checkbox">Mandatory</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+<?php foreach ($items as $item) : ?>
+          <tr>
+            <td><input type="text" name="item[<?php echo $item['item_id']; ?>][description]" value="<?php $_($item['description']); ?>" /></td>
+            <td>
+              <select name="item[<?php echo $item['item_id']; ?>][availability]">
+                <option value="all"<?php if ($item['availability'] == 'all') echo ' selected="selected"'; ?>>All</option>
+                <option value="player"<?php if ($item['availability'] == 'player') echo ' selected="selected"'; ?>>Player</option>
+                <option value="monster"<?php if ($item['availability'] == 'monster') echo ' selected="selected"'; ?>>Monster</option>
+                <option value="staff"<?php if ($item['availability'] == 'staff') echo ' selected="selected"'; ?>>Staff</option>
+              </select>
+            </td>
+            <td class="checkbox"><input type="checkbox" name="item[<?php echo $item['item_id']; ?>][ticket]" value="1"<?php if ($item['ticket']) echo ' checked="checked"'; ?> /></td>
+            <td class="checkbox"><input type="checkbox" name="item[<?php echo $item['item_id']; ?>][meal]" value="1"<?php if ($item['meal']) echo ' checked="checked"'; ?> /></td>
+            <td class="checkbox"><input type="checkbox" name="item[<?php echo $item['item_id']; ?>][bunk]" value="1"<?php if ($item['bunk']) echo ' checked="checked"'; ?> /></td>
+            <td><input type="text" name="item[<?php echo $item['item_id']; ?>][from]" value="<?php echo $item['from']; ?>" /></td>
+            <td><input type="text" name="item[<?php echo $item['item_id']; ?>][to]" value="<?php echo $item['to']; ?>" /></td>
+            <td class="cost"><input type="text" name="item[<?php echo $item['item_id']; ?>][cost]" value="<?php echo $item['cost']; ?>" /></td>
+            <td class="checkbox"><input type="checkbox" name="item[<?php echo $item['item_id']; ?>][multiple]" value="1"<?php if ($item['multiple']) echo ' checked="checked"'; ?> /></td>
+            <td class="checkbox"><input type="checkbox" name="item[<?php echo $item['item_id']; ?>][mandatory]" value="1"<?php if ($item['mandatory']) echo ' checked="checked"'; ?> /></td>
+            <td><a class="delete"><i class="material-icons" role="presentation">delete</i></a></td>
+          </tr>
+<?php endforeach; ?>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="11"><a id="add-item"><i class="material-icons" role="presentation">add_box</i>Add Item</a></td>
+          </tr>
+        </tfoot>
+      </table>
+    </fieldset>
+
+    <div class="row bits-layout__form--buttons">
+      <button type="submit" class="bits-layout__button bits-layout__button--save" id="save"><i class="material-icons" role="presentation">save</i>Save Event</button>
+    </div>
+  </form>
+</div>
+
+<script>
+require(['EventEdit'], function(EventEdit) {
+  new EventEdit( {
+    editorCss: '<?php $_($editor_css); ?>'
+  } );
+} );
+</script>
+
+<?php echo $footer; ?>
