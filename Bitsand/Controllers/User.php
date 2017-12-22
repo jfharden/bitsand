@@ -42,6 +42,9 @@ class User {
 		if (isset($this->session->data['user_id'])) {
 			$this->user_id = (int)$this->session->data['user_id'];
 		}
+		if (isset($this->session->data['access_level'])) {
+			$this->is_admin = $this->session->data['access_level'] == 'admin';
+		}
 	}
 
 	/**
