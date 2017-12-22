@@ -29,7 +29,8 @@ class CommonHeader extends Controller {
 	public function index() {
 		$this->document->addStyle('//fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en');
 		$this->document->addStyle('//fonts.googleapis.com/icon?family=Material+Icons');
-		$this->document->addStyle('//code.getmdl.io/1.2.1/material.indigo-blue.min.css');
+		//$this->document->addStyle('//code.getmdl.io/1.2.1/material.indigo-blue.min.css');
+		$this->document->addStyle('styles/reset.css');
 		$this->document->addStyle('styles/common.css');
 
 		$this->data['title'] = (!empty($this->document->getTitle()) ? $this->document->getTitle() . ' - ' : '') . $this->config->get('site_title');
@@ -75,28 +76,6 @@ class CommonHeader extends Controller {
 			$this->addNavigationItem('user/details-personal', 'Personal Details (OOC)');
 			$this->addNavigationItem('user/details-character', 'Character Details (IC)');
 		}*/
-
-		// Messages
-		if (isset($this->session->data['error'])) {
-			$this->data['error'] = $this->session->data['error'];
-			unset($this->session->data['error']);
-		} else {
-			$this->data['error'] = '';
-		}
-
-		if (isset($this->session->data['warning'])) {
-			$this->data['warning'] = $this->session->data['warning'];
-			unset($this->session->data['warning']);
-		} else {
-			$this->data['warning'] = '';
-		}
-
-		if (isset($this->session->data['success'])) {
-			$this->data['success'] = $this->session->data['success'];
-			unset($this->session->data['success']);
-		} else {
-			$this->data['success'] = '';
-		}
 
 		$this->data['is_logged'] = $this->user->isLogged();
 

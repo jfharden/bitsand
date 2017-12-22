@@ -30,6 +30,25 @@ class CommonFooter extends Controller {
 	public function index() {
 		$this->setView('common/footer');
 
+		// Messages
+		$messages = array();
+		if (isset($this->session->data['error'])) {
+			$messages['error'] = $this->session->data['error'];
+			unset($this->session->data['error']);
+		}
+
+		if (isset($this->session->data['warning'])) {
+			$messages['warning'] = $this->session->data['warning'];
+			unset($this->session->data['warning']);
+		}
+
+		if (isset($this->session->data['success'])) {
+			$messages['success'] = $this->session->data['success'];
+			unset($this->session->data['success']);
+		}
+
+		$this->data['messages'] = str_replace("'","\'",json_encode($messages));
+
 		$this->data['scripts'] = $this->document->getScripts(false);
 
 		$this->data['link_download'] = $this->router->link('common/download');
