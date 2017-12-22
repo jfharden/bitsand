@@ -6,7 +6,7 @@
     </div>
   </footer>
 <?php foreach ($scripts as $script) : ?>
-  <script type="text/javascript" src="<?php $_($script); ?>"></script>
+  <script type="text/javascript" src="<?php $_($script['href']); ?>"<?php if (!empty($script['defer'])) echo ' defer'; ?>></script>
 <?php endforeach; ?>
 </body>
 </html>
