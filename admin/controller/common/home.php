@@ -40,17 +40,21 @@ class CommonHome extends Controller {
 		$this->data['events_expired'] = array();
 		$this->data['events_queued'] = array();
 		foreach ($this->model_events_event->getByType(\Admin\Model\EventsEvent::ALL) as $event) {
-			$url_data = array('event_id' => (int)$event['evEventID']);
-			$this->data['events_' . $event['evEventState']][] = array(
-				'id'          => $event['evEventID'],
-				'title'       => $event['evEventName'],
-				'date'        => date(Config::getVal('short_date'), strtotime($event['evEventDate'])),
-				'view'        => $this->router->link('event/view', $url_data, \Bitsand\SSL),
-				'payments'    => $this->router->link('event/manage/payments', $url_data, \Bitsand\SSL),
-				'queue'       => $this->router->link('event/manage/queue', $url_data, \Bitsand\SSL),
-				'add_booking' => $this->router->link('event/manage/add_booking', $url_data, \Bitsand\SSL)
+			$url_data = array('event_id' => (int)$event['event_id']);
+			$this->data['events_' . $event['event_state']][] = array(
+				'id'            => $event['event_id'],
+				'title'         => $event['event_name'],
+				'date'          => date(Config::getVal('short_date'), strtotime($event['event_date'])),
+				'view'          => $this->router->link('events/view', $url_data, \Bitsand\SSL),
+				'payments'      => $this->router->link('events/payment/outstanding', $url_data, \Bitsand\SSL),
+				'payment_queue' => $event['payment_queue'],
+				'queue'         => $this->router->link('events/booking/queue', $url_data, \Bitsand\SSL),
+				'booking_queue' => $event['booking_queue'],
+				'add_booking'   => $this->router->link('events/booking/add', $url_data, \Bitsand\SSL)
 			);
 		}
+
+		$this->data['link_create_event'] = $this->router->link('events/event/create');
 
 		$this->setView('common/home');
 

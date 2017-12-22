@@ -1,84 +1,72 @@
 <?php echo $header; ?>
 
-<h2 class="bits-title mdl-typography--title">Current Events</h2>
-<div class="bits-events mdl-grid">
+<h1 class="bits-typography--title">Bitsand Admin</h1>
+
+<p>Welcome to Bitsand Admin!  From here you can control every part of your website booking, from managing your events through to changing settings on the website itself.</p>
+
+<a class="bits-layout__button" href="<?php echo $link_create_event; ?>">Create Event</a>
+
+<h2 class="bits-typography--title">Current Events</h2>
+<div class="bits-events">
 <?php if ($events_current) : ?>
-<?php foreach ($events_current as $event) : ?>
-  <div class="bits-events__event mdl-card mdl-cell mdl-cell--4-col mdl-shadow--2dp">
-    <a href="<?php echo $event['view']; ?>" class="mdl-button mdl-js-ripple-effect mdl-js-button floating mdl-button--fab mdl-color--accent"><i class="material-icons mdl-color-text--white" role="presenation">visibility</i><span class="visuallyhidden">view</span></a>
-    <div class="mdl-card__title mdl-card--expand">
-      <h4>
-        <?php $_($event['title']); ?><br/>
-        <?php $_($event['date']); ?>&nbsp;
-      </h4>
+<?php 	foreach ($events_current as $event) : ?>
+  <div class="bits-events__event">
+    <div class="bits-events__event--details">
+      <h4><?php $_($event['title']); ?><span class="bits-events__event--date"><?php $_($event['date']); ?></span></h4>
+      <div>| bookings | payments | queue</div>
     </div>
-    <div class="mdl-card__actions mdl-card--border">
-      <i class="material-icons">event</i>
-      <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect mdl-js-ripple-effect--ignore-events" for="evt<?php $_($event['id']); ?>">
-        <li class="mdl-menu__item mdl-js-ripple-effect" tabindex="-1" href="<?php echo $event['view']; ?>">View event</li>
-        <li class="mdl-menu__item mdl-js-ripple-effect" tabindex="-1" href="<?php echo $event['payments']; ?>">Manage payments</li>
-        <li class="mdl-menu__item mdl-js-ripple-effect" tabindex="-1" href="<?php echo $event['queue']; ?>">Manage queue</li>
-        <li class="mdl-menu__item mdl-js-ripple-effect" tabindex="-1" href="<?php echo $event['add_booking']; ?>">Add booking</li>
+    <div class="bits-layout__menu">
+      <ul>
+        <li><a href="<?php echo $event['view']; ?>"><i class="material-icons" role="presentation">event</i>Manage Event</a></li>
+        <li><a href="<?php echo $event['payments']; ?>"><i class="material-icons" role="presentation">payment</i>Payments</a><?php if ($event['payment_queue']) : ?> (<?php $_($event['payment_queue']); ?>)<?php endif; ?></li>
+        <li><a href="<?php echo $event['queue']; ?>"><i class="material-icons" role="presentation">queue</i>Queue</a><?php if ($event['booking_queue']) : ?> (<?php $_($event['booking_queue']); ?>)<?php endif; ?></li>
+        <li><a href="<?php echo $event['add_booking']; ?>"><i class="material-icons" role="presentation">playlist_add</i>Add Booking</a></li>
       </ul>
-      <button id="evt<?php $_($event['id']); ?>" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"><i class="material-icons" role="presenation">more_vert</i>
     </div>
   </div>
-<?php endforeach; ?>
+<?php 	endforeach; ?>
 <?php else : ?>
-  <div class="mdl-cell mdl-cell--12-col">You have no currently active events</div>
+  <div>You have no currently active events</div>
 <?php endif; ?>
 </div>
 
-<h2 class="bits-title mdl-typography--title">Upcoming Events</h2>
-<div class="bits-events mdl-grid">
+<h2 class="bits-typography--title">Upcoming Events</h2>
+<div class="bits-events">
 <?php if ($events_queued) : ?>
-<?php foreach ($events_queued as $event) : ?>
-  <div class="bits-events__event mdl-card mdl-cell mdl-cell--4-col mdl-shadow--2dp">
-    <a href="<?php echo $event['view']; ?>" class="mdl-button mdl-js-ripple-effect mdl-js-button floating mdl-button--fab mdl-color--accent"><i class="material-icons mdl-color-text--white" role="presenation">visibility</i><span class="visuallyhidden">view</span></a>
-    <div class="mdl-card__title mdl-card--expand">
-      <h4>
-        <?php $_($event['title']); ?><br/>
-        <?php $_($event['date']); ?>&nbsp;
-      </h4>
+<?php 	foreach ($events_queued as $event) : ?>
+  <div class="bits-events__event">
+    <div class="bits-events__event--details">
+      <h4><?php $_($event['title']); ?><span class="bits-events__event--date"><?php $_($event['date']); ?></span></h4>
+      <div>| bookings | payments | queue</div>
     </div>
-    <div class="mdl-card__actions mdl-card--border">
-      <i class="material-icons">event</i>
-      <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect mdl-js-ripple-effect--ignore-events" for="evt<?php $_($event['id']); ?>">
-        <li class="mdl-menu__item mdl-js-ripple-effect" tabindex="-1" href="<?php echo $event['view']; ?>">View event</li>
-        <li class="mdl-menu__item mdl-js-ripple-effect" tabindex="-1" href="<?php echo $event['payments']; ?>">Manage payments</li>
-        <li class="mdl-menu__item mdl-js-ripple-effect" tabindex="-1" href="<?php echo $event['queue']; ?>">Manage queue</li>
-        <li class="mdl-menu__item mdl-js-ripple-effect" tabindex="-1" href="<?php echo $event['add_booking']; ?>">Add booking</li>
+    <div class="bits-layout__menu">
+      <ul>
+        <li><a href="<?php echo $event['view']; ?>"><i class="material-icons" role="presentation">event</i>Manage Event</a></li>
+        <li><a href="<?php echo $event['payments']; ?>"><i class="material-icons" role="presentation">payment</i>Payments</a></li>
+        <li><a href="<?php echo $event['queue']; ?>"><i class="material-icons" role="presentation">queue</i>Queue</a></li>
+        <li><a href="<?php echo $event['add_booking']; ?>"><i class="material-icons" role="presentation">playlist_add</i>Add Booking</a></li>
       </ul>
-      <button id="evt<?php $_($event['id']); ?>" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"><i class="material-icons" role="presenation">more_vert</i>
     </div>
   </div>
-<?php endforeach; ?>
+<?php 	endforeach; ?>
 <?php else : ?>
-  <div class="mdl-cell mdl-cell--12-col">You have no events planned for the future</div>
+  <div>You have no events planned for the future</div>
 <?php endif; ?>
 </div>
 
 <h2 class="bits-title mdl-typography--title">Past Events</h2>
-<div class="bits-events mdl-grid">
+<div class="bits-grid bits-events__grid">
 <?php if ($events_expired) : ?>
 <?php foreach ($events_expired as $event) : ?>
-  <div class="bits-events__event mdl-card mdl-cell mdl-cell--4-col mdl-shadow--2dp">
-    <a href="<?php echo $event['view']; ?>" class="mdl-button mdl-js-ripple-effect mdl-js-button floating mdl-button--fab mdl-color--accent"><i class="material-icons mdl-color-text--white" role="presenation">visibility</i><span class="visuallyhidden">view</span></a>
-    <div class="mdl-card__title mdl-card--expand">
-      <h4>
-        <?php $_($event['title']); ?><br/>
-        <?php $_($event['date']); ?>&nbsp;
-      </h4>
+  <div class="bits-events__event bits-cell bits-cell--3-col">
+    <div class="bits-events__event--details bits-cell__content">
+      <h4><?php $_($event['title']); ?></h4>
+      <span class="bits-events__event--date"><?php $_($event['date']); ?></span>
     </div>
-    <div class="mdl-card__actions mdl-card--border">
-      <i class="material-icons">event</i>
-      <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect mdl-js-ripple-effect--ignore-events" for="evt<?php $_($event['id']); ?>">
-        <li class="mdl-menu__item mdl-js-ripple-effect" tabindex="-1" href="<?php echo $event['view']; ?>">View event</li>
-        <li class="mdl-menu__item mdl-js-ripple-effect" tabindex="-1" href="<?php echo $event['payments']; ?>">Manage payments</li>
-        <li class="mdl-menu__item mdl-js-ripple-effect" tabindex="-1" href="<?php echo $event['queue']; ?>">Manage queue</li>
-        <li class="mdl-menu__item mdl-js-ripple-effect" tabindex="-1" href="<?php echo $event['add_booking']; ?>">Add booking</li>
+    <div class="bits-layout__menu bits-cell__actions">
+      <ul>
+        <li><a href="<?php echo $event['view']; ?>"><i class="material-icons" role="presentation">event</i>Manage Event</a></li>
       </ul>
-      <button id="evt<?php $_($event['id']); ?>" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"><i class="material-icons" role="presenation">more_vert</i>
     </div>
   </div>
 <?php endforeach; ?>
