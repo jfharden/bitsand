@@ -29,6 +29,7 @@
 namespace Bitsand\Routing;
 
 use Bitsand\Controllers\ActionRoute;
+use Bitsand\Config\Config;
 
 class Router {
 	/**
@@ -73,6 +74,10 @@ class Router {
 
 	public function __construct() {
 		$this->base_path = str_replace('index.php', '', $_SERVER['SCRIPT_NAME']);
+		// We need to grab the route to the main site, we assume it's served from the same URL
+		if (Config::getVal('is_admin')) {
+			$this->_site_path = str_replace('//', '/', str_replace(Config::getAppDirectory(), '', $this->base_path));
+		}
 	}
 
 	/**
@@ -96,6 +101,15 @@ class Router {
 	 */
 	public function getBaseUrl() {
 		return $this->base_path;
+	}
+
+	/**
+	 * Returns the base url for the main site if within admin.
+	 *
+	 * @return string
+	 */
+	public function getSiteUrl() {
+		return $this->_site_path;
 	}
 
 	/**
