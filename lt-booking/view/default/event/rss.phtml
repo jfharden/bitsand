@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+	<channel>
+		<atom:link href="<?php echo $rss_link; ?>" rel="self" type="application/atom+xml" />
+		<title><?php $_($event_name); ?> - Booking List</title>
+		<link><?php echo $system_url; ?></link>
+		<description><?php $_($event_name); ?>: booking list</description>
+<?php foreach ($bookings as $booking) : ?>
+		<item>
+			<title>Booking from <?php $_($booking['firstname']); ?> <?php $_($booking['lastname']); ?></title>
+			<link><?php echo $system_url; ?></link>
+			<guid><?php echo $booking['guid']; ?></guid>
+			<description><![CDATA[OOC Name: <?php $_($booking['firstname']); ?> <?php $_($booking['lastname']); ?><br/>
+<?php if ($booking['player_number']) : ?>
+Player Number: <?php $_($booking['player_number']); ?><br/>
+<?php endif; ?>
+<?php if ($booking['character_nickname'] || $booking['character_name']) : ?>
+IC Name: <?php $_($booking['character_nickname'] ? $booking['character_nickname'] : $booking['character_name']); ?><br/>
+<?php endif; ?>
+<?php if ($show_character_group && $booking['character_group']) : ?>
+Group: <?php $_($booking['character_group']); ?><br/>
+<?php endif; ?>
+Faction: <?php $_($booking['faction']); ?><br/>
+Event: <?php $_($event_name); ?>]]></description>
+		</item>
+<?php endforeach; ?>
+	</channel>
+</rss>
