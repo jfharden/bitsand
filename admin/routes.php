@@ -24,34 +24,25 @@
  ++--------------------------------------------------------------------------*/
 
 $router->addRoutes(array(
-	array('GET', 'create_event.html', 'event/edit/new'),
-	array('GET', 'edit_event.html?event=[i:event_id]', 'event/edit/modify'),
-	array('GET', 'view_event.html?event=[i:event_id]', 'event/view'),
-	array('GET', 'manage_queue.html?event=[i:event_id]', 'event/manage/queue'),
-	array('GET', 'manage_payments.html?event=[i:event_id]', 'event/manage/payments'),
-	array('GET', 'add_booking.html?event=[i:event_id]', 'event/manage/add_booking')
-	/*array('GET', 'download.html', 'common/download'),
-	array('GET', 'login.html', 'user/login'),
-	array('POST', 'login.html', 'user/login/login'),
-	array('GET|POST', 'logout.html', 'user/login/logout'),
-	array('GET', 'forgotten.html', 'user/forgotten'),
-	array('POST', 'forgotten.html', 'user/forgotten/send-link'),
-	array('GET|POST', 'reset-password.html?token=[a:token]', 'user/reset/forgotten'),
-	array('GET|POST', 'details/reset-password.html', 'user/reset'),
-	array('GET|POST', 'register.html', 'user/register'),
-	array('GET|POST', 'details/mail-settings.html', 'user/mailing'),
-	array('GET|POST', 'details/change-email.html', 'user/change-mail'),
-	array('GET', 'change-email.html?token=[a:token]', 'user/change-mail/change'),
-	array('GET', 'account.html', 'user/account'),
-	array('GET', 'terms.html', 'common/terms'),
-	array('GET', 'booking_feed.rss', 'feed/booking-rss'),
-	array('GET', 'events/', 'event/list'),
-	array('GET|POST', 'events/[a:event]', 'event/event'),
-	array('GET', 'icalendar/', 'feed/icalendar'),
+	array('GET|POST', 'edit_event.html?event=[i:event_id]', 'events/event/edit'),
+	array('GET|POST', 'create_event.html', 'events/event/create'),
+	array('GET', 'view_event.html?event=[i:event_id]', 'events/view'),
 
-	array('GET|POST', 'address.html?postcode=[*:postcode]', 'user/details-personal/postcode-lookup'),
+	array('GET', 'manage_payments.html?event=[i:event_id]', 'events/payment/outstanding'),
+	array('GET', 'manage_queue.html?event=[i:event_id]', 'events/booking/queue'),
+	array('GET', 'add_booking.html?event=[i:event_id]', 'events/booking/add'),
+	array('GET', 'booking_status.html?event=[i:event_id]', 'events/booking/status'),
+	array('GET', 'manage_bunks.html?event=[i:event_id]', 'events/booking/bunks'),
+	array('GET', 'manage_meals.html?event[i:event_id]', 'events/booking/meals'),
+	array('GET', 'manage_marshals.html?event[i:event_id]', 'events/booking/marshal'),
 
-	array('GET|POST', 'details/ooc.html', 'user/details-personal'),
+	array('GET', 'report_cards.html?event[i:event_id]', 'events/report/cards'),
+	array('GET', 'report_bookings.html?event[i:event_id]&output=csv', 'events/report/bookings'),
+	array('GET', 'report_purchases.html?event[i:event_id]&output=csv', 'events/report/purchases'),
+	array('GET', 'report_signin.html?event[i:event_id]&output=pdf', 'events/report/signin'),
+	array('GET', 'report_medical.html?event[i:event_id]&output=pdf', 'events/report/medical'),
+	array('GET', 'report_diet.html?event[i:event_id]&output=pdf', 'events/report/diet'),
 
-	array('GET|POST', 'details/ic.html', 'user/details-character'),*/
+	array('GET', 'delete_event.html?event[i:event_id]', 'events/booking/delete'),
+	array('GET', 'final_confirmation.html?event[i:event_id]', 'events/final_confirmation')
 ));
