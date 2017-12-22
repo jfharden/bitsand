@@ -6,20 +6,16 @@
 
   <form action="<?php $_($mailing); ?>" method="post" class="fixed-form">
     <div class="row">
-      <input type="checkbox" name="ooc" value="1" id="ooc"<?php if ($ooc) echo ' checked="checked"'; ?> />
-      <label for="ooc">Personal details change</label>
+      <label for="ooc"><input type="checkbox" name="ooc" value="1" id="ooc"<?php if ($ooc) echo ' checked="checked"'; ?> /> <span>Personal details change</span></label>
     </div>
     <div class="row">
-      <input type="checkbox" name="ic" value="1" id="ic"<?php if ($ic) echo ' checked="checked"'; ?> />
-      <label for="ic">Character details change</label>
+      <label for="ic"><input type="checkbox" name="ic" value="1" id="ic"<?php if ($ic) echo ' checked="checked"'; ?> /> <span>Character details change</span></label>
     </div>
     <div class="row">
-      <input type="checkbox" name="payment" value="1" id="payment"<?php if ($payment) echo ' checked="checked"'; ?> />
-      <label for="payment">Payment marked as received</label>
+      <label for="payment"><input type="checkbox" name="payment" value="1" id="payment"<?php if ($payment) echo ' checked="checked"'; ?> /> <span>Payment marked as received</span></label>
     </div>
     <div class="row">
-      <input type="checkbox" name="queue" value="1" id="queue"<?php if ($queue) echo ' checked="checked"'; ?> />
-      <label for="queue">Booking is removed from queue</label>
+      <label for="queue"><input type="checkbox" name="queue" value="1" id="queue"<?php if ($queue) echo ' checked="checked"'; ?> /> <span>Booking is removed from queue</span></label>
     </div>
     <div class="row center">
       <input type="submit" value="Update e-mail preferences" class="button" /> <a href="<?php $_($account); ?>" class="button">Back to Manage Account</a>
