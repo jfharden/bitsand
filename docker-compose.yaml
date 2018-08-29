@@ -1,0 +1,49 @@
+version: '3'
+services:
+  bitsand:
+    build: .
+    ports:
+      - "80:80"
+    environment:
+      - BITSAND_ROOT_USER_ID=2
+      - BITSAND_DB_HOST=mysql
+      - BITSAND_DB_NAME=bitsandtest
+      - BITSAND_DB_USER=bitsandtest
+      - BITSAND_DB_PASS=Lahja3lie5wohphahna7IhailiemupohL3Aehoa2Oil9ahD7iMohvei1tuuG3akusoohooleecai9moogah1eiNooSh9yoo2thai
+      - BITSAND_ENCRYPTION_KEY=ceichohr6oothohmuu1pai0pi4aw9pheu1AiMeiliequiy1juethishah5Ooshie3oog2oGhie6luu5ooHak6meiJaif0ohfait1
+      - BITSAND_PW_SALT=johvah4buath9kae4veeteezah5saesh0ahc7maiveiYi5Aeso4teeKa1eich7wei4nahyoaquai0phuRahLukaiQuatae4ohghi
+      - BITSAND_SYSTEM_URL=http://127.0.0.1/
+      - BITSAND_DEBUG_MODE=TRUE
+      - BITSAND_MAINTAINENCE_MODE=FALSE
+      - BITSAND_LOG_WARNINGS=TRUE
+      - BITSAND_LOG_ERRORS=TRUE
+    depends_on:
+      - mailhog
+      - mysql
+    volumes:
+      - .:/var/www/html/
+      - ./docker-config/bitsand/inc/inc_config.php:/var/www/html/inc/inc_config.php
+      - ./docker-config/bitsand/inc/inc_error.php:/var/www/html/inc/inc_error.php
+      - ./inc/admin_dist.css:/var/www/html/inc/admin.css
+      - ./inc/body_dist.css:/var/www/html/inc/body.css
+      - ./inc/help_dist.css:/var/www/html/inc/help.css
+
+  mysql:
+    image: mysql:5.6
+    environment:
+      - MYSQL_ROOT_PASSWORD=ev3aem6quaLaem0aeba4osheeloh1aeV2quei6Ea1soleed9XeeGh5ohmooxohtim7vaigeiquai5aich5xikiothee9hee0oi9i
+      - MYSQL_DATABASE=bitsandtest
+      - MYSQL_USER=bitsandtest
+      - MYSQL_PASSWORD=Lahja3lie5wohphahna7IhailiemupohL3Aehoa2Oil9ahD7iMohvei1tuuG3akusoohooleecai9moogah1eiNooSh9yoo2thai
+    volumes:
+      - mysql:/var/lib/mysql
+
+  mailhog:
+    image: mailhog/mailhog:latest
+    ports:
+      - 1025:1025
+      - 8025:8025
+
+volumes:
+  mysql:
+    driver: local
