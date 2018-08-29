@@ -73,10 +73,7 @@ if ($_POST ['btnSubmit'] != '') {
 		$sLoginTime = sha1 (microtime () . RandomString (10, 20));
 		$iLastAccess = time ();
 		//Set cookies
-		if (setcookie ('BA_PlayerID', $iPlayerID) === False)
-			$sErr = "<br>\nYou must have cookies enabled to login";
-		if (setcookie ('BA_LoginTime', $sLoginTime) === False)
-			$sErr = "<br>\nYou must have cookies enabled to login";
+		set_session_login($iPlayerID, $sLoginTime);
 		if ($sErr == '') {
 			//Cookies set OK. Reset login counter
 			$sql = "UPDATE {$db_prefix}players SET plLoginCounter = 0 WHERE plPlayerID = $iPlayerID";
@@ -161,16 +158,7 @@ if ($_POST ['btnSubmit'] != '') {
 	}
 }
 else {
-	//User is not logging in, so reset login cookies
-	//Cookies are reset here, but values will not be available until next page load. Note that Lynx (and others?)
-	//do not seem to reset cookies when they are set null value, so we set them to zero, then set them to null
-	setcookie ('BA_PlayerID', 0);
-	setcookie ('BA_PlayerID', '');
-	setcookie ('BA_LoginTime', 0);
-	setcookie ('BA_LoginTime', '');
-	//Because cookie value will not be available until next page load, reset value of $iPlayerID & $iLoginTime
-	$PLAYER_ID = 0;
-	$fLoginTime = 0;
+	destroy_session();
 }
 include ('inc/inc_head_html.php');
 ?>
