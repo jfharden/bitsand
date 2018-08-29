@@ -1,5 +1,10 @@
 # Local development in docker
 
+## Prerequisites
+
+1. docker engine 1.13.0+
+2. docker-compose 1.10.0+
+
 ## First time setup
 
 1. Build and start the container
@@ -18,7 +23,7 @@
 
        docker-compose up
 
-## Running the production container
+## Running the production-like container
 
 The default container will mount the bitsand directory into the container as the website to serve, this means changes
 you make to the files on disk locally will be reflected instantly in the running container. The downside to this is you
