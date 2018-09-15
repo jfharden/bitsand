@@ -184,11 +184,11 @@ if ($_POST ['btnSubmit'] != '' && !is_email_or_password_empty()) {
 		ba_db_query ($link, $sql) . $sql;
 	}
 }
+elseif ($_POST ['btnSubmit'] != '') {
+	// Attempt to login with no email or password
+	$sMessage = is_email_or_password_empty();
+}
 else {
-	if ($blank_fields_error = is_email_or_password_empty()) {
-		$sMessage = $blank_fields_error;
-	}
-
 	//User is not logging in, so reset login cookies
 	//Cookies are reset here, but values will not be available until next page load. Note that Lynx (and others?)
 	//do not seem to reset cookies when they are set null value, so we set them to zero, then set them to null
