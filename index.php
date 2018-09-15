@@ -96,16 +96,8 @@ if ($_POST ['btnSubmit'] != '') {
 			}
 			//Run query to update/insert session, then redirect to start page
 			ba_db_query ($link, $sql);
-			//Make up URL & redirect
-			//$sProtocol (http or https) is based on what protocol was used by referrer
-			//More robust than using $_SERVER ['HTTPS']
-			$sProtocol = parse_url ($_SERVER ['HTTP_REFERER'], PHP_URL_SCHEME) . '://';
-			if ($sProtocol == '://')
-				$sProtocol = 'http://';
-			$sHost = $_SERVER ['HTTP_HOST'];
-			$sURI = rtrim (dirname ($_SERVER ['PHP_SELF']), '/\\');
-			$sFile ='start.php';
-			header ("Location: $sProtocol$sHost$sURI/$sFile");		}
+
+			header ("Location: ". fnSystemURL() ."start.php");		}
 		else
 			//Problem setting cookies. Append error message
 			$sMessage .= $sErr;

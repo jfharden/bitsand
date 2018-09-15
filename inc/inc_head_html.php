@@ -53,20 +53,11 @@ function wopen(url) {
 }
 </script>
 
+<script src='//ajax.microsoft.com/ajax/jquery/jquery-1.5.1.min.js' type='text/javascript'></script>
+<script src='//ajax.aspnetcdn.com/ajax/jquery.ui/1.8.10/jquery-ui.min.js' type='text/javascript'></script>
+<link href='//ajax.aspnetcdn.com/ajax/jquery.ui/1.8.10/themes/flick/jquery-ui.css' rel='stylesheet' type='text/css' />
+
 <?php
-//Use HTTPS or HTTP link for JQuery, to avoid browser complaining that page contains non-secure items when using HTTPS
-if ($_SERVER ["HTTPS"])
-{
-	echo "<script src='https://ajax.microsoft.com/ajax/jquery/jquery-1.5.1.min.js' type='text/javascript'></script>\n";
-	echo "<script src='https://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.10/jquery-ui.min.js' type='text/javascript'></script>\n";
-	echo "<link href='https://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.10/themes/flick/jquery-ui.css' rel='stylesheet' type='text/css' />\n";
-}
-else
-{
-	echo "<script src='http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.5.1.min.js' type='text/javascript'></script>\n";
-	echo "<script src='http://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.10/jquery-ui.min.js' type='text/javascript'></script>\n";
-	echo "<link href='http://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.10/themes/flick/jquery-ui.css' rel='stylesheet' type='text/css' />\n";
-}
 echo "<link rel = 'shortcut icon' href = '" . SYSTEM_URL . "favicon.ico'>\n";
 echo "<link rel = 'alternate' type = 'application/rss+xml'  href = '" . SYSTEM_URL .
 	"bookings_rss.php' title = '" . TITLE . " - Booking List'>\n";
