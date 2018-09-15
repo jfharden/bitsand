@@ -47,6 +47,7 @@ if (!file_exists(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'inc_config.php')) {
 	die('Bitsand has not been configured correctly, please ensure config file has been created.');
 }
 require_once('inc_config.php');
+require_once('inc_session_handling.php');
 
 //Load error reporting, encrypt/decrypt functions
 include ('inc_error.php');
@@ -76,26 +77,12 @@ if (MAINTENANCE_MODE == True) {
 
 //Clear cookies and redirect to index.php
 function ForceLogin ($sMsg = '') {
-	global $PLAYER_ID;
-	//Cookies are reset here, but values will not be available until next page load. Note that Lynx (and others?)
-	//do not seem to reset cookies when they are set to null value, so we set them to zero, then set them to null
-	setcookie ('BA_PlayerID', 0);
-	setcookie ('BA_PlayerID', NULL);
-	setcookie ('BA_LoginTime', 0);
-	setcookie ('BA_LoginTime', NULL);
-	//Because cookie value will not be available until next page load, reset value of $PLAYER_ID
-	$PLAYER_ID = 0;
+	destroy_session();
 
 	//Make up URL
 	$sURL = fnSystemURL () . 'index.php?warn=' . urlencode ($sMsg);
 	header ("Location: $sURL");
 }
-
-if ((int) $_COOKIE ['BA_PlayerID'] > 0)
-	$PLAYER_ID = (int) $_COOKIE ['BA_PlayerID'];
-else
-	//Player is not logged in. Set $PLAYER_ID to zero - need fixed value if player is not logged in
-	$PLAYER_ID = 0;
 
 //Log access to access_log table. Passwords are *not* logged
 $aPost = $_POST;
@@ -117,14 +104,13 @@ ba_db_query ($link, $sql);
 //Check for cookie that shows that user is logged in. If user is not logged in, go to index.php
 //Do not check if $bLoginCheck == 'FALSE' - this allows some pages to not require login, but defaults to login being required
 if ($bLoginCheck !== False) {
-	if ($_COOKIE ['BA_PlayerID'] == '' || $_COOKIE ['BA_PlayerID'] == 0) {
+	if (!is_player_logged_in()) {
 		//User is not logged in, and must be logged in to access this page.
 		ForceLogin ('You must be logged in to access that page');
 	}
 	else {
 		//Check player ID and login time against database sessions table
-		$PLAYER_ID = (int) $_COOKIE ['BA_PlayerID'];
-		$sLoginTime = $_COOKIE ['BA_LoginTime'];
+		$sLoginTime = login_time_from_session();
 		//Only first two octets of remote IP are stored to avoid issue with dial-up etc (see issue 170)
 		$aIP = explode (".", $_SERVER ['REMOTE_ADDR']);
 		$sIP = ba_db_real_escape_string ($link, $aIP [0] . "." . $aIP [1]);
@@ -194,10 +180,10 @@ function CheckReferrer ($Referrer_Check, $Referrer_Check_2 = "") {
 
 //Return player ID in brackets if logged in, empty string if not
 function player_ID () {
-	if ((int) $_COOKIE ['BA_PlayerID'] == 0)
+	if ($PLAYER_ID == 0)
 		return "";
 	else
-		return "(" . PID_PREFIX . sprintf ('%03s', (int) $_COOKIE ['BA_PlayerID']) . ") ";
+		return "(" . PID_PREFIX . sprintf ('%03s', $PLAYER_ID) . ") ";
 }
 
 function sanitiseAmount($amount, $negativeallowed=False)
