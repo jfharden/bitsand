@@ -20,6 +20,7 @@
  | You should have received a copy of the GNU General Public License along with
  | Bitsand.  If not, see <http://www.gnu.org/licenses/>.
  +---------------------------------------------------------------------------*/
+require_once("inc_common.php");
 
 //Initialise $CSS_PREFIX. Will be changed (in inc_admin.php) if required
 //Note that another script may have already set it to '../' - do not change it in that case
@@ -28,15 +29,9 @@ if (!isset($CSS_PREFIX) || $CSS_PREFIX != '../')
 
 //Return base URL
 function fnSystemURL () {
-	//$sProtocol (http or https) is based on what protocol was used by referrer
-	//More robust than using $_SERVER ['HTTPS']
-	$as = parse_url ($_SERVER ['HTTP_REFERER']);
-	$sProtocol = $as ['scheme'] . '://';
-	if ($sProtocol == '://')
-		$sProtocol = 'http://';
 	$sHost = $_SERVER ['HTTP_HOST'];
 	$sURI = rtrim (dirname ($_SERVER ['PHP_SELF']), '/\\');
-	return "$sProtocol$sHost$sURI/";
+	return url_scheme() . "://$sHost$sURI/";
 }
 
 /*
