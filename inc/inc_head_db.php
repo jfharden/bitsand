@@ -34,6 +34,19 @@ function fnSystemURL () {
 	return url_scheme() . "://$sHost$sURI/";
 }
 
+function account_has_no_email($link, $player_id) {
+	$sql = "SELECT plEmail FROM {$db_prefix}players WHERE plPlayerId = $player_id ";
+	$result = ba_db_query ($link, $sql);
+	$row = ba_db_fetch_assoc ($result);
+
+	$match = preg_match("/^\s*$/", $row["plEmail"]);
+	if ($match === FALSE || $match === 1) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
 /*
  * Ensure that the config file has been correctly created. If not gracefully
  * stop the script from executing anything else
@@ -102,6 +115,15 @@ if ($bLoginCheck !== False) {
 	if (!is_player_logged_in()) {
 		//User is not logged in, and must be logged in to access this page.
 		ForceLogin ('You must be logged in to access that page');
+	}
+	elseif (account_has_no_email($link, $_COOKIE['BA_PlayerID']) === true) {
+		// The account that is attempting to be logged into has no email set
+		// This can happen where an admin has added an account/booking from a
+		// paper booking form (so the player never has a user in the booking system)
+		// but it leaves behind an account with an empty email and password
+		// This has already been fixed but there are systems that have been running
+		// for many years with accounts like this in them.
+		ForceLogin("Error logging in, cannot login to that account");
 	}
 	else {
 		//Check player ID and login time against database sessions table

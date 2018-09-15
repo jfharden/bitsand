@@ -27,8 +27,32 @@ $bLoginCheck = False;
 include ('inc/inc_head_db.php');
 $sMessage = '';
 
+function is_email_or_password_empty() {
+	// Explicitly disallow logging in with a blank email address field
+	if (!array_key_exists('txtEmail', $_POST)) {
+		return "You must enter an email address to try and log in";
+	}
+
+	$match = preg_match("/^\s*$/", $_POST['txtEmail']);
+	if ($match === FALSE || $match === 1) {
+		return "You must enter an email address to try and log in";
+	}
+
+	// Explicitly disallow logging in with a blank email address field
+	if (!array_key_exists('txtPassword', $_POST)) {
+		return "You must enter a password to try and log in";
+	}
+	$match = preg_match("/^\s*$/", $_POST['txtPassword']);
+	if ($match === FALSE || $match === 1) {
+		return "You must enter a password to try and log in";
+	}
+
+	return false;
+}
+
 $db_prefix = DB_PREFIX;
-if ($_POST ['btnSubmit'] != '') {
+
+if ($_POST ['btnSubmit'] != '' && !is_email_or_password_empty()) {
 	//User is logging in
 	$sEmail = SafeEmail ($_POST ['txtEmail']);
 	//Work out which salt to use
@@ -148,6 +172,10 @@ if ($_POST ['btnSubmit'] != '') {
 		//Run query to update plLoginCounter (and plPassword, if account is being disabled)
 		ba_db_query ($link, $sql) . $sql;
 	}
+}
+elseif ($_POST ['btnSubmit'] != '') {
+	// Attempt to login with no email or password
+	$sMessage = is_email_or_password_empty();
 }
 else {
 	destroy_session();
