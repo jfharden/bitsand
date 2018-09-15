@@ -27,8 +27,32 @@ $bLoginCheck = False;
 include ('inc/inc_head_db.php');
 $sMessage = '';
 
+function is_email_or_password_empty() {
+	// Explicitly disallow logging in with a blank email address field
+	if (!array_key_exists('txtEmail', $_POST)) {
+		return "You must enter an email address to try and log in";
+	}
+
+	$match = preg_match("/^\s*$/", $_POST['txtEmail']);
+	if ($match === FALSE || $match === 1) {
+		return "You must enter an email address to try and log in";
+	}
+
+	// Explicitly disallow logging in with a blank email address field
+	if (!array_key_exists('txtPassword', $_POST)) {
+		return "You must enter a password to try and log in";
+	}
+	$match = preg_match("/^\s*$/", $_POST['txtPassword']);
+	if ($match === FALSE || $match === 1) {
+		return "You must enter a password to try and log in";
+	}
+
+	return false;
+}
+
 $db_prefix = DB_PREFIX;
-if ($_POST ['btnSubmit'] != '') {
+
+if ($_POST ['btnSubmit'] != '' && !is_email_or_password_empty()) {
 	//User is logging in
 	$sEmail = SafeEmail ($_POST ['txtEmail']);
 	//Work out which salt to use
@@ -73,10 +97,7 @@ if ($_POST ['btnSubmit'] != '') {
 		$sLoginTime = sha1 (microtime () . RandomString (10, 20));
 		$iLastAccess = time ();
 		//Set cookies
-		if (setcookie ('BA_PlayerID', $iPlayerID) === False)
-			$sErr = "<br>\nYou must have cookies enabled to login";
-		if (setcookie ('BA_LoginTime', $sLoginTime) === False)
-			$sErr = "<br>\nYou must have cookies enabled to login";
+		set_session_login($iPlayerID, $sLoginTime);
 		if ($sErr == '') {
 			//Cookies set OK. Reset login counter
 			$sql = "UPDATE {$db_prefix}players SET plLoginCounter = 0 WHERE plPlayerID = $iPlayerID";
@@ -99,16 +120,8 @@ if ($_POST ['btnSubmit'] != '') {
 			}
 			//Run query to update/insert session, then redirect to start page
 			ba_db_query ($link, $sql);
-			//Make up URL & redirect
-			//$sProtocol (http or https) is based on what protocol was used by referrer
-			//More robust than using $_SERVER ['HTTPS']
-			$sProtocol = parse_url ($_SERVER ['HTTP_REFERER'], PHP_URL_SCHEME) . '://';
-			if ($sProtocol == '://')
-				$sProtocol = 'http://';
-			$sHost = $_SERVER ['HTTP_HOST'];
-			$sURI = rtrim (dirname ($_SERVER ['PHP_SELF']), '/\\');
-			$sFile ='start.php';
-			header ("Location: $sProtocol$sHost$sURI/$sFile");		}
+
+			header ("Location: ". fnSystemURL() ."start.php");		}
 		else
 			//Problem setting cookies. Append error message
 			$sMessage .= $sErr;
@@ -160,17 +173,12 @@ if ($_POST ['btnSubmit'] != '') {
 		ba_db_query ($link, $sql) . $sql;
 	}
 }
+elseif ($_POST ['btnSubmit'] != '') {
+	// Attempt to login with no email or password
+	$sMessage = is_email_or_password_empty();
+}
 else {
-	//User is not logging in, so reset login cookies
-	//Cookies are reset here, but values will not be available until next page load. Note that Lynx (and others?)
-	//do not seem to reset cookies when they are set null value, so we set them to zero, then set them to null
-	setcookie ('BA_PlayerID', 0);
-	setcookie ('BA_PlayerID', '');
-	setcookie ('BA_LoginTime', 0);
-	setcookie ('BA_LoginTime', '');
-	//Because cookie value will not be available until next page load, reset value of $iPlayerID & $iLoginTime
-	$PLAYER_ID = 0;
-	$fLoginTime = 0;
+	destroy_session();
 }
 include ('inc/inc_head_html.php');
 ?>

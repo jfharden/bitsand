@@ -20,6 +20,7 @@
  | You should have received a copy of the GNU General Public License along with
  | Bitsand.  If not, see <http://www.gnu.org/licenses/>.
  +---------------------------------------------------------------------------*/
+require_once("inc_common.php");
 
 //Initialise $CSS_PREFIX. Will be changed (in inc_admin.php) if required
 //Note that another script may have already set it to '../' - do not change it in that case
@@ -28,15 +29,22 @@ if (!isset($CSS_PREFIX) || $CSS_PREFIX != '../')
 
 //Return base URL
 function fnSystemURL () {
-	//$sProtocol (http or https) is based on what protocol was used by referrer
-	//More robust than using $_SERVER ['HTTPS']
-	$as = parse_url ($_SERVER ['HTTP_REFERER']);
-	$sProtocol = $as ['scheme'] . '://';
-	if ($sProtocol == '://')
-		$sProtocol = 'http://';
 	$sHost = $_SERVER ['HTTP_HOST'];
 	$sURI = rtrim (dirname ($_SERVER ['PHP_SELF']), '/\\');
-	return "$sProtocol$sHost$sURI/";
+	return url_scheme() . "://$sHost$sURI/";
+}
+
+function account_has_no_email($link, $player_id) {
+	$sql = "SELECT plEmail FROM {$db_prefix}players WHERE plPlayerId = $player_id ";
+	$result = ba_db_query ($link, $sql);
+	$row = ba_db_fetch_assoc ($result);
+
+	$match = preg_match("/^\s*$/", $row["plEmail"]);
+	if ($match === FALSE || $match === 1) {
+		return true;
+	} else {
+		return false;
+	}
 }
 
 /*
@@ -47,6 +55,7 @@ if (!file_exists(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'inc_config.php')) {
 	die('Bitsand has not been configured correctly, please ensure config file has been created.');
 }
 require_once('inc_config.php');
+require_once('inc_session_handling.php');
 
 //Load error reporting, encrypt/decrypt functions
 include ('inc_error.php');
@@ -76,26 +85,12 @@ if (MAINTENANCE_MODE == True) {
 
 //Clear cookies and redirect to index.php
 function ForceLogin ($sMsg = '') {
-	global $PLAYER_ID;
-	//Cookies are reset here, but values will not be available until next page load. Note that Lynx (and others?)
-	//do not seem to reset cookies when they are set to null value, so we set them to zero, then set them to null
-	setcookie ('BA_PlayerID', 0);
-	setcookie ('BA_PlayerID', NULL);
-	setcookie ('BA_LoginTime', 0);
-	setcookie ('BA_LoginTime', NULL);
-	//Because cookie value will not be available until next page load, reset value of $PLAYER_ID
-	$PLAYER_ID = 0;
+	destroy_session();
 
 	//Make up URL
 	$sURL = fnSystemURL () . 'index.php?warn=' . urlencode ($sMsg);
 	header ("Location: $sURL");
 }
-
-if ((int) $_COOKIE ['BA_PlayerID'] > 0)
-	$PLAYER_ID = (int) $_COOKIE ['BA_PlayerID'];
-else
-	//Player is not logged in. Set $PLAYER_ID to zero - need fixed value if player is not logged in
-	$PLAYER_ID = 0;
 
 //Log access to access_log table. Passwords are *not* logged
 $aPost = $_POST;
@@ -117,14 +112,22 @@ ba_db_query ($link, $sql);
 //Check for cookie that shows that user is logged in. If user is not logged in, go to index.php
 //Do not check if $bLoginCheck == 'FALSE' - this allows some pages to not require login, but defaults to login being required
 if ($bLoginCheck !== False) {
-	if ($_COOKIE ['BA_PlayerID'] == '' || $_COOKIE ['BA_PlayerID'] == 0) {
+	if (!is_player_logged_in()) {
 		//User is not logged in, and must be logged in to access this page.
 		ForceLogin ('You must be logged in to access that page');
 	}
+	elseif (account_has_no_email($link, $_COOKIE['BA_PlayerID']) === true) {
+		// The account that is attempting to be logged into has no email set
+		// This can happen where an admin has added an account/booking from a
+		// paper booking form (so the player never has a user in the booking system)
+		// but it leaves behind an account with an empty email and password
+		// This has already been fixed but there are systems that have been running
+		// for many years with accounts like this in them.
+		ForceLogin("Error logging in, cannot login to that account");
+	}
 	else {
 		//Check player ID and login time against database sessions table
-		$PLAYER_ID = (int) $_COOKIE ['BA_PlayerID'];
-		$sLoginTime = $_COOKIE ['BA_LoginTime'];
+		$sLoginTime = login_time_from_session();
 		//Only first two octets of remote IP are stored to avoid issue with dial-up etc (see issue 170)
 		$aIP = explode (".", $_SERVER ['REMOTE_ADDR']);
 		$sIP = ba_db_real_escape_string ($link, $aIP [0] . "." . $aIP [1]);
@@ -194,10 +197,10 @@ function CheckReferrer ($Referrer_Check, $Referrer_Check_2 = "") {
 
 //Return player ID in brackets if logged in, empty string if not
 function player_ID () {
-	if ((int) $_COOKIE ['BA_PlayerID'] == 0)
+	if ($PLAYER_ID == 0)
 		return "";
 	else
-		return "(" . PID_PREFIX . sprintf ('%03s', (int) $_COOKIE ['BA_PlayerID']) . ") ";
+		return "(" . PID_PREFIX . sprintf ('%03s', $PLAYER_ID) . ") ";
 }
 
 function sanitiseAmount($amount, $negativeallowed=False)
