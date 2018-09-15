@@ -2,8 +2,12 @@ FROM php:5.6-apache
 
 LABEL maintainer="jfharden@gmail.com"
 
-RUN apt-get update && apt-get install -y ssmtp \
-  && docker-php-ext-install mysql \
+RUN apt-get update && apt-get install -y \
+    ssmtp \
+    zlib1g-dev \
+  && docker-php-ext-install \
+    mysql \
+    zip \
   && rm -rf /var/lib/{apt,dpkg,cache,log}
 
 COPY docker-config/system/ /
