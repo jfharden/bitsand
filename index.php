@@ -27,8 +27,32 @@ $bLoginCheck = False;
 include ('inc/inc_head_db.php');
 $sMessage = '';
 
+function is_email_or_password_empty() {
+	// Explicitly disallow logging in with a blank email address field
+	if (!array_key_exists('txtEmail', $_POST)) {
+		return "You must enter an email address to try and log in";
+	}
+
+	$match = preg_match("/^\s*$/", $_POST['txtEmail']);
+	if ($match === FALSE || $match === 1) {
+		return "You must enter an email address to try and log in";
+	}
+
+	// Explicitly disallow logging in with a blank email address field
+	if (!array_key_exists('txtPassword', $_POST)) {
+		return "You must enter a password to try and log in";
+	}
+	$match = preg_match("/^\s*$/", $_POST['txtPassword']);
+	if ($match === FALSE || $match === 1) {
+		return "You must enter a password to try and log in";
+	}
+
+	return false;
+}
+
 $db_prefix = DB_PREFIX;
-if ($_POST ['btnSubmit'] != '') {
+
+if ($_POST ['btnSubmit'] != '' && !is_email_or_password_empty()) {
 	//User is logging in
 	$sEmail = SafeEmail ($_POST ['txtEmail']);
 	//Work out which salt to use
@@ -161,6 +185,10 @@ if ($_POST ['btnSubmit'] != '') {
 	}
 }
 else {
+	if ($blank_fields_error = is_email_or_password_empty()) {
+		$sMessage = $blank_fields_error;
+	}
+
 	//User is not logging in, so reset login cookies
 	//Cookies are reset here, but values will not be available until next page load. Note that Lynx (and others?)
 	//do not seem to reset cookies when they are set null value, so we set them to zero, then set them to null
