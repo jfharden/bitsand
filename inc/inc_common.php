@@ -41,7 +41,7 @@ function isHttpsScheme() {
 }
 
 function url_scheme() {
-	return isHttpsScheme ? "https" : "http";
+	return isHttpsScheme() ? "https" : "http";
 }
 
 ?>
