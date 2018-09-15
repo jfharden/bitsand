@@ -33,7 +33,7 @@ function isHttpsScheme() {
 	}
 
 	// nginx with php-fpm sets _SERVER['HTTPS'] to 'off' when an http connection is used
-  if ($_SERVER['HTTPS'] != 'off') {
+	if ($_SERVER['HTTPS'] != 'off') {
 		return true;
 	}
 
