@@ -116,7 +116,7 @@ if ($bLoginCheck !== False) {
 		//User is not logged in, and must be logged in to access this page.
 		ForceLogin ('You must be logged in to access that page');
 	}
-	elseif (account_has_no_email($link, $_COOKIE['BA_PlayerID']) === true) {
+	elseif (account_has_no_email($link, $PLAYER_ID) === true) {
 		// The account that is attempting to be logged into has no email set
 		// This can happen where an admin has added an account/booking from a
 		// paper booking form (so the player never has a user in the booking system)
