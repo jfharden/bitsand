@@ -125,8 +125,8 @@ else
 <td>Character Preferred Name:</td>
 <td><?php echo htmlentities (stripslashes ($row ['chPreferredName']))?></td>
 </tr><tr>
-<td>Race &amp; Gender:</td>
-<td><?php echo htmlentities (stripslashes ($row ['chRace']))?>, <?php echo htmlentities (stripslashes ($row ['chGender']))?></td>
+<td>Race</td>
+<td><?php echo htmlentities (stripslashes ($row ['chRace']))?></td>
 </tr>
 <?php
 if (LIST_GROUPS_LABEL != '') {

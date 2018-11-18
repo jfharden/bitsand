@@ -147,7 +147,7 @@ if ($buttonpressed > 0  && CheckReferrer ('admin_finalconfirmation.php'))
 	"bkMealTicket, " .
 	"bkAmountPaid, ".
 	"bkAmountExpected, ".
-	"chName, chRace, chGender, " .
+	"chName, chRace, " .
 	"chGroupSel, chGroupText, chFaction, chAncestor, chAncestorSel,".
 	"chNotes, chOSP " .
 	"from {$db_prefix}players LEFT OUTER JOIN {$db_prefix}bookings ON {$db_prefix}players.plPlayerID = {$db_prefix}bookings.bkPlayerID " .
