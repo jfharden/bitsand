@@ -30,7 +30,7 @@ define ('ROOT_USER_ID', $_ENV["BITSAND_ROOT_USER_ID"]);
 define ('PID_PREFIX', '');
 
 // Type of database. Valid values are 'mysql' (for the PHP MySQL extension) or 'mysqli' (for the PHP Improved MySQL extension)
-define ('DB_TYPE','mysql');
+define ('DB_TYPE', $_ENV["BITSAND_DB_TYPE"]);
 // MySQL hostname
 define ('DB_HOST', $_ENV["BITSAND_DB_HOST"]);
 // Name of MySQL database

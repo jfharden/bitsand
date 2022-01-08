@@ -6,6 +6,7 @@ services:
       - "80:80"
     environment:
       - BITSAND_ROOT_USER_ID=2
+      - BITSAND_DB_TYPE=mysql
       - BITSAND_DB_HOST=mysql
       - BITSAND_DB_NAME=bitsandtest
       - BITSAND_DB_USER=bitsandtest
@@ -29,7 +30,7 @@ services:
       - ./inc/help_dist.css:/var/www/html/inc/help.css
 
   mysql:
-    image: mysql:5.6
+    image: mysql:5.7
     environment:
       - MYSQL_ROOT_PASSWORD=ev3aem6quaLaem0aeba4osheeloh1aeV2quei6Ea1soleed9XeeGh5ohmooxohtim7vaigeiquai5aich5xikiothee9hee0oi9i
       - MYSQL_DATABASE=bitsandtest
