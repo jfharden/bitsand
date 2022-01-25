@@ -66,7 +66,7 @@ $sql = "SELECT plPlayerID, " .
 	"plCarRegistration, ".
 	"plMarshal, ".
 	"plRefNumber, ".
-	"chName, chPreferredName, chRace, chGender, chGroupSel, chGroupText, chFaction, chAncestor, chAncestorSel, chLocation, chNPC, chNotes, chOSP, chMonsterOnly, " .
+	"chName, chPreferredName, chRace, chGroupSel, chGroupText, chFaction, chAncestor, chAncestorSel, chLocation, chNPC, chNotes, chOSP, chMonsterOnly, " .
 	"bkDatePaymentConfirmed, bkMealTicket, bkAmountPaid, bkAmountExpected, bkPayOnGate " .
 	"FROM {$db_prefix}players ".
 	"LEFT JOIN {$db_prefix}characters ON plPlayerID = chPlayerID " .
@@ -85,7 +85,7 @@ if (ALLOW_EVENT_PACK_BY_POST)
 	echo '"Eventpack by Post",';
 }
 echo '"Paying on Gate","Marshal","Ref Number","OOC Notes","Admin Notes","Car Registration",';
-echo '"Character name","Preferred Name","Gender","Race","Group","Faction","Ancestor","Location","IC Notes",';
+echo '"Character name","Preferred Name","Race","Group","Faction","Ancestor","Location","IC Notes",';
 echo '"Special items/powers/creatures","Guilds",';
 //Skills ordered by skID
 echo '"Ambidexterity","Ritual Magic 2","Large Melee Weapon Use","Ritual Magic 3","Projectile Weapon Use","Contribute To Ritualist",';
@@ -161,7 +161,6 @@ while ($row = ba_db_fetch_assoc ($result)) {
 	echo '"' . str_replace('"', '""', stripslashes ($row ['plCarRegistration'])) . '",';
 	echo '"' . str_replace('"', '""', stripslashes ($row ['chName'])) . '",';
 	echo '"' . str_replace('"', '""', stripslashes ($row ['chPreferredName'])) . '",';
-	echo '"' . str_replace('"', '""', stripslashes ($row ['chGender'])) . '",';
 	echo '"' . str_replace('"', '""', stripslashes ($row ['chRace'])) . '",';
 	if ($row ['chGroupText'] == 'Enter name here if not in above list' || $row ['chGroupText'] == '')
 		echo '"' . stripslashes ($row ['chGroupSel']) . '",';

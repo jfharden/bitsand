@@ -71,7 +71,6 @@ if ($_POST ['btnSubmit'] != '' && CheckReferrer ('admin_edit_ic.php')) {
 	$sql = "UPDATE {$db_prefix}characters SET chName = '" . ba_db_real_escape_string ($link, $_POST ['txtCharName']) . "', " .
 		"chPreferredName = '" . ba_db_real_escape_string($link, $_POST ['txtPreferredName']) . "', " .
 		"chRace = '" . ba_db_real_escape_string ($link, $_POST ['selRace']) . "', " .
-		"chGender = '" . ba_db_real_escape_string ($link, $_POST ['selGender']) . "', " .
 		"chGroupSel = '" . ba_db_real_escape_string ($link, $sSelGroupName) . "', " .
 		"chGroupText = '" . ba_db_real_escape_string ($link, $_POST ['txtGroup']) . "', " .
 		"chFaction = '" . ba_db_real_escape_string ($link, $_POST ['selFaction']) . "', " .
@@ -219,7 +218,7 @@ It is possible to select illegal combinations of skills. BE CAREFUL!
 <td>Preferred Character Name:</td>
 <td><input type = "text" name = "txtPreferredName" class = 'text' value = "<?php echo htmlentities (stripslashes ($row ['chPreferredName']))?>"></td>
 </tr><tr>
-<td>Race &amp; Gender:</td>
+<td>Race</td>
 <td>
 <select class = "req_colour" name = "selRace">
 <?php
@@ -233,18 +232,7 @@ foreach ($asOptions as $sOption) {
 }
 ?>
 </select>
-<select class = "req_colour" name = "selGender">
-<?php
-$sValue = $row ['chGender'];
-$asOptions = array ('Male', 'Female');
-foreach ($asOptions as $sOption) {
-	echo "<option value = '$sOption'";
-	if ($sOption == $sValue)
-		echo ' selected';
-	echo ">" . htmlentities (stripslashes ($sOption)) . "</option>\n";
-}
-?>
-</select></td>
+</td>
 </tr>
 <?php
 if (LIST_GROUPS_LABEL != '') {

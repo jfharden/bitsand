@@ -268,8 +268,8 @@ if ($pid != 0) {
 	<td>Preferred Character Name:</td>
 	<td><?php echo htmlentities (stripslashes ($row ['chPreferredName']))?></td>
 	</tr><tr class = 'highlight'>
-	<td>Race &amp; Gender:</td>
-	<td><?php echo htmlentities (stripslashes ($row ['chRace']))?>, <?php echo htmlentities (stripslashes ($row ['chGender']))?></td>
+	<td>Race</td>
+	<td><?php echo htmlentities (stripslashes ($row ['chRace']))?></td>
 	</tr>
 	<?php
 	if (LIST_GROUPS_LABEL != '') {

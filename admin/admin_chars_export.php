@@ -64,7 +64,7 @@ else
 //Get list of players
 $db_prefix = DB_PREFIX;
 $sql = "SELECT plPlayerID, plFirstName, " .
-	"plSurname, chName, chRace, chGender, " .
+	"plSurname, chName, chRace, " .
 	"chGroupSel, chGroupText, chFaction, chAncestor, chLocation, chNotes, chOSP " .
 	"FROM {$db_prefix}players, {$db_prefix}characters WHERE plPlayerID = chPlayerID ORDER BY plSurname";
 $result = ba_db_query ($link, $sql);
@@ -75,7 +75,6 @@ echo $cellstart . 'First Name' . $cellend . $separator;
 echo $cellstart . 'Surname' . $cellend . $separator;
 echo $cellstart . 'IC Name' . $cellend . $separator;
 echo $cellstart . 'Race' . $cellend . $separator;
-echo $cellstart . 'Gender' . $cellend . $separator;
 echo $cellstart . 'Faction' . $cellend . $separator;
 echo $cellstart . 'Guilds' . $cellend . $separator;
 echo $cellstart . 'Group' . $cellend . $separator;
@@ -90,7 +89,6 @@ while ($row = ba_db_fetch_assoc ($result)) {
 	echo $cellstart . formatdata ($row ['plSurname'], $bHTML) . $cellend . $separator;
 	echo $cellstart . formatdata ($row ['chName'], $bHTML) . $cellend . $separator;
 	echo $cellstart . formatdata ($row ['chRace'], $bHTML) . $cellend . $separator;
-	echo $cellstart . formatdata ($row ['chGender'], $bHTML) . $cellend . $separator;
 	echo $cellstart . formatdata ($row ['chFaction'], $bHTML) . $cellend . $separator;
 	echo $cellstart;
 		//Guilds - currently just put them in a single cell
