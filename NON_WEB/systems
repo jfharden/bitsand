@@ -35,10 +35,15 @@
 #
 Bears	LT	http://kaitain.vm.bytemark.co.uk/bears/export.php
 Gryphons	LT	http://www.gryphonbooking.com/export.php
-Harts	LT	http://www.hartsofalbion.co.uk/booking/export.php
+Harts	LT	https://harts.sanctioned-events.com/export.php
 #Jackals	LT	http://www.jackalfaction.com/booking/export.php
 Lions	LT	https://bookings.lionsfaction.co.uk/export.php
 Vipers	LT	http://www.viperfaction.co.uk/booking/export.php
 First Spear	LT	https://bookings.lionsfaction.co.uk/firstspear/export.php
 Dragons	LT	http://events.dragonsfaction.org/export.php
-Incantors	LT	http://www.hartsofalbion.co.uk/incantors-booking/export.php
+Incantors	LT	https://incantors.sanctioned-events.com/export.php
+Healers	LT	https://www.hartsofalbion.co.uk/healers-booking/export.php
+Alchemists	LT	https://www.hartsofalbion.co.uk/alchemists-booking/export.php
+Wardens	LT	https://www.hartsofalbion.co.uk/wardens-booking/export.php
+Reality Checkpoint	LT	https://www.hartsofalbion.co.uk/reality-booking/export.php
+World Plot	LT	https://world-plot.sanctioned-events.com/export.php

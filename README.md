@@ -13,12 +13,17 @@ Please note, the new location of the Systems file (for registration import) is: 
 Bitsand is known to be in use by:
 
 * [Lions](http://bookings.lionsfaction.co.uk/)
-* [Harts](http://www.hartsofalbion.co.uk/booking/)
+* [Harts](https://harts.sanctioned-events.com/)
 * [Jackals](http://www.jackalfaction.com/booking/)
 * [Bears](http://kaitain.vm.bytemark.co.uk/bears/)
 * [Vipers](http://www.viperfaction.co.uk/booking/)
 * [Dragons](http://events.dragonsfaction.org)
-* [Incantors](http://www.hartsofalbion.co.uk/incantors-booking/)
+* [Incantors](https://incantors.sanctioned-events.com/)
+* [Healers](https://www.hartsofalbion.co.uk/healers-booking/)
+* [Alchemists](https://www.hartsofalbion.co.uk/alchemists-booking/)
+* [Wardens](https://www.hartsofalbion.co.uk/wardens-booking/)
+* [Reality Checkpoint](https://www.hartsofalbion.co.uk/reality-booking/)
+* [World Plot](https://world-plot.sanctioned-events.com/export.php)
 
 ## Installation Instructions
 
